@@ -670,29 +670,44 @@ Jmj.prototype.getSingless = function(i) {
 	return s;
 };
 
-Jmj.prototype.patt_print = function(mode_) {
+//Jmj.prototype.patt_print = function(mode_) {
+Jmj.prototype.patt_print = function(mode_, isUpdate) {
 	var i;
 	var c;
-	if (mode_ == 1) {
-		if (this.pattw > this.c0 && this.pattw > this.intsyn + 1) {
-			this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], false);
+	if (mode_ == 1) { // TODO
+		//if (this.pattw > this.c0 && this.pattw > this.intsyn + 1) {
+			//this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], false);
+			//this.tx += this.singless[this.c0].length;
+		//}
+		//c = this.time_period;
+		//if (c <= this.c0) {
+		//	this.tx = 0;
+		//}
+		//this.drawSiteswap(this.patt_x + this.tx, this.singless[c], true);
+		//this.c0 = c;
+		this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], true);
+		if (isUpdate){
 			this.tx += this.singless[this.c0].length;
+			this.c0 += 1 + this.intsyn;;
+			if (this.c0 > this.time_period){
+				this.c0 = 0;
+				this.tx = 0;
+			}
 		}
-		c = this.time_period;
-		if (c <= this.c0) {
-			this.tx = 0;
-		}
-		this.drawSiteswap(this.patt_x + this.tx, this.singless[c], true);
-		this.c0 = c;
 		return;
 	}
 	if (mode_ == 0) {
-		this.tx = 0;
+		// this.tx = 0;
+		//for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
+		//	this.drawSiteswap(this.patt_x + this.tx, this.singless[i], false);
+		//	this.tx += this.singless[i].length;
+		//}
+		//this.c0 = this.pattw;
+		var x = 0;
 		for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
-			this.drawSiteswap(this.patt_x + this.tx, this.singless[i], false);
-			this.tx += this.singless[i].length;
+			this.drawSiteswap(this.patt_x + x, this.singless[i], false);
+			x += this.singless[i].length;
 		}
-		this.c0 = this.pattw;
 	}
 };
 
@@ -806,7 +821,11 @@ Jmj.prototype.startJuggling = function(index, s) {
 		this.pattInitialize();
 	}
 	if (this.show_ss) {
+		this.c0 = 0; // TODO 初期化
+		this.tx = 0; // TODO 初期化
 		this.patt_print(0);
+		this.c0 = 0; // TODO 初期化
+		this.tx = 0; // TODO 初期化
 	}
 	this.controller.setLabels();
 	this.initBallGraphics();
@@ -864,12 +883,16 @@ Jmj.prototype.do_juggle = function() {
 	for (this.jPerNo = 0; this.jPerNo < Jmj.iPerNo; this.jPerNo++) {
 		iCnt += this.rhand[this.jPerNo].juggle () + this.lhand[this.jPerNo].juggle ();
 	}
-	if (iCnt > 0) {
-		if (this.show_ss) {
-			this.patt_print (1);
-		}
-	}
+	//if (iCnt > 0) {
+	//	if (this.show_ss) {
+	//		this.patt_print (1);
+	//	}
+	//}
 	this.eraseBalls ();
+	if (this.show_ss) {
+		this.patt_print(0);
+		this.patt_print(1, iCnt > 0);
+	}
 	for (var jPerNo = 0; jPerNo < Jmj.iPerNo; jPerNo++) {
 		this.ap[jPerNo].rx[0] = this.rhand[jPerNo].gx + 11 + this.arm_x;
 		this.ap[jPerNo].ry[0] = this.rhand[jPerNo].gy + 11 + this.arm_y;
@@ -968,7 +991,7 @@ Jmj.prototype.drawSiteswap = function(x, str, is_red) {
 	this.image_gc.drawString (str, x * 8, 20);
 };
 	
-Jmj.prototype.drawBall = function(bm, x, y, isHand, color) {
+Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 	if (x < -this.iMoveX || x > 480 - this.iMoveX || y < 0 || y > 376) {
 		return ;
 	}
@@ -978,9 +1001,12 @@ Jmj.prototype.drawBall = function(bm, x, y, isHand, color) {
 	g.dispose ();
 */
 	this.image_gc.setColor(color);
-	if (isHand){
+	if (hand == 0){
 		var r = Math.floor(11 * this.dpm / Jmj.DW);
-		this.image_gc.fillOval(this.HOR_CENTER + x-this.bm1, y-this.bm1, r * 2, r * 2);
+		x = this.fx(x + this.bm1);
+		y += this.bm1;
+		this.image_gc.fillOval(x, y, r * 2, r * 2);
+		//this.image_gc.fillRect(x, y, x + r * 2, y + r * 2);
 	}
 	else {
 		// initBallGraphics()でも定義している // TODO
@@ -994,14 +1020,22 @@ Jmj.prototype.drawBall = function(bm, x, y, isHand, color) {
 		this.hand_y = data[i - 3] + 2;
 		this.arm_x = data[i - 2];
 		this.arm_y = data[i - 1];
-		x += this.HOR_CENTER;
+		
+		//x = this.fx(x + this.bm1);
+		//y += this.bm1;
+		x = this.fx(x);
+		
 		for (i = 0; i + 6 < data.length; i += 2) {
 			//this.r_bm_gc[1].setColor (this.color[1]);
 			//this.r_bm_gc[1].drawLine (11 + data[i], 10 + data[i + 1], 11 + data[i + 2], 10 + data[i + 3]);
 			//this.l_bm_gc[1].setColor (this.color[1]);
 			//this.l_bm_gc[1].drawLine (12 - data[i], 10 + data[i + 1], 12 - data[i + 2], 10 + data[i + 3]);
-			this.image_gc.drawLine (x + 11 + data[i], y + 10 + data[i + 1], x + 11 + data[i + 2], y + 10 + data[i + 3]);
-			this.image_gc.drawLine (x + 12 - data[i], y + 10 + data[i + 1], x + 12 - data[i + 2], y + 10 + data[i + 3]);
+			if (hand == 1){
+				this.image_gc.drawLine (x + 11 + data[i], y + 10 + data[i + 1], x + 11 + data[i + 2], y + 10 + data[i + 3]);
+			}
+			else {
+				this.image_gc.drawLine (x + 12 - data[i], y + 10 + data[i + 1], x + 12 - data[i + 2], y + 10 + data[i + 3]);
+			}
 		}	
 	}
 };
@@ -1019,10 +1053,9 @@ Jmj.prototype.fillBox = function(x1_b, y1, x2_b, y2) {
 };
 
 Jmj.prototype.initBallGraphics = function() {
-/*
 	var i;
 	var data = [0, 18, 0, 23, 17, 23, 20, 22, 22, 20, 23, 17, 23, 12, 18, 12, 18, 16, 16, 18, 0, 18, 12, 15, 23, 17];
-	
+/*	
 	if (this.bm[0] == null) {
 		if (this.imf != null) {
 			this.l_bm[1] = this.imf.createImage (32, 24);
@@ -1054,6 +1087,7 @@ Jmj.prototype.initBallGraphics = function() {
 	this.l_bm_gc[1].fillRect (0, 0, 32, 24);
 	this.r_bm_gc[1].setColor (java.awt.Color.white);
 	this.r_bm_gc[1].fillRect (0, 0, 32, 24);
+*/
 	for (i = 0; i < data.length; i++) {
 		data[i] = Math.floor ((data[i] - 11) * this.dpm / 290);
 	}
@@ -1061,6 +1095,7 @@ Jmj.prototype.initBallGraphics = function() {
 	this.hand_y = data[i - 3] + 2;
 	this.arm_x = data[i - 2];
 	this.arm_y = data[i - 1];
+/*
 	for (i = 0; i + 6 < data.length; i += 2) {
 		this.r_bm_gc[1].setColor (this.color[1]);
 		this.r_bm_gc[1].drawLine (11 + data[i], 10 + data[i + 1], 11 + data[i + 2], 10 + data[i + 3]);
@@ -1072,14 +1107,14 @@ Jmj.prototype.initBallGraphics = function() {
 		this.bm_gc[i].setColor (this.color[i]);
 		this.bm_gc[i].fillOval (11 - r, 11 - r, 2 * r, 2 * r);
 	}
+*/
 	this.bm1 = 11 - Math.floor (11 * this.dpm / 290);
 	this.bm2 = 11 + Math.floor (11 * this.dpm / 290) + 1;
-*/
 };
 	
 Jmj.prototype.clearImage = function() {
 	this.image_gc.setColor(this.color[0]);
-	this.image_gc.fillRect(0, 0, 480, 400);
+	this.image_gc.clearRect(0, 0, 480, 400); // TODO
 
 	var g;
 	if (this.imf != null) {
@@ -1095,6 +1130,10 @@ Jmj.prototype.eraseBalls = function() {
 	var i;
 	var j;
 
+	// 全体を消す
+	this.image_gc.clearRect(0, 0, 480, 400); // TODO
+	return;
+/*
 	this.image_gc.setColor (this.color[0]);
 	if (this.hand_on) {
 		for (j = 0; j < Jmj.iPerNo; j++) {
@@ -1111,6 +1150,7 @@ Jmj.prototype.eraseBalls = function() {
 		this.fillBox (Math.floor (this.b[i].gx0 / 8), this.b[i].gy0 + this.bm1, Math.floor (this.b[i].gx0 / 8) + 3, this.b[i].gy0 + this.bm2);
 	}
 	return ;
+*/
 };
 
 Jmj.prototype.putBalls = function() {
@@ -1120,8 +1160,8 @@ Jmj.prototype.putBalls = function() {
 	if (this.hand_on) {
 		this.image_gc.setColor (this.color[1]);
 		for (j = 0; j < Jmj.iPerNo; j++) {
-			this.drawBall (this.r_bm[1], this.rhand[j].gx, this.rhand[j].gy, false, this.color[1]);
-			this.drawBall (this.l_bm[1], this.lhand[j].gx, this.lhand[j].gy, false, this.color[1]);
+			this.drawBall (this.r_bm[1], this.rhand[j].gx, this.rhand[j].gy, 1, this.color[1]);
+			this.drawBall (this.l_bm[1], this.lhand[j].gx, this.lhand[j].gy, 2, this.color[1]);
 			for (i = 0; i < 5; i++) {
 				this.drawLine (this.ap[j].rx[i], this.ap[j].ry[i], this.ap[j].rx[i + 1], this.ap[j].ry[i + 1]);
 				this.drawLine (this.ap[j].lx[i], this.ap[j].ly[i], this.ap[j].lx[i + 1], this.ap[j].ly[i + 1]);
@@ -1130,7 +1170,7 @@ Jmj.prototype.putBalls = function() {
 		}
 	}
 	for (i = this.ballno - 1; i >= 0; i--) {
-		this.drawBall (this.bm[15 - i % 13], this.b[i].gx, this.b[i].gy, true, this.getColor(i));
+		this.drawBall (this.bm[15 - i % 13], this.b[i].gx, this.b[i].gy, 0, this.getColor(i));
 	}
 };
 
@@ -1223,6 +1263,12 @@ Jmj.prototype.getColor = function(i) {
 	return c[(l - 1) - i % (l - n)];
 };
 
+// FOO
+//Jmj.prototype.initPage3 = function(e) {
+//	this.controller.setSpeed(this.speed);
+//	//this.controller.speed_gauge.refresh2();
+//}
+
 // Applet
 Jmj.prototype.getParameter = function(s) {
 	if (s == 'file') {
@@ -1231,6 +1277,7 @@ Jmj.prototype.getParameter = function(s) {
 	}
 	if (s == 'startwith') {
 		return 'Throw Twice';
+		//return '35-Cascade';
 	}
 	if (s == '') {
 		return 'pattern.jm,pattern_ja.jm';
@@ -1270,4 +1317,3 @@ Jmj.MOTION_MODE = -2;
 Jmj.FORMATION_MODE = -1;
 Jmj.Y_OFFSET = 0;
 Jmj.FORMATION_BASIC = "1-Person";
-

@@ -140,7 +140,8 @@ JmjController.prototype.setLabels = function() {
 };
 
 JmjController.prototype.setSpeed = function(speed) {
-	this.speed_gauge.setValue(Math.round((speed * 10)));
+	//this.speed_gauge.setValue(Math.round((speed * 10)));
+	this.speed_gauge.setValue(speed);
 	this.setSpeedLabel();
 };
 
@@ -161,7 +162,8 @@ JmjController.prototype.setPerno = function(i) {
 };
 
 JmjController.prototype.getSpeed = function() {
-	return this.speed_gauge.getValue() / 10;
+	//return this.speed_gauge.getValue() / 10;
+	return this.speed_gauge.getValue();
 };
 
 JmjController.prototype.GetHeight_ = function() {

@@ -67,13 +67,13 @@ Ball.prototype.juggle = function() {
 			this.bh = Ball.jmj.patt[t][Ball.jmj.r[t]];
 			this.c += Math.abs (this.bh);
 			if (++Ball.jmj.r[t] >= Ball.jmj.patts[t]) {
-			Ball.jmj.r[t] = 0;
-		}
-		this.thand = this.chand;
-		if (((this.bh & 1) != 0) || this.bh < 0) {
-			this.chand = 1 - this.chand;
-		}
-		flag = 1;
+				Ball.jmj.r[t] = 0;
+			}
+			this.thand = this.chand;
+			if (((this.bh & 1) != 0) || this.bh < 0) {
+				this.chand = 1 - this.chand;
+			}
+			flag = 1;
 		}
 	}
 	if (this.c < 0) {

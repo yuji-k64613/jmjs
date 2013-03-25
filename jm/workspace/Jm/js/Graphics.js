@@ -25,16 +25,27 @@ Graphics.prototype.translate = function(center, i) { // TODO 未使用
 	this.center = center;
 };
 
-//Graphics.prototype.fillRect = function(x, y, width, height) {
-Graphics.prototype.fillRect = function(x, y, x2, y2) {
+Graphics.prototype.clearRect = function(x, y, x2, y2) {
 	var width = Math.abs(x2 - x);
 	var height = Math.abs(y2 - y);
 
 	this.ctx.beginPath();
 	this.ctx.clearRect(x, y, width, height);
 	this.ctx.closePath();
-	this.ctx.fill();
-	// this.ctx.stroke(); //いらないの？ TODO
+	this.ctx.stroke();
+	////this.ctx.fill();
+	//// this.ctx.stroke(); //いらないの？ TODO
+};
+
+Graphics.prototype.fillRect = function(x, y, x2, y2) {
+	var width = Math.abs(x2 - x);
+	var height = Math.abs(y2 - y);
+
+	this.ctx.beginPath();
+	this.ctx.fillRect(x, y, width, height);
+	//this.ctx.fill();
+	this.ctx.closePath();
+	this.ctx.stroke();
 };
 
 Graphics.prototype.drawString = function(str, x, y, anchor, color) {
@@ -59,9 +70,9 @@ Graphics.prototype.drawLine = function(x1, y1, x2, y2) {
 };
 
 Graphics.prototype.drawOval = function(x, y, w, h) {
-	x += w / 2 + this.center;
+	x += w / 2;
 	y += h / 2;
-	var r = (w + h) / 4;	
+	var r = Math.floor((w + h) / 4);	
 	this.ctx.beginPath();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
 	//this.ctx.fill();
@@ -73,7 +84,7 @@ Graphics.prototype.fillOval = function(x, y, w, h) {
 	//x += w / 2 + this.center;
 	x += w / 2;
 	y += h / 2;
-	var r = (w + h) / 4;	
+	var r = Math.floor((w + h) / 4);	
 	this.ctx.beginPath();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
 	this.ctx.fill();
