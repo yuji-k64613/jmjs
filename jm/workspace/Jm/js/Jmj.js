@@ -880,8 +880,11 @@ Jmj.prototype.do_juggle = function() {
 	//}
 	this.eraseBalls ();
 	if (this.show_ss) {
+		this.image_gc.beginPath();
 		this.patt_print(0);
 		this.patt_print(1, iCnt > 0);
+		this.image_gc.closePath();
+		this.image_gc.stroke();
 	}
 	for (var jPerNo = 0; jPerNo < Jmj.iPerNo; jPerNo++) {
 		this.ap[jPerNo].rx[0] = this.rhand[jPerNo].gx + 11 + this.arm_x;
@@ -1146,17 +1149,27 @@ Jmj.prototype.putBalls = function() {
 	if (this.hand_on) {
 		this.image_gc.setColor (this.color[1]);
 		for (j = 0; j < Jmj.iPerNo; j++) {
+			this.image_gc.beginPath();
 			this.drawBall (this.r_bm[1], this.rhand[j].gx, this.rhand[j].gy, 1, this.color[1]);
 			this.drawBall (this.l_bm[1], this.lhand[j].gx, this.lhand[j].gy, 2, this.color[1]);
 			for (i = 0; i < 5; i++) {
 				this.drawLine (this.ap[j].rx[i], this.ap[j].ry[i], this.ap[j].rx[i + 1], this.ap[j].ry[i + 1]);
 				this.drawLine (this.ap[j].lx[i], this.ap[j].ly[i], this.ap[j].lx[i + 1], this.ap[j].ly[i + 1]);
 			}
+			this.image_gc.closePath();
+			this.image_gc.stroke();
+
+			this.image_gc.beginPath();
 			this.drawCircle (this.ap[j].hx, this.ap[j].hy, this.ap[j].hr);
+			this.image_gc.closePath();
+			this.image_gc.stroke();
 		}
 	}
 	for (i = this.ballno - 1; i >= 0; i--) {
+		this.image_gc.beginPath();
 		this.drawBall (this.bm[15 - i % 13], this.b[i].gx, this.b[i].gy, 0, this.getColor(i));
+		this.image_gc.closePath();
+		this.image_gc.stroke();
 	}
 };
 

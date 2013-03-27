@@ -10,12 +10,12 @@ var Image = function(canvas, img) {
 //Image.prototype = new Component();
 
 Image.prototype.getGraphics = function() {
-	//return this.canvas.getGraphics();
-	if (this.graphics == null){
-		var ctx = this.canvas.getCanvas().getContext('2d');
-		this.graphics = new Graphics(ctx);
-	}
-	return this.graphics;
+	//if (this.graphics == null){
+	//	var ctx = this.canvas.getCanvas().getContext('2d');
+	//	this.graphics = new Graphics(ctx);
+	//}
+	//return this.graphics;
+	return this.canvas.getGraphics();
 };
 
 Image.prototype.getImage = function() {
