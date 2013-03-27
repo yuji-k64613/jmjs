@@ -1,7 +1,7 @@
-var Thread = function(obj, func){
+var Thread = function(obj, func, t){
 	this.obj = obj;
 	this.func = func;
-	this.interval = 20;
+	this.interval = t;
 };
 
 Thread.prototype.start = function() {

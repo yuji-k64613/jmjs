@@ -25,29 +25,23 @@ var arrayInit = function(n, v){
 };
 
 Clazz.data = null;
-function loadTextFile(fileName) {
+function loadTextFile(fileName, callback, e) {
 	httpObj = new XMLHttpRequest();
 	httpObj.open('GET', fileName, true);
 	httpObj.send(null);
 	httpObj.onreadystatechange = function() {
 		if ((httpObj.readyState == 4) && (httpObj.status == 200)) {
 			var data = httpObj.responseText;
-			//alert(JSON.stringify(data, null, '   '));
 			Clazz.data = data;
 			
-			foo();
+			callback(e);
 		}
 	}
 }
 
-// TODO 不要？
-function displayData() {// TODO 名前　http://www.openspc2.org/JavaScript/Ajax/Ajax_study/chapter02/007/index.html
-	if ((httpObj.readyState == 4) && (httpObj.status == 200)) {
-		alert('done');
-	} else {
-		// TODO 読み込み中？
-	}
-}
+Clazz.instanceOf = function(e, t){
+	return false;
+};
 
 function parseId(s){
 	var n = s.indexOf('_');
@@ -56,3 +50,10 @@ function parseId(s){
 	}
 	return parseInt(s.substring(n + 1));
 }
+
+function clone(o)
+{
+    var f = function(){};
+    f.prototype = o;
+    return new f();
+};

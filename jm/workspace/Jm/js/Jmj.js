@@ -22,7 +22,7 @@ var Jmj = function() {
 	this.FORMATION_BASIC = "1-Person";
 	*/
 
-	// Filed TODO "1-Person";初期化
+	// Filed
 	this.strVer = "2.13__";
 	this.TEST_MODE = false;
 	this.redrawrate = 100.0;
@@ -143,6 +143,8 @@ var Jmj = function() {
 	this.bm_gc = new Array(16);
 	this.r_bm_gc = new Array(16);
 	this.l_bm_gc = new Array(16);
+	
+	this.data = [0, 18, 0, 23, 17, 23, 20, 22, 22, 20, 23, 17, 23, 12, 18, 12, 18, 16, 16, 18, 0, 18, 12, 15, 23, 17];
 }
 
 Jmj.prototype.init = function() {
@@ -198,8 +200,8 @@ Jmj.prototype.init = function() {
 	this.readParameter();
 	if (this.startindex == -1) {
 		this.startindex = this.fallback_startindex;
-		this.startJuggling(this.startindex, null);
-		this.controller.patternList.select(this.startindex);
+		//this.startJuggling(this.startindex, null);
+		//this.controller.patternList.select(this.startindex);
 	}
 };
 
@@ -327,13 +329,11 @@ Jmj.prototype.openFile = function(s) {
 		var func = function (target) {
     		return function(e) {
         		target.controller.actionPerformedForPatternList(e);
-        		// TODO
-				//e.stopImmediatePropagation();
-				//return false;
     		};
 		}(this);
 		this.controller.patternList.add('patternList', i, s, func, p.isPattern);
 	}
+	this.controller.patternList.add(null, 0, '', func, false);
 	this.controller.patternList.validate();
 	this.controller.enableSwitches();
 	this.controller.putMessage("", "");
@@ -623,7 +623,6 @@ Jmj.prototype.square = function(x) {
 };
 
 Jmj.prototype.getSingless = function(i) {
-	//var p = Clazz.newArray(256, '\0');
 	var p = Clazz.newArray(256, 0);
 	var j;
 	var t;
@@ -674,7 +673,7 @@ Jmj.prototype.getSingless = function(i) {
 Jmj.prototype.patt_print = function(mode_, isUpdate) {
 	var i;
 	var c;
-	if (mode_ == 1) { // TODO
+	if (mode_ == 1) {
 		//if (this.pattw > this.c0 && this.pattw > this.intsyn + 1) {
 			//this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], false);
 			//this.tx += this.singless[this.c0].length;
@@ -816,16 +815,22 @@ Jmj.prototype.startJuggling = function(index, s) {
 			this.controller.setPerno(Jmj.iPerNo);
 			this.controller.setLabels();
 		}
+		else if (s != null && s.length == 0 && index >= 0){
+			// Java版には無い
+			// 前回と同じパターンを選択した場合
+			Jmj.iPerNo = Jmj.iPerMax;
+			this.holder.getPattern(index);
+			this.controller.setPerno(Jmj.iPerNo);
+			this.controller.setLabels();
+			this.controller.setHeight(this.$height);
+			this.controller.setDwell(this.dwell);		
+		}
 		this.set_dpm();
 		this.speed = this.controller.getSpeed();
 		this.pattInitialize();
 	}
 	if (this.show_ss) {
-		this.c0 = 0; // TODO 初期化
-		this.tx = 0; // TODO 初期化
 		this.patt_print(0);
-		this.c0 = 0; // TODO 初期化
-		this.tx = 0; // TODO 初期化
 	}
 	this.controller.setLabels();
 	this.initBallGraphics();
@@ -833,7 +838,7 @@ Jmj.prototype.startJuggling = function(index, s) {
 	this.time_count = 0;
 	this.time_period = 0;
 	//this.kicker = new Thread(this);
-	this.kicker = new Thread(this, Jmj.prototype.run);
+	this.kicker = new Thread(this, Jmj.prototype.run, 1000 / this.redrawrate);
 	this.kicker.start();
 	self = this;
 	this.status = 2;
@@ -841,24 +846,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 };
 
 Jmj.prototype.run = function() {
-	// while (this.kicker != null) {
-		// this.do_juggle();
-		// this.count_up_timer();
-		// try {
-			// this.kicker.sleep(Math.round((10.0)));
-		// } catch (e) {
-			// if (Clazz.instanceOf(e, InterruptedException)) {
-			// } else {
-				// throw e;
-			// }
-		// }
-	// }
 	if (self.kicker != null){
 		self.do_juggle();
 		self.count_up_timer();
-		
-		// FOO
-		//self.kicker.stop();
 	}
 };
 
@@ -917,7 +907,7 @@ Jmj.prototype.removeErrorMessage = function() {
 };
 
 Jmj.prototype.putError = function(s1, s2) {
-	// TODO
+
 };
 
 Jmj.prototype.fadd = function(t, x) {
@@ -966,7 +956,6 @@ Jmj.prototype.disposeGraphics = function() {
 			this.l_bm_gc[i].dispose ();
 		}
 	} catch (e) {
-		// TODO
 		if (Clazz.instanceOf (e, Throwable)) {
 
 		} else {
@@ -995,7 +984,7 @@ Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 	if (x < -this.iMoveX || x > 480 - this.iMoveX || y < 0 || y > 376) {
 		return ;
 	}
-/*
+/* Java版では、イメージのコピーで描画しているが、手抜きして直接描画している
 	var g = this.image_gc.create (this.fx (x + this.bm1), y + this.bm1, this.bm2 - this.bm1 + 1, this.bm2 - this.bm1 + 1);
 	g.drawImage (bm, -this.bm1, -this.bm1, null);
 	g.dispose ();
@@ -1009,8 +998,7 @@ Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 		//this.image_gc.fillRect(x, y, x + r * 2, y + r * 2);
 	}
 	else {
-		// initBallGraphics()でも定義している // TODO
-		var data = [0, 18, 0, 23, 17, 23, 20, 22, 22, 20, 23, 17, 23, 12, 18, 12, 18, 16, 16, 18, 0, 18, 12, 15, 23, 17];
+		var data = clone(this.data);
 	
 		var i;
 		for (i = 0; i < data.length; i++) {
@@ -1021,8 +1009,6 @@ Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 		this.arm_x = data[i - 2];
 		this.arm_y = data[i - 1];
 		
-		//x = this.fx(x + this.bm1);
-		//y += this.bm1;
 		x = this.fx(x);
 		
 		for (i = 0; i + 6 < data.length; i += 2) {
@@ -1054,7 +1040,7 @@ Jmj.prototype.fillBox = function(x1_b, y1, x2_b, y2) {
 
 Jmj.prototype.initBallGraphics = function() {
 	var i;
-	var data = [0, 18, 0, 23, 17, 23, 20, 22, 22, 20, 23, 17, 23, 12, 18, 12, 18, 16, 16, 18, 0, 18, 12, 15, 23, 17];
+	var data = clone(this.data);
 /*	
 	if (this.bm[0] == null) {
 		if (this.imf != null) {
@@ -1175,9 +1161,7 @@ Jmj.prototype.putBalls = function() {
 };
 
 Jmj.prototype.MessageBox = function(str) {
-// TODO
-// if (this.TEST_MODE == false) return ;
-// this.msg.msgbx (str);
+
 };
 
 Jmj.prototype.SetXYDummyData = function() {
@@ -1263,17 +1247,48 @@ Jmj.prototype.getColor = function(i) {
 	return c[(l - 1) - i % (l - n)];
 };
 
-// FOO
-//Jmj.prototype.initPage3 = function(e) {
-//	this.controller.setSpeed(this.speed);
-//	//this.controller.speed_gauge.refresh2();
-//}
+Jmj.prototype.initPage = function(e) {
+
+};
+
+Jmj.prototype.initPage1 = function(e) {
+
+};
+
+Jmj.prototype.initPage2 = function(e) {
+
+};
+
+Jmj.prototype.initPage3 = function(e) {
+	this.controller.speed_gauge.refresh(true);
+	this.controller.height_gauge.refresh(true);
+	this.controller.dwell_gauge.refresh(true);
+	this.controller.perno_gauge.refresh(true);
+}
+
+Jmj.prototype.changePage1 = function(e) {
+	this.stopJuggling();
+};
+
+Jmj.prototype.changePage2 = function(e) {
+	if (this.kicker == null) {
+		this.controller.juggle_pressed();
+	}
+};
+
+Jmj.prototype.changePage3 = function(e) {
+	this.stopJuggling();
+	this.controller.speed_gauge.refresh(true);
+	this.controller.height_gauge.refresh(true);
+	this.controller.dwell_gauge.refresh(true);
+	this.controller.perno_gauge.refresh(true);
+};
 
 // Applet
 Jmj.prototype.getParameter = function(s) {
 	if (s == 'file') {
-		//return 'pattern.jm';
-		return 'https://dl.dropbox.com/u/9975638/juggling/jmj/pattern.jm';
+		return 'pattern.jm';
+		//return 'https://dl.dropbox.com/u/9975638/juggling/jmj/pattern.jm';
 	}
 	if (s == 'startwith') {
 		return 'Throw Twice';

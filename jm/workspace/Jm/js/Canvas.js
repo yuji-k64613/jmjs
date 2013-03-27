@@ -6,9 +6,7 @@ var Canvas = function(id) {
 	
 	this.canvas = this.obj.get(0);
 	this.ctx = this.canvas.getContext('2d');
-	// TODO
-	//this.ctx.font = "" + Resource.fontSize + "px 'Monotype Corsiva'";
-	this.ctx.font = "" + 14 + "px 'Monotype Corsiva'";
+	this.ctx.font = "" + Resource.fontSize + "px 'Monotype Corsiva'";
 	
 	this.graphics = new Graphics(this.ctx);
 };

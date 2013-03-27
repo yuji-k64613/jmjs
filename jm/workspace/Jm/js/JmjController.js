@@ -71,9 +71,10 @@ var JmjController = function(jmj, quitflag) {
     this.perno_label = new Label('perno_label', "Person #");
 
     this.speed_gauge  = new Scrollbar('speed_gauge');
-    this.height_gauge = new Scrollbar();
-    this.dwell_gauge  = new Scrollbar();
-    this.perno_gauge  = new Scrollbar();
+    this.height_gauge = new Scrollbar('height_gauge');
+    this.dwell_gauge  = new Scrollbar('dwell_gauge');
+    this.perno_gauge  = new Scrollbar('perno_gauge');
+    //this.perno_gauge  = new Scrollbar();
 
     this.speed_value  = new Label("");
     this.height_value = new Label("");
@@ -97,18 +98,15 @@ var JmjController = function(jmj, quitflag) {
 };
 
 JmjController.prototype.actionPerformedForPatternList = function(e) {
-	var oldIndex = this.patternList.getSelectedIndex();
 	var index = parseId(e.target.id);
-	if (index < 0 || index == oldIndex){
-		return;
-	}
 	this.patternList.select(index);
 
 	this.patternList.chooseValidIndex();
-	this.juggle_pressed();	
+	//this.juggle_pressed();	
+	// 手抜き
+	this.jmj.startJuggling(this.patternList.getSelectedIndex(), "");
 	
 	// TODO jQueryを外に
-	//$('page1_page2').click();
 	$.mobile.changePage('#page2');
 };
 
@@ -146,12 +144,14 @@ JmjController.prototype.setSpeed = function(speed) {
 };
 
 JmjController.prototype.setHeight = function(height) {
-	this.height_gauge.setValue(Math.round((height * 100)));
+	//this.height_gauge.setValue(Math.round((height * 100)));
+	this.height_gauge.setValue(height);
 	this.setHeightLabel();
 };
 
 JmjController.prototype.setDwell = function(dwell) {
-	this.dwell_gauge.setValue(Math.round((dwell * 100)));
+	//this.dwell_gauge.setValue(Math.round((dwell * 100)));
+	this.dwell_gauge.setValue(dwell);
 	this.setDwellLabel();
 };
 
@@ -167,11 +167,13 @@ JmjController.prototype.getSpeed = function() {
 };
 
 JmjController.prototype.GetHeight_ = function() {
-	return this.height_gauge.getValue() / 100;
+	//return this.height_gauge.getValue() / 100;
+	return this.height_gauge.getValue();
 };
 
 JmjController.prototype.getDwell = function() {
-	return this.dwell_gauge.getValue() / 100;
+	//return this.dwell_gauge.getValue() / 100;
+	return this.dwell_gauge.getValue();
 };
 
 JmjController.prototype.getPerNo = function() {

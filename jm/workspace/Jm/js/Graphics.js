@@ -4,12 +4,7 @@ var Graphics = function(ctx) {
 	//}
 	//Component.apply(this, [id]);
 	this.ctx = ctx;
-
 	this.center = 0;
-
-	//this.canvas = this.obj.get(0);
-	//this.ctx = this.canvas.getContext('2d');
-	//this.ctx.font = "" + Resource.fontSize + "px 'Monotype Corsiva'";
 };
 //Graphics.prototype = new Component();
 
@@ -21,9 +16,10 @@ Graphics.prototype.dispose = function() {
 	//this.ctx = null;
 };
 
-Graphics.prototype.translate = function(center, i) { // TODO 未使用
-	this.center = center;
-};
+// 不要
+//Graphics.prototype.translate = function(center, i) {
+//	this.center = center;
+//};
 
 Graphics.prototype.clearRect = function(x, y, x2, y2) {
 	var width = Math.abs(x2 - x);
@@ -33,8 +29,6 @@ Graphics.prototype.clearRect = function(x, y, x2, y2) {
 	this.ctx.clearRect(x, y, width, height);
 	this.ctx.closePath();
 	this.ctx.stroke();
-	////this.ctx.fill();
-	//// this.ctx.stroke(); //いらないの？ TODO
 };
 
 Graphics.prototype.fillRect = function(x, y, x2, y2) {
@@ -81,7 +75,6 @@ Graphics.prototype.drawOval = function(x, y, w, h) {
 };
 
 Graphics.prototype.fillOval = function(x, y, w, h) {
-	//x += w / 2 + this.center;
 	x += w / 2;
 	y += h / 2;
 	var r = Math.floor((w + h) / 4);	
@@ -94,7 +87,6 @@ Graphics.prototype.fillOval = function(x, y, w, h) {
 
 Graphics.prototype.drawCircle = function(x, y, r) {
 	this.ctx.beginPath();
-	//this.ctx.strokeStyle = "rgba(0, 0, 0, 1.0)";
 	this.ctx.arc(x + this.center, y, r, 0, (360 * Math.PI / 180), true);
 	this.ctx.closePath();
 	this.ctx.stroke();
@@ -125,17 +117,9 @@ Graphics.prototype.setColor = function(c) {
 };
 
 Graphics.prototype.create = function(x, y, w, h) {
-	var g = new Graphics(this.ctx); // TODO x, y, w, h
+	var g = new Graphics(this.ctx); // x, y, w, hを使用していない
 	return g;
 };
 
 Graphics.COLOR_BLACK = "rgba(0, 0, 0, 1.0)";
 Graphics.COLOR_RED = "rgba(255, 0, 0, 1.0)";
-
-//Graphics.instance = null;
-//Graphics.getInstance = function(){
-//	if (Graphics.instance == null){
-//		Graphics.instance = new Graphics();
-//	}
-//	return Graphics.instance;
-//};

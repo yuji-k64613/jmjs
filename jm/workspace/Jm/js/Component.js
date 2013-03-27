@@ -1,5 +1,5 @@
 var Component = function(id){
-	this.id = null;
+	this.id = id;
 	this.obj = $('#' + id);
 };
 

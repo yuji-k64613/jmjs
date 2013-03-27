@@ -1,8 +1,7 @@
-// TODO http://www.mojavelinux.com/articles/javascript_hashes.html
 var Hashtable = function(/*obj*/) {
 	this.length = 0;
 	this.items = {};
-/* TODO
+/*
 	for (var p in obj) {
 		if (obj.hasOwnProperty(p)) {
 			this.items[p] = obj[p];

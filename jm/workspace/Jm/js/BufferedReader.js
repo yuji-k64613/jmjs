@@ -9,7 +9,8 @@ BufferedReader.prototype.readLine = function() {
 	if (this.pos >= this.length){
 		return null;
 	}
-	var n = this.data.indexOf('\r\n', this.pos);  // TODO
+	// Windows改行のみ（手抜き）
+	var n = this.data.indexOf('\r\n', this.pos);
 	var m = this.pos;
 	if (n < 0){
 		this.pos = this.length;

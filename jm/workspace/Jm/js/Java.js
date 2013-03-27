@@ -3,7 +3,6 @@ var java = function() {
 
 };
 
-// TODO Object?
 var util = function() {
 
 };
@@ -52,7 +51,11 @@ var System = function(){
 System.out = function(){
 	
 };
-// TODO prototype.
-System.out.println = function(s){
+
+System.out.prototype.println = function(s){
+	
+};
+
+var Throwable = function(){
 	
 };

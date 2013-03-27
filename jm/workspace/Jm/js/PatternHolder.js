@@ -39,15 +39,8 @@ var PatternHolder = function(j) {
 	this.xyformation = new java.util.Hashtable();
 	this.enXY = this.xyformation.keys();
 	this.cbuf = Clazz.newArray(256, 0);
-	// TODO '\0'→0
 	this.bbuf = Clazz.newArray(200, 0);
 	this.ibuf = Clazz.newArray(256, 0);
-	//this.cbuf =  new Array (256);
-	//arrayInit(this.cbuf, 0); // TODO '\0'→0
-	//this.bbuf =  new Array (Jmj.LMAX);
-	//arrayInit(this.bbuf, 0);
-	//this.ibuf =  new Array (256);
-	//arrayInit(this.ibuf, 0);
 	this.motion2 = new Array(Jmj.PERMAX);
 
 	// Constructor
@@ -120,19 +113,7 @@ PatternHolder.prototype.setHolder = function(fp) {
 			}
 		}
 	} catch (e$$) {
-		/* TODO
-		 if (Clazz.instanceOf(e$$, java.io.IOException)) {
-		 var e = e$$;
-		 {
-		 }
-		 } else if (Clazz.instanceOf(e$$, NullPointerException)) {
-		 var e = e$$;
-		 {
-		 }
-		 } else {
-		 throw e$$;
-		 }
-		 */
+		// 手抜き
 		throw e$$;
 	}
 	return !this.patternVector.isEmpty();

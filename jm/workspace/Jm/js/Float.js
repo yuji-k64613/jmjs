@@ -13,7 +13,7 @@ Float.parseFloat = function(s) {
 Float.$valueOf = function(v){
 	var i = parseInt(v)
 	if (isNaN(i)){
-		alert('TODO Float.$valueOf');
+		throw new TypeError();
 	}
 	return new Float(i);
 };

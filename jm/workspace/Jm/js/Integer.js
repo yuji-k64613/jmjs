@@ -13,7 +13,7 @@ Integer.parseInt = function(s) {
 Integer.$valueOf = function(v){
 	var i = parseInt(v)
 	if (isNaN(i)){
-		alert('TODO Integer.$valueOf');
+		throw new TypeError();
 	}
 	return new Integer(i);
 };
