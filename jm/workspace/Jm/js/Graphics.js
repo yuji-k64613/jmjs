@@ -25,6 +25,11 @@ Graphics.prototype.dispose = function() {
 //};
 
 Graphics.prototype.clearRect = function(x, y, x2, y2) {
+	x *= canvasScale;
+	y *= canvasScale;
+	x2 *= canvasScale;
+	y2 *= canvasScale;
+
 	var width = Math.abs(x2 - x);
 	var height = Math.abs(y2 - y);
 
@@ -36,6 +41,11 @@ Graphics.prototype.clearRect = function(x, y, x2, y2) {
 };
 
 Graphics.prototype.fillRect = function(x, y, x2, y2) {
+	x *= canvasScale;
+	y *= canvasScale;
+	x2 *= canvasScale;
+	y2 *= canvasScale;
+	
 	var width = Math.abs(x2 - x);
 	var height = Math.abs(y2 - y);
 
@@ -49,6 +59,9 @@ Graphics.prototype.fillRect = function(x, y, x2, y2) {
 
 //Graphics.prototype.drawString = function(str, x, y, anchor, color) {
 Graphics.prototype.drawString = function(str, x, y, anchor) {
+	x *= canvasScale;
+	y *= canvasScale;
+	
 	try {// for IE
 		//@this.ctx.beginPath();
 		//@this.ctx.strokeStyle = color;
@@ -62,6 +75,11 @@ Graphics.prototype.drawString = function(str, x, y, anchor) {
 };
 
 Graphics.prototype.drawLine = function(x1, y1, x2, y2) {
+	x1 *= canvasScale;
+	y1 *= canvasScale;
+	x2 *= canvasScale;
+	y2 *= canvasScale;
+
 	//@this.ctx.beginPath();
 	//this.ctx.strokeStyle = "rgba(0, 0, 0, 1.0)";
 	this.setColor();
@@ -74,6 +92,11 @@ Graphics.prototype.drawOval = function(x, y, w, h) {
 	x += w / 2;
 	y += h / 2;
 	var r = Math.floor((w + h) / 4);	
+
+	x *= canvasScale;
+	y *= canvasScale;
+	r *= canvasScale;
+
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
@@ -85,7 +108,12 @@ Graphics.prototype.drawOval = function(x, y, w, h) {
 Graphics.prototype.fillOval = function(x, y, w, h) {
 	x += w / 2;
 	y += h / 2;
-	var r = Math.floor((w + h) / 4);	
+	var r = Math.floor((w + h) / 4);
+	
+	x *= canvasScale;
+	y *= canvasScale;
+	r *= canvasScale;
+		
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
@@ -95,6 +123,10 @@ Graphics.prototype.fillOval = function(x, y, w, h) {
 };
 
 Graphics.prototype.drawCircle = function(x, y, r) {
+	x *= canvasScale;
+	y *= canvasScale;
+	r *= canvasScale;
+
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x + this.center, y, r, 0, (360 * Math.PI / 180), true);
@@ -104,6 +136,9 @@ Graphics.prototype.drawCircle = function(x, y, r) {
 
 //Graphics.prototype.drawImage = function(i, x, y, size) {
 Graphics.prototype.drawImage = function(img, x, y, obj) {
+	x *= canvasScale;
+	y *= canvasScale;
+
 	//@this.ctx.beginPath();
 	//var color = JugglerCanvas.color[i % JugglerCanvas.color.length];
 	//this.ctx.fillStyle = toRGB(color);

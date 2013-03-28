@@ -8,8 +8,11 @@ function initJmj(e) {
 	jmj = new Jmj();
 	jmj.init();
 	initPage(e);
+	
+	$('#loading1').remove();
 }
 
+var canvasScale = 1.0;
 function initCanvas(){
 	var p1 = $('#page1');
 	var w = p1.width();
@@ -27,9 +30,15 @@ function initCanvas(){
 	else {
 		w *= d;
 	}
+	canvasScale = w / Jmj.IMAGE_WIDTH;
+	h = Jmj.IMAGE_HEIGHT * canvasScale;
 	
-	var c = $('#canvas');
-	c.width(w);	
+	w = Math.round(w);
+	h = Math.round(h);
+	var c = $('<canvas id="canvas" class="canvas" width="' + w + 'px" height="' + h + 'px">');
+
+	var m = $('#main2');
+	m.append(c);
 }
 
 var isInit = null;
