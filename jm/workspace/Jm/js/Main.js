@@ -3,9 +3,33 @@
  */
 var jmj = null;
 function initJmj(e) {
+	initCanvas();
+
 	jmj = new Jmj();
 	jmj.init();
 	initPage(e);
+}
+
+function initCanvas(){
+	var p1 = $('#page1');
+	var w = p1.width();
+	var h = p1.height();
+	var dx = 1.5;
+	var d = 0.95;
+	var max = Jmj.IMAGE_WIDTH * dx * d;
+
+	if (w >= Jmj.IMAGE_WIDTH * dx / d){
+		w = Jmj.IMAGE_WIDTH * dx;
+	}
+	else if (w >= Jmj.IMAGE_WIDTH){
+		w *= d;
+	}
+	else {
+		w *= d;
+	}
+	
+	var c = $('#canvas');
+	c.width(w);	
 }
 
 var isInit = null;
