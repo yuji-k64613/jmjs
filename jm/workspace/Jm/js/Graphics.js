@@ -30,6 +30,11 @@ Graphics.prototype.clearRect = function(x, y, x2, y2) {
 	x2 *= canvasScale;
 	y2 *= canvasScale;
 
+	x = x | 0;
+	y = y | 0;
+	x2 = x2 | 0;
+	y2 = y2 | 0;
+
 	var width = Math.abs(x2 - x);
 	var height = Math.abs(y2 - y);
 
@@ -46,6 +51,11 @@ Graphics.prototype.fillRect = function(x, y, x2, y2) {
 	x2 *= canvasScale;
 	y2 *= canvasScale;
 	
+	x = x | 0;
+	y = y | 0;
+	x2 = x2 | 0;
+	y2 = y2 | 0;
+
 	var width = Math.abs(x2 - x);
 	var height = Math.abs(y2 - y);
 
@@ -62,6 +72,9 @@ Graphics.prototype.drawString = function(str, x, y, anchor) {
 	x *= canvasScale;
 	y *= canvasScale;
 	
+	x = x | 0;
+	y = y | 0;
+
 	try {// for IE
 		//@this.ctx.beginPath();
 		//@this.ctx.strokeStyle = color;
@@ -80,6 +93,11 @@ Graphics.prototype.drawLine = function(x1, y1, x2, y2) {
 	x2 *= canvasScale;
 	y2 *= canvasScale;
 
+	x1 = x1 | 0;
+	y1 = y1 | 0;
+	x2 = x2 | 0;
+	y2 = y2 | 0;
+
 	//@this.ctx.beginPath();
 	//this.ctx.strokeStyle = "rgba(0, 0, 0, 1.0)";
 	this.setColor();
@@ -97,6 +115,10 @@ Graphics.prototype.drawOval = function(x, y, w, h) {
 	y *= canvasScale;
 	r *= canvasScale;
 
+	x = x | 0;
+	y = y | 0;
+	r = r | 0;
+
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
@@ -113,7 +135,14 @@ Graphics.prototype.fillOval = function(x, y, w, h) {
 	x *= canvasScale;
 	y *= canvasScale;
 	r *= canvasScale;
-		
+
+	x = x | 0;
+	y = y | 0;
+	r = r | 0;
+
+	if (r < 1){
+		r = 1;
+	}		
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
@@ -127,6 +156,10 @@ Graphics.prototype.drawCircle = function(x, y, r) {
 	y *= canvasScale;
 	r *= canvasScale;
 
+	x = x | 0;
+	y = y | 0;
+	r = r | 0;
+
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x + this.center, y, r, 0, (360 * Math.PI / 180), true);
@@ -138,6 +171,9 @@ Graphics.prototype.drawCircle = function(x, y, r) {
 Graphics.prototype.drawImage = function(img, x, y, obj) {
 	x *= canvasScale;
 	y *= canvasScale;
+
+	x = x | 0;
+	y = y | 0;
 
 	//@this.ctx.beginPath();
 	//var color = JugglerCanvas.color[i % JugglerCanvas.color.length];
