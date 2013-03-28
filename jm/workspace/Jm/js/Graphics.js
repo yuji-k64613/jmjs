@@ -6,6 +6,7 @@ var Graphics = function(ctx) {
 	this.ctx = ctx;
 	this.strokeStyle = Graphics.COLOR_BLACK;
 	this.fillStyle = Graphics.COLOR_BLACK;
+	this.isColorSet = false;
 	this.center = 0;
 };
 //Graphics.prototype = new Component();
@@ -46,7 +47,8 @@ Graphics.prototype.fillRect = function(x, y, x2, y2) {
 	//@this.ctx.stroke();
 };
 
-Graphics.prototype.drawString = function(str, x, y, anchor, color) {
+//Graphics.prototype.drawString = function(str, x, y, anchor, color) {
+Graphics.prototype.drawString = function(str, x, y, anchor) {
 	try {// for IE
 		//@this.ctx.beginPath();
 		//@this.ctx.strokeStyle = color;
@@ -133,12 +135,16 @@ Graphics.prototype.getHeight = function() {
 
 Graphics.prototype.setColor = function(c) {
 	if (arguments.length < 1) {
-		this.ctx.strokeStyle = this.strokeStyle;
-		this.ctx.fillStyle = this.fillStyle;		
+		if (this.isColorSet){
+			this.ctx.strokeStyle = this.strokeStyle;
+			this.ctx.fillStyle = this.fillStyle;		
+		}
+		this.isColorSet = false;
 	}
 	else {
 		this.strokeStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";
-		this.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";		
+		this.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";
+		this.isColorSet = true;		
 	}
 };
 

@@ -74,7 +74,6 @@ var JmjController = function(jmj, quitflag) {
     this.height_gauge = new Scrollbar('height_gauge');
     this.dwell_gauge  = new Scrollbar('dwell_gauge');
     this.perno_gauge  = new Scrollbar('perno_gauge');
-    //this.perno_gauge  = new Scrollbar();
 
     this.speed_value  = new Label("");
     this.height_value = new Label("");

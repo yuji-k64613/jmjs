@@ -2,12 +2,6 @@ var PatternHolder = function(j) {
 	this.jmj = j;
 
 	// Field
-	this.CROSS = 33;
-	this.COMMA = -1;
-	this.BRA = -2;
-	this.KET = -3;
-	this.PAR = -4;
-	this.ENTHESIS = -5;
 	this.motiontable = null;
 	this.patternVector = null;
 	this.en = null;
@@ -23,15 +17,12 @@ var PatternHolder = function(j) {
 	this.bbuf = null;
 	this.ibuf = null;
 	this.pattbarr = null;
-	this.motion = "Normal";
+	//c this.motion = "Normal";
+	this.motion = Jmj.NORMAL;
 	this.motion2 = null;
 	this.formation = "1-Person";
 	this.s = null;
 	this.next = 0;
-	this.X_MIN = -30;
-	this.X_MAX = 30;
-	this.Y_MIN = -10;
-	this.Y_MAX = 20;
 
 	// Field init
 	this.motiontable = new java.util.Hashtable();
@@ -39,7 +30,8 @@ var PatternHolder = function(j) {
 	this.xyformation = new java.util.Hashtable();
 	this.enXY = this.xyformation.keys();
 	this.cbuf = Clazz.newArray(256, 0);
-	this.bbuf = Clazz.newArray(200, 0);
+	//c this.bbuf = Clazz.newArray(200, 0);
+	this.bbuf = Clazz.newArray(Jmj.LMAX, 0);
 	this.ibuf = Clazz.newArray(256, 0);
 	this.motion2 = new Array(Jmj.PERMAX);
 
@@ -192,7 +184,8 @@ PatternHolder.prototype.wasMotion = function(fp) {
 				}
 				//this.bbuf[bindex] = Byte.parseByte(s1);
 				this.bbuf[bindex] = Integer.$valueOf(s1).intValue();
-				if ((this.bbuf[bindex] < this.Y_MIN || this.bbuf[bindex] > this.Y_MAX) && ((bindex & 1) == 1) && (this.bbuf[bindex] < this.X_MIN || this.bbuf[bindex] > this.X_MAX)) {
+				//c if ((this.bbuf[bindex] < this.Y_MIN || this.bbuf[bindex] > this.Y_MAX) && ((bindex & 1) == 1) && (this.bbuf[bindex] < this.X_MIN || this.bbuf[bindex] > this.X_MAX)) {
+				if ((this.bbuf[bindex] < PatternHolder.Y_MIN || this.bbuf[bindex] > PatternHolder.Y_MAX) && ((bindex & 1) == 1) && (this.bbuf[bindex] < PatternHolder.X_MIN || this.bbuf[bindex] > PatternHolder.X_MAX)) {
 					throw new NumberFormatException();
 				}
 			}
@@ -229,19 +222,24 @@ PatternHolder.prototype.parsePattern = function(s) {
 	for (var i = 0; i < this.next; i++, bindex++) {
 		switch ((c = s.charAt (i))) {
 			case '(':
-				this.bbuf[bindex] = -4;
+				//c this.bbuf[bindex] = -4;
+				this.bbuf[bindex] = PatternHolder.PAR;
 				break;
 			case ')':
-				this.bbuf[bindex] = -5;
+				//c this.bbuf[bindex] = -5;
+				this.bbuf[bindex] = PatternHolder.ENTHESIS;
 				break;
 			case ',':
-				this.bbuf[bindex] = -1;
+				//c this.bbuf[bindex] = -1;
+				this.bbuf[bindex] = PatternHolder.COMMA;
 				break;
+			//c case '[':
 			case '[':
-				this.bbuf[bindex] = -2;
+				this.bbuf[bindex] = PatternHolder.BRA;
 				break;
 			case ']':
-				this.bbuf[bindex] = -3;
+				//c this.bbuf[bindex] = -3;
+				this.bbuf[bindex] = PatternHolder.KET;
 				break;
 			default:
 				if ((c).charCodeAt(0) >= ('0').charCodeAt(0) && (c).charCodeAt(0) <= ('9').charCodeAt(0)) {
@@ -255,7 +253,8 @@ PatternHolder.prototype.parsePattern = function(s) {
 				}
 		}
 	}
-	if (this.next > 200) {
+	//c if (this.next > 200) {
+	if (this.next > Jmj.LMAX) {
 		this.jmj.putError("Too Long Pattern in line :" + this.fline, s);
 		return null;
 	}
@@ -319,19 +318,23 @@ PatternHolder.prototype.getPattern = function(o, s) {
 			this.jmj.motion2[iCnt] = p.motion2[iCnt];
 		}
 	}
-	if (this.pattbarr[0] == -4) {
+	
+	//c if (this.pattbarr[0] == -4) {
+	if (this.pattbarr[0] == PatternHolder.PAR) {
 		this.jmj.isSync = true;
 	} else {
 		this.jmj.isSync = false;
 	}
 	while (j < this.pattbarr.length) {
-		if (this.pattbarr[j] == -2) {
+		//c if (this.pattbarr[j] == -2) {
+		if (this.pattbarr[j] == PatternHolder.BRA) {
 			flag2 = 1;
 			this.jmj.patts[pattw] = 0;
 			j++;
 			continue;
 		}
-		if (this.pattbarr[j] == -3) {
+		//c if (this.pattbarr[j] == -3) {
+		if (this.pattbarr[j] == PatternHolder.KET) {
 			if (flag2 == 0) {
 				return false;
 			}
@@ -342,28 +345,32 @@ PatternHolder.prototype.getPattern = function(o, s) {
 		}
 		if (this.jmj.isSync) {
 			switch (this.pattbarr[j]) {
-				case -4:
+				//c case -4:
+				case PatternHolder.PAR:
 					if (flag != 0) {
 						return false;
 					}
 					flag = 1;
 					j++;
 					continue;
-				case -5:
+				//c case -5:
+				case PatternHolder.ENTHESIS:
 					if (flag != 5) {
 						return false;
 					}
 					flag = 0;
 					j++;
 					continue;
-				case -1:
+				//c case -1:
+				case PatternHolder.COMMA:
 					if (flag != 2) {
 						return false;
 					}
 					flag = 4;
 					j++;
 					continue;
-				case 33:
+				//c case 33:
+				case PatternHolder.CROSS:
 					if (flag != 2 && flag != 5) {
 						return false;
 					}
@@ -396,7 +403,8 @@ PatternHolder.prototype.getPattern = function(o, s) {
 				return false;
 			}
 			this.jmj.patt[pattw][this.jmj.patts[pattw]++] = a;
-			if (this.jmj.patts[pattw] > 11) {
+			//c if (this.jmj.patts[pattw] > 11) {
+			if (this.jmj.patts[pattw] > Jmj.MMAX) {
 				return false;
 			}
 		} else {
@@ -712,6 +720,18 @@ PatternHolder.prototype.resetmotion2 = function() {
 	return;
 };
 
+PatternHolder.CROSS = 33;
+PatternHolder.COMMA = -1;
+PatternHolder.BRA = -2;
+PatternHolder.KET = -3;
+PatternHolder.PAR = -4;
+PatternHolder.ENTHESIS = -5;
+
+PatternHolder.X_MIN = -30;
+PatternHolder.X_MAX = 30;
+PatternHolder.Y_MIN = -10;
+PatternHolder.Y_MAX = 20;
+
 PatternHolder.Piece = function(isPat, nm, mt, ss, hght, ht, fm, mt2) {
 	this.name = null;
 	this.isPattern = false;
@@ -735,7 +755,8 @@ PatternHolder.Piece = function(isPat, nm, mt, ss, hght, ht, fm, mt2) {
 		this.dwell = ht;
 		this.formation = fm;
 
-		for (var i = 0; i < 10; i++) {
+		//c for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < Jmj.PERMAX; i++) {
 			if (mt2[i] === "") {
 				this.motion2[i] = this.motion;
 			} else {

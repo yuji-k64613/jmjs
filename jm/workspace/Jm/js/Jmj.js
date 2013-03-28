@@ -23,7 +23,7 @@ var Jmj = function() {
 	*/
 
 	// Filed
-	this.strVer = "2.13__";
+	//this.strVer = "2.13__";
 	this.TEST_MODE = false;
 	this.redrawrate = 100.0;
 	this.iXData = null;
@@ -56,7 +56,8 @@ var Jmj = function() {
 	this.mirror = false;
 	this.pattern = null;
 	this.siteswap = null;
-	this.motion = "Normal";
+	//c this.motion = "Normal";
+	this.motion = Jmj.NORMAL;
 	this.startpattern = null;
 	this.patternfiles = null;
 	this.filename = null;
@@ -65,7 +66,8 @@ var Jmj = function() {
 	this.motionlength = null;
 	this.motion2 = null;
 	this.formationXY = null;
-	this.formation = "1-Person";
+	//c this.formation = "1-Person";
+	this.formation = Jmj.FORMATION_BASIC;
 	this.formationarray = null;
 	this.startindex = -1;
 	this.fallback_startindex = 0;
@@ -94,15 +96,6 @@ var Jmj = function() {
 	this.singless = null;
 	this.vsync_Count1 = 0;
 	this.color = null;
-	this.PM_W = 32;
-	this.PM_H = 24;
-	this.NCOLOR = 16;
-	this.IMAGE_WIDTH = 480;
-	this.IMAGE_HEIGHT = 400;
-	this.HOR_CENTER = (240);
-	this.VER_CENTER = (200);
-	this.HOR_MARGIN = 20;
-	this.VER_MARGIN = 20;
 	this.gg1 = null;
 	this.gg2 = null;
 	this.bm = null;
@@ -119,30 +112,46 @@ var Jmj = function() {
 	// Field Init
 	this.iXData = Clazz.newArray(100, 0);
 	this.iYData = Clazz.newArray(100, 0);
-	this.ap = new Array(10);
+	//c this.ap = new Array(10);
+	this.ap = new Array(Jmj.PERMAX);
 	this.motionarray = [13, 0, 4, 0];
-	this.motionarray2 = Clazz.newArray(10, 1000, 0);
-	// TODO PERMAX
-	this.motionlength = Clazz.newArray(10, 0);
-	this.motion2 = new Array(10);
+	//c this.motionarray2 = Clazz.newArray(10, 1000, 0);
+	this.motionarray2 = Clazz.newArray(Jmj.PERMAX, 1000, 0);
+	//c this.motionlength = Clazz.newArray(10, 0);
+	this.motionlength = Clazz.newArray(Jmj.PERMAX, 0);
+	//c this.motion2 = new Array(10);
+	this.motion2 = new Array(Jmj.PERMAX);
 	this.formationXY = Clazz.newArray(100, 0);
 	this.formationarray = [0, 0];
-	this.rhand = new Array(10);
-	this.lhand = new Array(10);
+	//c this.rhand = new Array(10);
+	this.rhand = new Array(Jmj.PERMAX);
+	//c this.lhand = new Array(10);
+	this.lhand = new Array(Jmj.PERMAX);
 	this.b = new Array(35);
 	this.msg = new MessageBox();
-	this.patt = Clazz.newArray(200, 11, 0);
-	this.patts = Clazz.newArray(200, 0);
-	this.r = Clazz.newArray(400, 0);
-	this.high = Clazz.newArray(36, 0);
-	this.singless = new Array(200);
+	//c this.patt = Clazz.newArray(200, 11, 0);
+	this.patt = Clazz.newArray(Jmj.LMAX, Jmj.MMAX, 0);
+	//c this.patts = Clazz.newArray(200, 0);
+	this.patts = Clazz.newArray(Jmj.LMAX, 0);
+	//c this.r = Clazz.newArray(400, 0);
+	this.r = Clazz.newArray(Jmj.LMAX * 2, 0);
+	//c this.high = Clazz.newArray(36, 0);
+	this.high = Clazz.newArray(Jmj.BMAX + 1, 0);
+	//c this.singless = new Array(200);
+	this.singless = new Array(Jmj.LMAX);
 	this.color = [new java.awt.Color(255, 255, 255), new java.awt.Color(80, 80, 80), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 100, 200), new java.awt.Color(200, 0, 100), new java.awt.Color(100, 200, 0), new java.awt.Color(50, 150, 200), new java.awt.Color(200, 50, 150), new java.awt.Color(100, 200, 50), new java.awt.Color(0, 150, 50), new java.awt.Color(50, 0, 150), new java.awt.Color(150, 50, 0), new java.awt.Color(0, 200, 0), new java.awt.Color(255, 200, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 0, 200)];
-	this.bm = new Array(16);
-	this.r_bm = new Array(16);
-	this.l_bm = new Array(16);
-	this.bm_gc = new Array(16);
-	this.r_bm_gc = new Array(16);
-	this.l_bm_gc = new Array(16);
+	//c this.bm = new Array(16);
+	this.bm = new Array(Jmj.NCOLOR);
+	//c this.r_bm = new Array(16);
+	this.r_bm = new Array(Jmj.NCOLOR);
+	//c this.l_bm = new Array(16);
+	this.l_bm = new Array(Jmj.NCOLOR);
+	//c this.bm_gc = new Array(16);
+	this.bm_gc = new Array(Jmj.NCOLOR);
+	//c this.r_bm_gc = new Array(16);
+	this.r_bm_gc = new Array(Jmj.NCOLOR);
+	//c this.l_bm_gc = new Array(16);
+	this.l_bm_gc = new Array(Jmj.NCOLOR);
 	
 	this.data = [0, 18, 0, 23, 17, 23, 20, 22, 22, 20, 23, 17, 23, 12, 18, 12, 18, 16, 16, 18, 0, 18, 12, 15, 23, 17];
 }
@@ -154,10 +163,12 @@ Jmj.prototype.init = function() {
 		//( $t$ = Jmj.Y_OFFSET = 0, Jmj.prototype.Y_OFFSET = Jmj.Y_OFFSET, $t$);
 		Jmj.Y_OFFSET = 0;
 		this.setBackground(java.awt.Color.white);
-		this.resize(480, 400 + Jmj.Y_OFFSET + 20);
+		//c this.resize(480, 400 + Jmj.Y_OFFSET + 20);
+		this.resize(Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT + Jmj.Y_OFFSET + 20);
 		this.validate();
 		this.setVisible(true);
-		this.image_pixmap = this.createImage(480, 420);
+		//c this.image_pixmap = this.createImage(480, 420);
+		this.image_pixmap = this.createImage(Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT + 20);
 		this.image_gc = this.image_pixmap.getGraphics();
 	} else {
 		//@this.imf = Clazz.innerTypeInstance(Jmj.ImageFrame, this, null, this); 
@@ -166,32 +177,40 @@ Jmj.prototype.init = function() {
 		Jmj.Y_OFFSET = 20;
 		this.imf.setLayout(null);
 		this.imf.setBackground(java.awt.Color.white);
-		this.imf.setSize(480, 400 + Jmj.Y_OFFSET + 20);
+		//c this.imf.setSize(480, 400 + Jmj.Y_OFFSET + 20);
+		this.imf.setSize(Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT + Jmj.Y_OFFSET + 20);
 		this.imf.validate();
 		//@var d = this.getToolkit().getScreenSize();
 		//@this.imf.setLocation(Math.floor(d.width / 2), 0);
 		//@d = null;
 		this.imf.setVisible(true);
-		this.image_pixmap = this.imf.createImage(480, 420);
+		//c this.image_pixmap = this.imf.createImage(480, 420);
+		this.image_pixmap = this.imf.createImage(Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT + 20);
 		this.image_gc = this.image_pixmap.getGraphics();
 	}
+	
 	this.holder = new PatternHolder(this);
+	
+    //motionarray2[][] にノーマルのパターンを入れておく
 	var icnt;
-	for ( icnt = 0; icnt < 10; icnt++) {
+	//c for ( icnt = 0; icnt < 10; icnt++) {
+	for ( icnt = 0; icnt < Jmj.PERMAX; icnt++) {
 		this.holder.getMotion2("Normal", icnt);
 	}
 	this.controller = new JmjController(this, this.getParameter("noquit"));
 	this.controller.setLocation(0, 0);
 	this.controller.setVisible(true);
 	this.controller.enableMenuBar();
-	for (var i = 0; i < 35; i++) {// PERMAX
+	//c for (var i = 0; i < 35; i++) {
+	for (var i = 0; i < Jmj.BMAX; i++) {
 		this.b[i] = new Ball();
 	}
 	//( $t$ = Ball.jmj = this, Ball.prototype.jmj = Ball.jmj, $t$);
 	Ball.jmj = this;
 	
 	var i;
-	for ( i = 0; i < 10; i++) {// PERMAX
+	//c for ( i = 0; i < 10; i++) {
+	for ( i = 0; i < Jmj.PERMAX; i++) {
 		this.ap[i] = new Arm();
 		this.rhand[i] = new Ball();
 		this.lhand[i] = new Ball();
@@ -228,7 +247,8 @@ Jmj.prototype.readParameter = function() {
 		return;
 	}
 	if (this.startpattern != null && this.startpattern.length > 0) {
-		if (!this.startJuggling(-3, this.startpattern)) {
+		//c if (!this.startJuggling(-3, this.startpattern)) {
+		if (!this.startJuggling(Jmj.SITESWAP_MODE, this.startpattern)) {
 			this.putError("Error in <param> tag with \'startwith\' term.", "Mail this message to the webmaster");
 			return;
 		}
@@ -362,19 +382,32 @@ Jmj.prototype.set_dpm = function() {
 	this.set_xmin_xmax();
 	if (this.gy_max - this.gy_min > 0) {
 		this.dpm = Math.round((136000.0 / (this.gy_max - this.gy_min)));
-		if (this.dpm > 290) {
-			this.dpm = 290;
+		//c if (this.dpm > 290) {
+		if (this.dpm > Jmj.DW) {
+			//c this.dpm = 290;
+			this.dpm = Jmj.DW;
 		}
-		var xdpm = (480 - this.HOR_MARGIN * 2) / (this.gx_max - this.gx_min);
+		
+		//c var xdpm = (480 - this.HOR_MARGIN * 2) / (this.gx_max - this.gx_min);
+		var xdpm = (Jmj.IMAGE_WIDTH - Jmj.HOR_MARGIN * 2) / (this.gx_max - this.gx_min);
 		if (xdpm > 1)
 			xdpm = 1;
-		this.dpm = Math.min(Math.round((xdpm * 290)), this.dpm);
-		this.gx_min = Math.floor(this.gx_min * 290 / 400);
-		this.gx_max = Math.floor(this.gx_max * 290 / 400);
-		this.iXmax = Math.floor((this.gx_max - this.gx_min) * this.dpm / (580)) + 240;
-		this.iXmin = 480 - this.iXmax;
-		var DPM = this.dpm / 290;
-		this.iMoveX = 240 - Math.floor(Math.floor((this.gx_max + this.gx_min) / 2) * this.dpm / 290);
+		
+		//c this.dpm = Math.min(Math.round((xdpm * 290)), this.dpm);
+		this.dpm = Math.min(Math.round((xdpm * Jmj.DW)), this.dpm);
+		
+		//c this.gx_min = Math.floor(this.gx_min * 290 / 400);
+		this.gx_min = Math.floor(this.gx_min * Jmj.DW / 400);
+		//c this.gx_max = Math.floor(this.gx_max * 290 / 400);
+		this.gx_max = Math.floor(this.gx_max * Jmj.DW / 400);
+		//c this.iXmax = Math.floor((this.gx_max - this.gx_min) * this.dpm / (580)) + 240;
+		this.iXmax = Math.floor((this.gx_max - this.gx_min) * this.dpm / (Jmj.DW * 2)) + Jmj.HOR_CENTER;
+		//c this.iXmin = 480 - this.iXmax;
+		this.iXmin = Jmj.IMAGE_WIDTH - this.iXmax;
+		//c var DPM = this.dpm / 290;
+		var DPM = this.dpm / Jmj.DW;
+		//c this.iMoveX = 240 - Math.floor(Math.floor((this.gx_max + this.gx_min) / 2) * this.dpm / 290);
+		this.iMoveX = Jmj.HOR_CENTER - Math.floor(Math.floor((this.gx_max + this.gx_min) / 2) * this.dpm / Jmj.DW);
 		this.$base = Math.round((370 - this.gy_max * this.dpm / 400));
 	}
 };
@@ -428,13 +461,19 @@ Jmj.prototype.arm_line = function(j) {
 	var iXhosei = 0;
 	var iYhosei = 0;
 	if (this.mirror == false) {
-		iXhosei = Math.floor(this.iXData[j] * this.dpm / 30);
+		//c iXhosei = Math.floor(this.iXData[j] * this.dpm / 30);
+		iXhosei = Math.floor(this.iXData[j] * this.dpm / Jmj.PXY);
 	} else {
-		iXhosei = Math.floor(-this.iXData[j] * this.dpm / 30);
+		//c iXhosei = Math.floor(-this.iXData[j] * this.dpm / 30);
+		iXhosei = Math.floor(-this.iXData[j] * this.dpm / Jmj.PXY);
 	}
-	iYhosei = Math.floor(this.iYData[j] * this.dpm / 30);
-	sx = (Math.floor(this.dpm * 1024 / this.kw0));
+	//c iYhosei = Math.floor(this.iYData[j] * this.dpm / 30);
+	iYhosei = Math.floor(this.iYData[j] * this.dpm / Jmj.PXY);
+	
+	//c sx = (Math.floor(this.dpm * 1024 / this.kw0));
+	sx = (Math.floor(this.dpm * Jmj.XR / this.kw0));
 	sy = this.$base - Math.floor(this.dpm / 3) - iYhosei;
+	
 	this.ap[j].rx[1] = Math.floor((this.ap[j].rx[0] + (iXhosei + sx) * 2) / 3) + Math.floor(this.dpm / 12);
 	this.ap[j].lx[1] = Math.floor((this.ap[j].lx[0] + (iXhosei - sx) * 2) / 3) - Math.floor(this.dpm / 12);
 	this.ap[j].ry[1] = Math.floor((this.ap[j].ry[0] + sy) / 2) + Math.floor(this.dpm / 8);
@@ -481,11 +520,13 @@ Jmj.prototype.pattInitialize = function() {
 		return false;
 	}
 	this.ballno /= this.pattw;
-	if (this.ballno > 35) {
+	//c if (this.ballno > 35) {
+	if (this.ballno > Jmj.BMAX) {
 		System.out.println("Too many balls");
 		return false;
 	}
-	for ( i = 0; i < 400; i++) {
+	//c for ( i = 0; i < 400; i++) {
+	for ( i = 0; i < Jmj.LMAX * 2; i++) {
 		this.r[i] = 0;
 	}
 	for ( i = 0; i <= this.ballno; i++) {
@@ -559,8 +600,12 @@ Jmj.prototype.pattInitialize = function() {
 	if (this.aw > this.tw * 2 - 1) {
 		this.aw = this.tw * 2 - 1;
 	}
-	this.patt_x = 30 - Math.floor(this.siteswap.length / 2);
-	this.kw0 = Math.round((4096.0));
+	//c this.patt_x = 30 - Math.floor(this.siteswap.length / 2);
+	this.patt_x = Math.round(Jmj.HOR_CENTER / 8) - Math.floor(this.siteswap.length / 2);
+
+	//c this.kw0 = Math.round((4096.0));
+	this.kw0 = Math.round(Jmj.XR / Jmj.KW);
+
 	this.high[0] = -0.2 * this.dpm;
 	this.high[1] = Math.round((this.ga * this.square(tw0 / 100.0 * this.speed) / 8 * this.dpm));
 	for ( i = 2; i <= this.max_height; i++) {
@@ -569,11 +614,14 @@ Jmj.prototype.pattInitialize = function() {
 	for ( i = 0; i < this.ballno; i++) {
 		this.b[i].bh = 0;
 		this.b[i].gx = 0;
-		this.b[i].gy = 200;
+		//c this.b[i].gy = 200;
+		this.b[i].gy = Jmj.VER_CENTER;
 		this.b[i].gx0 = 0;
-		this.b[i].gy0 = 200;
+		//c this.b[i].gy0 = 200;
+		this.b[i].gy0 = Jmj.VER_CENTER;
 		this.b[i].gx1 = 0;
-		this.b[i].gy1 = 200;
+		//c this.b[i].gy1 = 200;
+		this.b[i].gy1 = Jmj.VER_CENTER;
 	}
 	for (this.jPerNo = 0; this.jPerNo < Jmj.iPerNo; this.jPerNo++) {
 		if (this.mirror) {
@@ -596,23 +644,30 @@ Jmj.prototype.pattInitialize = function() {
 		this.rhand[this.jPerNo].thand = 1;
 		this.rhand[this.jPerNo].chand = 1;
 		this.rhand[this.jPerNo].gx = 0;
-		this.rhand[this.jPerNo].gy = 200;
+		//c this.rhand[this.jPerNo].gy = 200;
+		this.rhand[this.jPerNo].gy = Jmj.VER_CENTER;
 		this.rhand[this.jPerNo].gx0 = 0;
-		this.rhand[this.jPerNo].gy0 = 200;
+		//c this.rhand[this.jPerNo].gy0 = 200;
+		this.rhand[this.jPerNo].gy0 = Jmj.VER_CENTER;
 		this.rhand[this.jPerNo].gx1 = 0;
-		this.rhand[this.jPerNo].gy1 = 200;
+		//c this.rhand[this.jPerNo].gy1 = 200;
+		this.rhand[this.jPerNo].gy1 = Jmj.VER_CENTER;
 		this.lhand[this.jPerNo].bh = 2;
 		this.lhand[this.jPerNo].st = 1;
 		this.lhand[this.jPerNo].thand = 0;
 		this.lhand[this.jPerNo].chand = 0;
 		this.lhand[this.jPerNo].gx = 0;
-		this.lhand[this.jPerNo].gy = 200;
+		//c this.lhand[this.jPerNo].gy = 200;
+		this.lhand[this.jPerNo].gy = Jmj.VER_CENTER;
 		this.lhand[this.jPerNo].gx0 = 0;
-		this.lhand[this.jPerNo].gy0 = 200;
+		//c this.lhand[this.jPerNo].gy0 = 200;
+		this.lhand[this.jPerNo].gy0 = Jmj.VER_CENTER;
 		this.lhand[this.jPerNo].gx1 = 0;
-		this.lhand[this.jPerNo].gy1 = 200;
+		//c this.lhand[this.jPerNo].gy1 = 200;
+		this.lhand[this.jPerNo].gy1 = Jmj.VER_CENTER;
 	}
-	for ( i = 0; i < 400; i++) {
+	//c for ( i = 0; i < 400; i++) {
+	for ( i = 0; i < Jmj.LMAX * 2; i++) {
 		this.r[i] = 0;
 	}
 	return true;
@@ -740,8 +795,10 @@ Jmj.prototype.startJuggling = function(index, s) {
 	this.hand_on = this.controller.ifShowBody();
 	//( $t$ = Jmj.iPerNo = this.controller.getPerNo(), Jmj.prototype.iPerNo = Jmj.iPerNo, $t$);
 	Jmj.iPerNo = this.controller.getPerNo();
-	if (this.controller.isNewChoice() || index == -3) {
-		if (index == -3) {
+	//c if (this.controller.isNewChoice() || index == -3) {
+	if (this.controller.isNewChoice() || index == Jmj.SITESWAP_MODE) {
+		//c if (index == -3) {
+		if (index == Jmj.SITESWAP_MODE) {
 			this.holder.getPattern(s);
 			this.$height = this.controller.GetHeight_();
 			this.dwell = this.controller.getDwell();
@@ -760,9 +817,11 @@ Jmj.prototype.startJuggling = function(index, s) {
 			strs += "Formation : " + this.formation + "\n";
 			strs += "Pattern : " + this.pattern + "\n";
 			strs += "Motion : " + this.motion + "\n";
+			// ここで motion2[]を技リストで選択された技のモーションに戻す
 		}
 		this.holder.getMotion(this.motion);
-		for ( iCnt = 0; iCnt < 10; iCnt++) {
+		//c for ( iCnt = 0; iCnt < 10; iCnt++) {
+		for ( iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
 			this.holder.getMotion2(this.motion2[iCnt], iCnt);
 		}
 		this.holder.getFormation(this.formation);
@@ -784,7 +843,8 @@ Jmj.prototype.startJuggling = function(index, s) {
 		if (this.pattInitialize()) {
 			this.removeErrorMessage();
 		} else {
-			if (index != -3)
+			//c if (index != -3)
+			if (index != Jmj.SITESWAP_MODE)
 				this.holder.invalidate(index);
 			this.putError("Wrong siteswap", this.pattern);
 			return false;
@@ -795,10 +855,12 @@ Jmj.prototype.startJuggling = function(index, s) {
 	} else {
 		this.$height = this.controller.GetHeight_();
 		this.dwell = this.controller.getDwell();
-		if (index == -2) {
+		//c if (index == -2) {
+		if (index == Jmj.MOTION_MODE) {
 			this.motion = s;
 			this.holder.getMotion(s);
-			for ( iCnt = 0; iCnt < 10; iCnt++) {
+			//c for ( iCnt = 0; iCnt < 10; iCnt++) {
+			for ( iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
 				this.holder.getMotion2(this.motion, iCnt);
 			}
 			this.holder.getFormation(this.formation);
@@ -806,7 +868,8 @@ Jmj.prototype.startJuggling = function(index, s) {
 			Jmj.iPerNo = Jmj.iPerMax;
 			this.controller.setPerno(Jmj.iPerNo);
 			this.controller.setLabels();
-		} else if (index == -1 && s != null) {
+		//c } else if (index == -1 && s != null) {
+		} else if (index == Jmj.FORMATION_MODE && s != null) {
 			this.motion = s;
 			this.holder.getMotion(s);
 			this.holder.getFormation(this.formation);
@@ -841,7 +904,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 	this.kicker = new Thread(this, Jmj.prototype.run, 1000 / this.redrawrate);
 	this.kicker.start();
 	self = this;
-	this.status = 2;
+	//c this.status = 2;
+	this.status = Jmj.JUGGLING;
+
 	return true;
 };
 
@@ -854,7 +919,9 @@ Jmj.prototype.run = function() {
 
 Jmj.prototype.do_juggle = function() {
 	var i;
-	if (this.status == 1 || this.status == 0) {
+	
+	//c if (this.status == 1 || this.status == 0) {
+	if (this.status == Jmj.PAUSE || this.status == Jmj.IDLE) {
 		this.vsync_Count1 = 0;
 		return ;
 	}
@@ -940,11 +1007,13 @@ Jmj.prototype.initGraphics = function() {
 	}if (this.gg1 != null) {
 		this.gg1.dispose ();
 	}
-	this.gg1 = g.create (0, Jmj.Y_OFFSET, 480, 20);
+	//c this.gg1 = g.create (0, Jmj.Y_OFFSET, 480, 20);
+	this.gg1 = g.create (0, Jmj.Y_OFFSET, Jmj.IMAGE_WIDTH, 20);
 	if (this.gg2 != null) {
 		this.gg2.dispose ();
 	}
-	this.gg2 = g.create (this.iXmin - 20, 20 + Jmj.Y_OFFSET, this.iXmax - this.iXmin + 41, 380);
+	//c this.gg2 = g.create (this.iXmin - 20, 20 + Jmj.Y_OFFSET, this.iXmax - this.iXmin + 41, 380);
+	this.gg2 = g.create (this.iXmin - 20, 20 + Jmj.Y_OFFSET, this.iXmax - this.iXmin + 41, Jmj.IMAGE_HEIGHT - 20);
 	g.dispose ();
 };
 
@@ -953,7 +1022,8 @@ Jmj.prototype.disposeGraphics = function() {
 		this.image_gc.dispose ();
 	}
 	try {
-		for (var i = 0; i < 16; i++) {
+		//c for (var i = 0; i < 16; i++) {
+		for (var i = 0; i < Jmj.NCOLOR; i++) {
 			this.bm_gc[i].dispose ();
 			this.r_bm_gc[i].dispose ();
 			this.l_bm_gc[i].dispose ();
@@ -984,7 +1054,8 @@ Jmj.prototype.drawSiteswap = function(x, str, is_red) {
 };
 	
 Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
-	if (x < -this.iMoveX || x > 480 - this.iMoveX || y < 0 || y > 376) {
+	//c if (x < -this.iMoveX || x > 480 - this.iMoveX || y < 0 || y > 376) {
+	if (x < -this.iMoveX || x > Jmj.IMAGE_WIDTH - this.iMoveX || y < 0 || y > Jmj.IMAGE_HEIGHT - 24) {
 		return ;
 	}
 /* Java版では、イメージのコピーで描画しているが、手抜きして直接描画している
@@ -1005,7 +1076,8 @@ Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 	
 		var i;
 		for (i = 0; i < data.length; i++) {
-			data[i] = Math.floor ((data[i] - 11) * this.dpm / 290);
+			//c data[i] = Math.floor ((data[i] - 11) * this.dpm / 290);
+			data[i] = Math.floor ((data[i] - 11) * this.dpm / Jmj.DW);
 		}
 		this.hand_x = data[i - 4] + 2;
 		this.hand_y = data[i - 3] + 2;
@@ -1078,7 +1150,8 @@ Jmj.prototype.initBallGraphics = function() {
 	this.r_bm_gc[1].fillRect (0, 0, 32, 24);
 */
 	for (i = 0; i < data.length; i++) {
-		data[i] = Math.floor ((data[i] - 11) * this.dpm / 290);
+		//c data[i] = Math.floor ((data[i] - 11) * this.dpm / 290);
+		data[i] = Math.floor ((data[i] - 11) * this.dpm / Jmj.DW);
 	}
 	this.hand_x = data[i - 4] + 2;
 	this.hand_y = data[i - 3] + 2;
@@ -1097,13 +1170,16 @@ Jmj.prototype.initBallGraphics = function() {
 		this.bm_gc[i].fillOval (11 - r, 11 - r, 2 * r, 2 * r);
 	}
 */
-	this.bm1 = 11 - Math.floor (11 * this.dpm / 290);
-	this.bm2 = 11 + Math.floor (11 * this.dpm / 290) + 1;
+	//c this.bm1 = 11 - Math.floor (11 * this.dpm / 290);
+	this.bm1 = 11 - Math.floor (11 * this.dpm / Jmj.DW);
+	//c this.bm2 = 11 + Math.floor (11 * this.dpm / 290) + 1;
+	this.bm2 = 11 + Math.floor (11 * this.dpm / Jmj.DW) + 1;
 };
 	
 Jmj.prototype.clearImage = function() {
 	this.image_gc.setColor(this.color[0]);
-	this.image_gc.clearRect(0, 0, 480, 400); // TODO
+	//c this.image_gc.clearRect(0, 0, 480, 400);
+	this.image_gc.clearRect(0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT);
 
 	var g;
 	if (this.imf != null) {
@@ -1111,7 +1187,8 @@ Jmj.prototype.clearImage = function() {
 	} else {
 		g = this.getGraphics ();
 	}
-	g.drawImage (this.image_pixmap, 0, 0, 480, 400, null);
+	//c g.drawImage (this.image_pixmap, 0, 0, 480, 400, null);
+	g.drawImage (this.image_pixmap, 0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT, null);
 	g.dispose ();
 };
 
@@ -1203,24 +1280,41 @@ Jmj.prototype.drawStatus = function() {
 	if (this.image_gc == null) return ;
 	this.image_gc.drawString ("0ABCDEFGHIJKLMNOPQRSTUVWXYZ1ABCDEFGHIJKLMNOPQRSTUVWXYZ2ABCDEFGHIJKLMNOPQRSTUVWXYZ3ABCDEFGHIJKLMNOPQRSTUVWXYZ4ABCDEFGHIJKLMNOPQRSTUVWXYZ5ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0, 20);
 	for (iCnt = 0; iCnt < Jmj.iPerNo; iCnt++) {
-		iSt[0][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_HAND) / this.b[0].OBJECT_HAND);
-		iSt[0][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_HAND) / this.b[0].OBJECT_HAND);
-		iSt[1][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE) / this.b[0].OBJECT_MOVE);
-		iSt[1][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE) / this.b[0].OBJECT_MOVE);
-		iSt[2][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE2) / this.b[0].OBJECT_MOVE);
-		iSt[2][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE2) / this.b[0].OBJECT_MOVE);
-		iSt[3][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_UNDER) / this.b[0].OBJECT_UNDER);
-		iSt[3][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_UNDER) / this.b[0].OBJECT_UNDER);
+		//c iSt[0][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_HAND) / this.b[0].OBJECT_HAND);
+		//c iSt[0][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_HAND) / this.b[0].OBJECT_HAND);
+		//c iSt[1][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE) / this.b[0].OBJECT_MOVE);
+		//c iSt[1][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE) / this.b[0].OBJECT_MOVE);
+		//c iSt[2][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE2) / this.b[0].OBJECT_MOVE);
+		//c iSt[2][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_MOVE2) / this.b[0].OBJECT_MOVE);
+		//c iSt[3][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_UNDER) / this.b[0].OBJECT_UNDER);
+		//c iSt[3][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & this.b[0].OBJECT_UNDER) / this.b[0].OBJECT_UNDER);
+		iSt[0][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_HAND) / Ball.OBJECT_HAND);
+		iSt[0][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_HAND) / Ball.OBJECT_HAND);
+		iSt[1][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_MOVE) / Ball.OBJECT_MOVE);
+		iSt[1][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_MOVE) / Ball.OBJECT_MOVE);
+		iSt[2][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_MOVE2) / Ball.OBJECT_MOVE);
+		iSt[2][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_MOVE2) / Ball.OBJECT_MOVE);
+		iSt[3][iCnt * 2] = Math.floor ((this.lhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_UNDER) / Ball.OBJECT_UNDER);
+		iSt[3][iCnt * 2 + 1] = Math.floor ((this.rhand[Jmj.iPerNo - iCnt - 1].st & Ball.OBJECT_UNDER) / Ball.OBJECT_UNDER);
 	}
-	iSt[4][0] = Math.floor ((this.b[0].st & this.b[0].OBJECT_MOVE) / this.b[0].OBJECT_MOVE);
-	iSt[5][0] = Math.floor ((this.b[0].st & this.b[0].OBJECT_MOVE2) / this.b[0].OBJECT_MOVE2);
-	iSt[6][0] = Math.floor ((this.b[0].st & this.b[0].OBJECT_UNDER) / this.b[0].OBJECT_UNDER);
-	iSt[4][1] = Math.floor ((this.b[1].st & this.b[0].OBJECT_MOVE) / this.b[1].OBJECT_MOVE);
-	iSt[5][1] = Math.floor ((this.b[1].st & this.b[0].OBJECT_MOVE2) / this.b[1].OBJECT_MOVE2);
-	iSt[6][1] = Math.floor ((this.b[1].st & this.b[0].OBJECT_UNDER) / this.b[1].OBJECT_UNDER);
-	iSt[4][2] = Math.floor ((this.b[2].st & this.b[0].OBJECT_MOVE) / this.b[2].OBJECT_MOVE);
-	iSt[5][2] = Math.floor ((this.b[2].st & this.b[0].OBJECT_MOVE2) / this.b[2].OBJECT_MOVE2);
-	iSt[6][2] = Math.floor ((this.b[2].st & this.b[0].OBJECT_UNDER) / this.b[2].OBJECT_UNDER);
+	//c iSt[4][0] = Math.floor ((this.b[0].st & this.b[0].OBJECT_MOVE) / this.b[0].OBJECT_MOVE);
+	//c iSt[5][0] = Math.floor ((this.b[0].st & this.b[0].OBJECT_MOVE2) / this.b[0].OBJECT_MOVE2);
+	//c iSt[6][0] = Math.floor ((this.b[0].st & this.b[0].OBJECT_UNDER) / this.b[0].OBJECT_UNDER);
+	//c iSt[4][1] = Math.floor ((this.b[1].st & this.b[0].OBJECT_MOVE) / this.b[1].OBJECT_MOVE);
+	//c iSt[5][1] = Math.floor ((this.b[1].st & this.b[0].OBJECT_MOVE2) / this.b[1].OBJECT_MOVE2);
+	//c iSt[6][1] = Math.floor ((this.b[1].st & this.b[0].OBJECT_UNDER) / this.b[1].OBJECT_UNDER);
+	//c iSt[4][2] = Math.floor ((this.b[2].st & this.b[0].OBJECT_MOVE) / this.b[2].OBJECT_MOVE);
+	//c iSt[5][2] = Math.floor ((this.b[2].st & this.b[0].OBJECT_MOVE2) / this.b[2].OBJECT_MOVE2);
+	//c iSt[6][2] = Math.floor ((this.b[2].st & this.b[0].OBJECT_UNDER) / this.b[2].OBJECT_UNDER);
+	iSt[4][0] = Math.floor ((this.b[0].st & Ball.OBJECT_MOVE) / Ball.OBJECT_MOVE);
+	iSt[5][0] = Math.floor ((this.b[0].st & Ball.OBJECT_MOVE2) / Ball.OBJECT_MOVE2);
+	iSt[6][0] = Math.floor ((this.b[0].st & Ball.OBJECT_UNDER) / Ball.OBJECT_UNDER);
+	iSt[4][1] = Math.floor ((this.b[1].st & Ball.OBJECT_MOVE) / Ball.OBJECT_MOVE);
+	iSt[5][1] = Math.floor ((this.b[1].st & Ball.OBJECT_MOVE2) / Ball.OBJECT_MOVE2);
+	iSt[6][1] = Math.floor ((this.b[1].st & Ball.OBJECT_UNDER) / Ball.OBJECT_UNDER);
+	iSt[4][2] = Math.floor ((this.b[2].st & Ball.OBJECT_MOVE) / Ball.OBJECT_MOVE);
+	iSt[5][2] = Math.floor ((this.b[2].st & Ball.OBJECT_MOVE2) / Ball.OBJECT_MOVE2);
+	iSt[6][2] = Math.floor ((this.b[2].st & Ball.OBJECT_UNDER) / Ball.OBJECT_UNDER);
 	this.image_gc.setColor (java.awt.Color.white);
 	this.image_gc.fillRect (0, 0, 420, 200);
 	this.image_gc.setColor (java.awt.Color.black);
@@ -1337,6 +1431,7 @@ Jmj.iPerNo = 2;
 Jmj.iPerMax = Jmj.iPerNo;
 
 Jmj.PXY = 30;
+
 Jmj.IDLE = 0;
 Jmj.PAUSE = 1;
 Jmj.JUGGLING = 2;
@@ -1345,3 +1440,13 @@ Jmj.MOTION_MODE = -2;
 Jmj.FORMATION_MODE = -1;
 Jmj.Y_OFFSET = 0;
 Jmj.FORMATION_BASIC = "1-Person";
+
+Jmj.PM_W = 32;
+Jmj.PM_H = 24;
+Jmj.NCOLOR = 16;
+Jmj.IMAGE_WIDTH = 480;
+Jmj.IMAGE_HEIGHT = 400;
+Jmj.HOR_CENTER = Math.round(Jmj.IMAGE_WIDTH / 2);
+Jmj.VER_CENTER = Math.round(Jmj.IMAGE_HEIGHT / 2);
+Jmj.HOR_MARGIN = 20;
+Jmj.VER_MARGIN = 20;
