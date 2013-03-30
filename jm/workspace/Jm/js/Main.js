@@ -35,10 +35,20 @@ function initCanvas(){
 	
 	w = Math.round(w);
 	h = Math.round(h);
-	var c = $('<canvas id="canvas" class="canvas" width="' + w + 'px" height="' + h + 'px">');
+	var c1 = $('<canvas id="canvas" class="canvas" width="' + w + 'px" height="' + h + 'px">');
+	//var c2 = $('<canvas id="offscrn" class="canvas" width="' + w + 'px" height="' + h + 'px">');
 
 	var m = $('#main2');
-	m.append(c);
+	m.append(c1);
+	//m.append(c2);
+/*
+	var pid = 'main2';
+	for (var i = 0; i < 16; i++){
+		var id = 'offscrn' + i;
+		var c = $('<canvas id="' + id + '" class="canvas" width="' + w + 'px" height="' + h + 'px">');
+		$('#' + pid).append(c);	
+	}
+*/
 }
 
 var isInit = null;

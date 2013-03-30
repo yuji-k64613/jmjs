@@ -8,6 +8,7 @@ var Graphics = function(ctx) {
 	this.fillStyle = Graphics.COLOR_BLACK;
 	this.isColorSet = false;
 	this.center = 0;
+	this.ctx.lineWidth = 1;
 };
 //Graphics.prototype = new Component();
 
@@ -87,17 +88,23 @@ Graphics.prototype.drawString = function(str, x, y, anchor) {
 	}
 };
 
-Graphics.prototype.drawLine = function(x1, y1, x2, y2) {
+Graphics.prototype.drawLine = function(x1, y1, x2, y2, b) {
+	if (arguments.length < 5) {
+		b = true;
+	}
+	
 	x1 *= canvasScale;
 	y1 *= canvasScale;
 	x2 *= canvasScale;
 	y2 *= canvasScale;
 
-	x1 = x1 | 0;
-	y1 = y1 | 0;
-	x2 = x2 | 0;
-	y2 = y2 | 0;
-
+	if (b){
+		x1 = x1 | 0;
+		y1 = y1 | 0;
+		x2 = x2 | 0;
+		y2 = y2 | 0;
+	}
+	
 	//@this.ctx.beginPath();
 	//this.ctx.strokeStyle = "rgba(0, 0, 0, 1.0)";
 	this.setColor();
@@ -143,10 +150,10 @@ Graphics.prototype.fillOval = function(x, y, w, h) {
 	if (r < 1){
 		r = 1;
 	}		
+
 	//@this.ctx.beginPath();
 	this.setColor();
 	this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
-	this.ctx.fill();
 	//@this.ctx.closePath();
 	//@this.ctx.stroke();
 };
@@ -168,7 +175,7 @@ Graphics.prototype.drawCircle = function(x, y, r) {
 };
 
 //Graphics.prototype.drawImage = function(i, x, y, size) {
-Graphics.prototype.drawImage = function(img, x, y, obj) {
+Graphics.prototype.putImageData = function(img, x, y, obj) {
 	x *= canvasScale;
 	y *= canvasScale;
 
@@ -185,6 +192,14 @@ Graphics.prototype.drawImage = function(img, x, y, obj) {
 	//@this.ctx.closePath();
 };
 
+Graphics.prototype.drawImage = function(offscrn, x, y){
+	x *= canvasScale;
+	y *= canvasScale;
+	x = x | 0;
+	y = y | 0;
+	this.ctx.drawImage(offscrn.getCanvas(), x, y);
+};
+			
 Graphics.prototype.beginPath = function() {
 	this.ctx.beginPath();
 };
@@ -192,8 +207,14 @@ Graphics.prototype.beginPath = function() {
 Graphics.prototype.closePath = function() {
 	this.ctx.closePath();
 };
+
 Graphics.prototype.stroke = function() {
 	this.ctx.stroke();
+};
+
+Graphics.prototype.fill = function() {
+	this.ctx.stroke(); // なぜかしら、drawImage()で輪郭が描画されないため
+	this.ctx.fill();
 };
 
 Graphics.prototype.getWidth = function() {
@@ -213,9 +234,13 @@ Graphics.prototype.setColor = function(c) {
 		this.isColorSet = false;
 	}
 	else {
-		this.strokeStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";
-		this.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";
-		this.isColorSet = true;		
+		var ss = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";
+		var fs = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 1.0)";
+		if (this.strokeStyle != ss || this.fillStyle != fs){
+			this.strokeStyle = ss;
+			this.fillStyle = fs;
+			this.isColorSet = true;		
+		}
 	}
 };
 
@@ -226,3 +251,4 @@ Graphics.prototype.create = function(x, y, w, h) {
 
 Graphics.COLOR_BLACK = "rgba(0, 0, 0, 1.0)";
 Graphics.COLOR_RED = "rgba(255, 0, 0, 1.0)";
+Graphics.COLOR_WHITE = "rgba(255, 255, 255, 1.0)";

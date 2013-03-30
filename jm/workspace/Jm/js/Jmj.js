@@ -990,10 +990,10 @@ Jmj.prototype.update = function(g) {
 
 Jmj.prototype.paint = function(g) {
 	if (this.gg1 != null) {
-		this.gg1.drawImage (this.image_pixmap, 0, 0, null);
+		this.gg1.putImageData (this.image_pixmap, 0, 0, null);
 	}
 	if (this.gg2 != null) {
-		this.gg2.drawImage (this.image_pixmap, 20 - this.iXmin, -20, null);
+		this.gg2.putImageData (this.image_pixmap, 20 - this.iXmin, -20, null);
 	}
 };
 
@@ -1058,20 +1058,20 @@ Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 	if (x < -this.iMoveX || x > Jmj.IMAGE_WIDTH - this.iMoveX || y < 0 || y > Jmj.IMAGE_HEIGHT - 24) {
 		return ;
 	}
-/* Java版では、イメージのコピーで描画しているが、手抜きして直接描画している
-	var g = this.image_gc.create (this.fx (x + this.bm1), y + this.bm1, this.bm2 - this.bm1 + 1, this.bm2 - this.bm1 + 1);
-	g.drawImage (bm, -this.bm1, -this.bm1, null);
-	g.dispose ();
-*/
-	this.image_gc.setColor(color);
-	if (hand == 0){
+	//var g = this.image_gc.create (this.fx (x + this.bm1), y + this.bm1, this.bm2 - this.bm1 + 1, this.bm2 - this.bm1 + 1);
+	//g.drawImage (bm, -this.bm1, -this.bm1, null);
+	//g.dispose ();
+
+	if (hand >= 0){
 		var r = Math.floor(11 * this.dpm / Jmj.DW);
 		x = this.fx(x + this.bm1);
 		y += this.bm1;
-		this.image_gc.fillOval(x, y, r * 2, r * 2);
-		//this.image_gc.fillRect(x, y, x + r * 2, y + r * 2);
+		//this.image_gc.fillOval(x, y, r * 2, r * 2);		
+		this.image_gc.drawImage(bm, x, y);
 	}
 	else {
+		// このルートは未使用
+		this.image_gc.setColor(color);
 		var data = clone(this.data);
 	
 		var i;
@@ -1116,11 +1116,17 @@ Jmj.prototype.fillBox = function(x1_b, y1, x2_b, y2) {
 Jmj.prototype.initBallGraphics = function() {
 	var i;
 	var data = clone(this.data);
-/*	
+	var g;
+	
+	//begin
+	var pid = 'main2';
+	var pid;
 	if (this.bm[0] == null) {
 		if (this.imf != null) {
-			this.l_bm[1] = this.imf.createImage (32, 24);
-			this.r_bm[1] = this.imf.createImage (32, 24);
+			id = 'offscrn' + 'l';
+			this.l_bm[1] = this.imf.createImage2 (pid, id, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+			id = 'offscrn' + 'r';
+			this.r_bm[1] = this.imf.createImage2 (pid, id, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
 		} else {
 			this.l_bm[1] = this.createImage (32, 24);
 			this.r_bm[1] = this.createImage (32, 24);
@@ -1128,10 +1134,11 @@ Jmj.prototype.initBallGraphics = function() {
 		this.l_bm_gc[1] = this.l_bm[1].getGraphics ();
 		this.r_bm_gc[1] = this.r_bm[1].getGraphics ();
 		for (i = 0; i < 16; i++) {
+			id = 'offscrn' + i;
 			if (this.imf != null) {
-				this.bm[i] = this.imf.createImage (32, 24);
+				this.bm[i] = this.imf.createImage2 (pid, id, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
 			} else {
-				this.bm[i] = this.createImage (32, 24);
+				this.bm[i] = this.createImage2 (pid, id, 32, 24);
 			}
 			this.bm_gc[i] = this.bm[i].getGraphics ();
 			this.l_bm[i] = this.l_bm[1];
@@ -1141,35 +1148,73 @@ Jmj.prototype.initBallGraphics = function() {
 		}
 	}
 	for (i = 0; i < 16; i++) {
-		this.bm_gc[i].setColor (java.awt.Color.white);
-		this.bm_gc[i].fillRect (0, 0, 32, 24);
+		//this.bm_gc[i].setColor (java.awt.Color.white);
+		// this.bm_gc[i].fillRect (0, 0, 32, 24);
+		this.bm_gc[i].clearRect (0, 0, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
 	}
-	this.l_bm_gc[1].setColor (java.awt.Color.white);
-	this.l_bm_gc[1].fillRect (0, 0, 32, 24);
-	this.r_bm_gc[1].setColor (java.awt.Color.white);
-	this.r_bm_gc[1].fillRect (0, 0, 32, 24);
-*/
+	//this.l_bm_gc[1].setColor (java.awt.Color.white);
+	//this.l_bm_gc[1].fillRect (0, 0, 32, 24);
+	g = this.l_bm_gc[1];
+	g.beginPath();
+	g.clearRect (0, 0, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+	g.closePath();
+	g.fill();
+
+	g = this.r_bm_gc[1];
+	//this.r_bm_gc[1].setColor (java.awt.Color.white);
+	//this.r_bm_gc[1].fillRect (0, 0, 32, 24);
+	g.beginPath();
+	g.clearRect (0, 0, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+	g.closePath();
+	g.fill();
+	//end
+
 	for (i = 0; i < data.length; i++) {
 		//c data[i] = Math.floor ((data[i] - 11) * this.dpm / 290);
-		data[i] = Math.floor ((data[i] - 11) * this.dpm / Jmj.DW);
+		//data[i] = Math.floor ((data[i] - 11) * this.dpm / Jmj.DW);
+		data[i] = (data[i] - 11) * this.dpm / Jmj.DW;
 	}
 	this.hand_x = data[i - 4] + 2;
 	this.hand_y = data[i - 3] + 2;
 	this.arm_x = data[i - 2];
 	this.arm_y = data[i - 1];
-/*
+
+	//begin
 	for (i = 0; i + 6 < data.length; i += 2) {
-		this.r_bm_gc[1].setColor (this.color[1]);
-		this.r_bm_gc[1].drawLine (11 + data[i], 10 + data[i + 1], 11 + data[i + 2], 10 + data[i + 3]);
-		this.l_bm_gc[1].setColor (this.color[1]);
-		this.l_bm_gc[1].drawLine (12 - data[i], 10 + data[i + 1], 12 - data[i + 2], 10 + data[i + 3]);
+		//this.r_bm_gc[1].setColor (this.color[1]);
+		//this.r_bm_gc[1].drawLine (11 + data[i], 10 + data[i + 1], 11 + data[i + 2], 10 + data[i + 3]);
+		//this.l_bm_gc[1].setColor (this.color[1]);
+		//this.l_bm_gc[1].drawLine (12 - data[i], 10 + data[i + 1], 12 - data[i + 2], 10 + data[i + 3]);
+		//var r = Math.floor (11 * this.dpm / Jmj.DW) | 0;
+		var r = 11 * this.dpm / Jmj.DW;
+		g = this.r_bm_gc[1];
+		g.beginPath();
+		g.setColor (this.color[1]);
+		//g.drawLine (11 + data[i], 10 + data[i + 1], 11 + data[i + 2], 10 + data[i + 3]);
+		g.drawLine (r + data[i], (r - 1) + data[i + 1], r + data[i + 2], (r - 1) + data[i + 3], false);
+		g.closePath();
+		g.stroke();
+		g = this.l_bm_gc[1];
+		g.setColor (this.color[1]);
+		//g.drawLine (12 - data[i], 10 + data[i + 1], 12 - data[i + 2], 10 + data[i + 3]);
+		//g.drawLine (11 - data[i], 10 + data[i + 1], 11 - data[i + 2], 10 + data[i + 3]);
+		g.drawLine ((r + 1) - data[i], (r - 1) + data[i + 1], (r + 1) - data[i + 2], (r - 1) + data[i + 3], false);
+		g.closePath();
+		g.stroke();
 	}
-	var r = Math.floor (11 * this.dpm / 290);
+	var r = Math.floor (11 * this.dpm / Jmj.DW);
 	for (i = 0; i < 16; i++) {
-		this.bm_gc[i].setColor (this.color[i]);
-		this.bm_gc[i].fillOval (11 - r, 11 - r, 2 * r, 2 * r);
+		//this.bm_gc[i].setColor (this.color[i]);
+		//this.bm_gc[i].fillOval (11 - r, 11 - r, 2 * r, 2 * r);
+		g = this.bm_gc[i];
+		g.beginPath();
+		g.setColor (this.color[i]);
+		g.fillOval(0, 0, 2 * r, 2 * r);
+		g.closePath();
+		g.fill();
 	}
-*/
+	//end
+
 	//c this.bm1 = 11 - Math.floor (11 * this.dpm / 290);
 	this.bm1 = 11 - Math.floor (11 * this.dpm / Jmj.DW);
 	//c this.bm2 = 11 + Math.floor (11 * this.dpm / 290) + 1;
@@ -1188,7 +1233,7 @@ Jmj.prototype.clearImage = function() {
 		g = this.getGraphics ();
 	}
 	//c g.drawImage (this.image_pixmap, 0, 0, 480, 400, null);
-	g.drawImage (this.image_pixmap, 0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT, null);
+	g.putImageData (this.image_pixmap, 0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT, null);
 	g.dispose ();
 };
 
@@ -1197,7 +1242,7 @@ Jmj.prototype.eraseBalls = function() {
 	var j;
 
 	// 全体を消す
-	this.image_gc.clearRect(0, 0, 480, 400); // TODO
+	this.image_gc.clearRect(0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT);
 	return;
 /*
 	this.image_gc.setColor (this.color[0]);
@@ -1226,9 +1271,11 @@ Jmj.prototype.putBalls = function() {
 	if (this.hand_on) {
 		this.image_gc.setColor (this.color[1]);
 		for (j = 0; j < Jmj.iPerNo; j++) {
-			this.image_gc.beginPath();
 			this.drawBall (this.r_bm[1], this.rhand[j].gx, this.rhand[j].gy, 1, this.color[1]);
-			this.drawBall (this.l_bm[1], this.lhand[j].gx, this.lhand[j].gy, 2, this.color[1]);
+			//this.drawBall (this.l_bm[1], this.lhand[j].gx, this.lhand[j].gy, 2, this.color[1]);
+			this.drawBall (this.l_bm[1], this.lhand[j].gx - 1, this.lhand[j].gy, 2, this.color[1]); // 微調整
+
+			this.image_gc.beginPath();
 			for (i = 0; i < 5; i++) {
 				this.drawLine (this.ap[j].rx[i], this.ap[j].ry[i], this.ap[j].rx[i + 1], this.ap[j].ry[i + 1]);
 				this.drawLine (this.ap[j].lx[i], this.ap[j].ly[i], this.ap[j].lx[i + 1], this.ap[j].ly[i + 1]);
@@ -1243,10 +1290,7 @@ Jmj.prototype.putBalls = function() {
 		}
 	}
 	for (i = this.ballno - 1; i >= 0; i--) {
-		this.image_gc.beginPath();
 		this.drawBall (this.bm[15 - i % 13], this.b[i].gx, this.b[i].gy, 0, this.getColor(i));
-		this.image_gc.closePath();
-		this.image_gc.stroke();
 	}
 };
 
@@ -1450,3 +1494,8 @@ Jmj.HOR_CENTER = Math.round(Jmj.IMAGE_WIDTH / 2);
 Jmj.VER_CENTER = Math.round(Jmj.IMAGE_HEIGHT / 2);
 Jmj.HOR_MARGIN = 20;
 Jmj.VER_MARGIN = 20;
+
+// オフスクリーン用(大きめ(2倍)に取得)
+Jmj.OFF_W = Jmj.PM_W * 2;
+Jmj.OFF_H = Jmj.PM_H * 2;
+

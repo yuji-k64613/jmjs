@@ -52,3 +52,12 @@ Canvas.prototype.createImage = function(w, h) {
 	
 	return new Image(this, img);
 };
+
+Canvas.prototype.createImage2 = function(pid, id, w, h) {
+	var c = $('<canvas id="' + id + '" class="canvas" width="' + w + 'px" height="' + h + 'px">');
+	c.hide();
+	$('#' + pid).append(c);
+
+	var canvas = new Canvas(id);	
+	return canvas;
+};
