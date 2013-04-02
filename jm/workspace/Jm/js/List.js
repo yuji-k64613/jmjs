@@ -28,8 +28,8 @@ List.prototype.add = function(id, index, n, func, isPattern) {
 		$(this.obj).append(this.data);
 
 		var main = $("#main");
-		if (startPage == 'page1'){		
-			main.find("div[data-role=collapsible-set]").collapsible({refresh:true}); 
+		if (startPage == 'page1'){
+			main.find("div[data-role=collapsible-set]").collapsibleset({refresh:true}); 
 			main.find("div[data-role=collapsible]").collapsible({refresh:true}); 
 			main.find("ul[data-role=listview]").listview({refresh:true}); 
 		}
@@ -82,7 +82,12 @@ List.prototype.add = function(id, index, n, func, isPattern) {
 		else {
 			this.data += '</ul></div>';
 		}
-		this.data += '<div data-role="collapsible" data-collapsed="' + collapsed + '" data-theme="b" data-content-theme="c">';
+		if (collapsed){
+			this.data += '<div data-role="collapsible" data-theme="b" data-content-theme="c">';			
+		}
+		else {
+			this.data += '<div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="c">';			
+		}
 		this.data += '<h3>' + n + '</h3>';
 		this.data += '<ul data-role="listview" data-inset="true">';
 	} else {

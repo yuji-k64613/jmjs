@@ -12,6 +12,7 @@ var Scrollbar = function(id) {
 		return function(e){
 			var self = target;
 			var v = self.obj.val();
+			v = Float.parseFloat(v);
 			self.value = v;
 		}
 	};
@@ -26,7 +27,7 @@ Scrollbar.prototype.setValue = function(v) {
 };
 
 Scrollbar.prototype.refresh = function(isForce) {
-this.isRefreshed=false;
+//this.isRefreshed=false; // TODO 削除忘れてる
 	var b = false;
 	if (arguments.length >= 1 && isForce) {
 		b = true;

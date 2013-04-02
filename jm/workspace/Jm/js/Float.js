@@ -7,11 +7,11 @@ Float.prototype.floatValue = function() {
 };
 
 Float.parseFloat = function(s) {
-	return parseInt(s);
+	return parseFloat(s);
 };
 
 Float.$valueOf = function(v){
-	var i = parseInt(v)
+	var i = parseFloat(v)
 	if (isNaN(i)){
 		throw new TypeError();
 	}

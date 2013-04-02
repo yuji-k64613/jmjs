@@ -1,27 +1,4 @@
 var Jmj = function() {
-	// Field static
-	/*
-	this.KW = 0.25;
-	this.XR = 1024;
-	this.DW = 290;
-	this.BMAX = 35;
-	this.LMAX = 200;
-	this.MMAX = 11;
-	this.NORMAL = "Normal";
-	this.PERMIN = 1;
-	this.PERMAX = 10;
-	this.iPerNo = 2;
-	this.PXY = 30;
-	this.IDLE = 0;
-	this.PAUSE = 1;
-	this.JUGGLING = 2;
-	this.SITESWAP_MODE = -3;
-	this.MOTION_MODE = -2;
-	this.FORMATION_MODE = -1;
-	this.Y_OFFSET = 0;
-	this.FORMATION_BASIC = "1-Person";
-	*/
-
 	// Filed
 	//this.strVer = "2.13__";
 	this.TEST_MODE = false;
@@ -989,12 +966,12 @@ Jmj.prototype.update = function(g) {
 };
 
 Jmj.prototype.paint = function(g) {
-	if (this.gg1 != null) {
-		this.gg1.putImageData (this.image_pixmap, 0, 0, null);
-	}
-	if (this.gg2 != null) {
-		this.gg2.putImageData (this.image_pixmap, 20 - this.iXmin, -20, null);
-	}
+	//if (this.gg1 != null) {
+	//	this.gg1.putImageData (this.image_pixmap, 0, 0, null);
+	//}
+	//if (this.gg2 != null) {
+	//	this.gg2.putImageData (this.image_pixmap, 20 - this.iXmin, -20, null);
+	//}
 };
 
 Jmj.prototype.initGraphics = function() {
@@ -1124,9 +1101,9 @@ Jmj.prototype.initBallGraphics = function() {
 	if (this.bm[0] == null) {
 		if (this.imf != null) {
 			id = 'offscrn' + 'l';
-			this.l_bm[1] = this.imf.createImage2 (pid, id, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+			this.l_bm[1] = this.imf.createImage2 (pid, id, Jmj.OFF_W, Jmj.OFF_H);
 			id = 'offscrn' + 'r';
-			this.r_bm[1] = this.imf.createImage2 (pid, id, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+			this.r_bm[1] = this.imf.createImage2 (pid, id, Jmj.OFF_W, Jmj.OFF_H);
 		} else {
 			this.l_bm[1] = this.createImage (32, 24);
 			this.r_bm[1] = this.createImage (32, 24);
@@ -1136,7 +1113,7 @@ Jmj.prototype.initBallGraphics = function() {
 		for (i = 0; i < 16; i++) {
 			id = 'offscrn' + i;
 			if (this.imf != null) {
-				this.bm[i] = this.imf.createImage2 (pid, id, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+				this.bm[i] = this.imf.createImage2 (pid, id, Jmj.OFF_W, Jmj.OFF_H);
 			} else {
 				this.bm[i] = this.createImage2 (pid, id, 32, 24);
 			}
@@ -1150,13 +1127,13 @@ Jmj.prototype.initBallGraphics = function() {
 	for (i = 0; i < 16; i++) {
 		//this.bm_gc[i].setColor (java.awt.Color.white);
 		// this.bm_gc[i].fillRect (0, 0, 32, 24);
-		this.bm_gc[i].clearRect (0, 0, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+		this.bm_gc[i].clearRect (0, 0, Jmj.OFF_W, Jmj.OFF_H);
 	}
 	//this.l_bm_gc[1].setColor (java.awt.Color.white);
 	//this.l_bm_gc[1].fillRect (0, 0, 32, 24);
 	g = this.l_bm_gc[1];
 	g.beginPath();
-	g.clearRect (0, 0, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+	g.clearRect (0, 0, Jmj.OFF_W, Jmj.OFF_H);
 	g.closePath();
 	g.fill();
 
@@ -1164,7 +1141,7 @@ Jmj.prototype.initBallGraphics = function() {
 	//this.r_bm_gc[1].setColor (java.awt.Color.white);
 	//this.r_bm_gc[1].fillRect (0, 0, 32, 24);
 	g.beginPath();
-	g.clearRect (0, 0, Jmj.OFF_W * 2, Jmj.OFF_H * 2);
+	g.clearRect (0, 0, Jmj.OFF_W, Jmj.OFF_H);
 	g.closePath();
 	g.fill();
 	//end
@@ -1226,15 +1203,15 @@ Jmj.prototype.clearImage = function() {
 	//c this.image_gc.clearRect(0, 0, 480, 400);
 	this.image_gc.clearRect(0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT);
 
-	var g;
-	if (this.imf != null) {
-		g = this.imf.getGraphics ();
-	} else {
-		g = this.getGraphics ();
-	}
-	//c g.drawImage (this.image_pixmap, 0, 0, 480, 400, null);
-	g.putImageData (this.image_pixmap, 0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT, null);
-	g.dispose ();
+	//var g;
+	//if (this.imf != null) {
+	//	g = this.imf.getGraphics ();
+	//} else {
+	//	g = this.getGraphics ();
+	//}
+	////c g.drawImage (this.image_pixmap, 0, 0, 480, 400, null);
+	//g.putImageData (this.image_pixmap, 0, 0, Jmj.IMAGE_WIDTH, Jmj.IMAGE_HEIGHT, null);
+	//g.dispose ();
 };
 
 Jmj.prototype.eraseBalls = function() {
