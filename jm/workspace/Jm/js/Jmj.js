@@ -569,8 +569,9 @@ Jmj.prototype.pattInitialize = function() {
 	tw0 = Math.sqrt(2 / this.ga * this.max_height * this.$height) * 2 / (this.max_height - this.dwell * 2) * this.redrawrate / this.speed;
 	this.tw = Math.round(this.fadd(tw0, 0));
 	if (this.tw == 0) {
-		System.out.println("tw = 0");
-		return false;
+		//System.out.println("tw = 0");
+		//return false;
+		this.tw = 1;
 	}
 	aw0 = tw0 * this.dwell * 2;
 	this.aw = Math.round(this.fadd(aw0, 0));

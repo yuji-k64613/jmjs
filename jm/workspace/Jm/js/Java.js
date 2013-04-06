@@ -52,7 +52,7 @@ System.out = function(){
 	
 };
 
-System.out.prototype.println = function(s){
+System.out.println = function(s){
 	
 };
 
