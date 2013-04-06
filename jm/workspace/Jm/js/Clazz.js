@@ -57,3 +57,7 @@ function clone(o)
     f.prototype = o;
     return new f();
 };
+
+function isUndefined(obj) {
+	return typeof obj == 'undefined';
+}

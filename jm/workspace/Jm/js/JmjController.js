@@ -156,7 +156,8 @@ JmjController.prototype.setDwell = function(dwell) {
 
 JmjController.prototype.setPerno = function(i) {
 	JmjController.iPersonNo = i;
-	this.perno_gauge.setValues(JmjController.iPersonNo, 1, Jmj.PERMIN, Jmj.iPerMax + 1);
+	//this.perno_gauge.setValues(JmjController.iPersonNo, 1, Jmj.PERMIN, Jmj.iPerMax + 1);
+	this.perno_gauge.setValues(JmjController.iPersonNo, 1, Jmj.PERMIN, Jmj.iPerMax);
 	this.setPernoLabel();
 };
 

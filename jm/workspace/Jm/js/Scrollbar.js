@@ -48,9 +48,13 @@ Scrollbar.prototype.getValue = function() {
 Scrollbar.prototype.setValues = function(value, visible, minimum, maximum) {
 	// min, maxが機能しない？
 	//	this.obj.slider({
-	//		min : minimum,
-	//		max : maximum
+	//		min: minimum,
+	//		max: maximum
 	//	});
-	
+	this.obj.attr('min', minimum);
+	this.obj.attr('max', maximum);
+	this.minimum = minimum;
+	this.maximum = maximum;
+
 	this.setValue(value);
 };

@@ -2,7 +2,8 @@ var Jmj = function() {
 	// Filed
 	//this.strVer = "2.13__";
 	this.TEST_MODE = false;
-	this.redrawrate = 100.0;
+	//this.redrawrate = 100.0;
+	this.redrawrate = 25.0;
 	this.iXData = null;
 	this.iYData = null;
 	this.iMoveX = 0;
@@ -563,7 +564,7 @@ Jmj.prototype.pattInitialize = function() {
 	if (this.max_height < 3) {
 		this.max_height = 3;
 	}
-	tw0 = Math.sqrt(2 / this.ga * this.max_height * this.$height) * 2 / (this.max_height - this.dwell * 2) * 100.0 / this.speed;
+	tw0 = Math.sqrt(2 / this.ga * this.max_height * this.$height) * 2 / (this.max_height - this.dwell * 2) * this.redrawrate / this.speed;
 	this.tw = Math.round(this.fadd(tw0, 0));
 	if (this.tw == 0) {
 		System.out.println("tw = 0");
@@ -584,9 +585,9 @@ Jmj.prototype.pattInitialize = function() {
 	this.kw0 = Math.round(Jmj.XR / Jmj.KW);
 
 	this.high[0] = -0.2 * this.dpm;
-	this.high[1] = Math.round((this.ga * this.square(tw0 / 100.0 * this.speed) / 8 * this.dpm));
+	this.high[1] = Math.round((this.ga * this.square(tw0 / this.redrawrate * this.speed) / 8 * this.dpm));
 	for ( i = 2; i <= this.max_height; i++) {
-		this.high[i] = Math.round((this.ga * this.square((tw0 * i - aw0) / 100.0 * this.speed) / 8 * this.dpm));
+		this.high[i] = Math.round((this.ga * this.square((tw0 * i - aw0) / this.redrawrate * this.speed) / 8 * this.dpm));
 	}
 	for ( i = 0; i < this.ballno; i++) {
 		this.b[i].bh = 0;
@@ -880,7 +881,8 @@ Jmj.prototype.startJuggling = function(index, s) {
 	//this.kicker = new Thread(this);
 	this.kicker = new Thread(this, Jmj.prototype.run, 1000 / this.redrawrate);
 	this.kicker.start();
-	self = this;
+	//self = this;
+	self = null;
 	//c this.status = 2;
 	this.status = Jmj.JUGGLING;
 
@@ -888,6 +890,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 };
 
 Jmj.prototype.run = function() {
+	if (self == null){
+		self = this;
+	}
 	if (self.kicker != null){
 		self.do_juggle();
 		self.count_up_timer();
@@ -1387,6 +1392,34 @@ Jmj.prototype.initPage2 = function(e) {
 
 };
 
+// 初期起動時にバーを右に寄せるために無理矢理
+Jmj.prototype.changePage3PernoGauge = function(){
+	var pg = this.controller.perno_gauge;
+	var v = pg.value;
+	var minimum = pg.minimum;
+	var maximum = pg.maximum;
+
+	pg.obj.attr('min', 1);
+	pg.obj.attr('max', 2);
+	pg.value = 2;
+	pg.refresh(true);
+
+	pg.obj.attr('min', 1);
+	pg.obj.attr('max', 1);
+	pg.obj.val(1);
+
+	if (!isUndefined(minimum)){
+		pg.minimum = minimum;
+		pg.obj.attr('min', minimum);
+	}
+	if (!isUndefined(maximum)){
+		pg.obj.attr('max', maximum);
+		pg.maximum = maximum;	
+	}
+	pg.value = v;
+	pg.obj.val(v);
+};
+
 Jmj.prototype.initPage3 = function(e) {
 	this.controller.speed_gauge.refresh(true);
 	this.controller.height_gauge.refresh(true);
@@ -1406,6 +1439,9 @@ Jmj.prototype.changePage2 = function(e) {
 
 Jmj.prototype.changePage3 = function(e) {
 	this.stopJuggling();
+
+	this.changePage3PernoGauge();
+	
 	this.controller.speed_gauge.refresh(true);
 	this.controller.height_gauge.refresh(true);
 	this.controller.dwell_gauge.refresh(true);

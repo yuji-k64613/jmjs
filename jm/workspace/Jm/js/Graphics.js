@@ -146,7 +146,8 @@ Graphics.prototype.fillOval = function(x, y, w, h) {
 	x = x | 0;
 	y = y | 0;
 	r = r | 0;
-
+	x += 1;
+	y += 1;
 	if (r < 1){
 		r = 1;
 	}		
