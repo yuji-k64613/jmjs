@@ -132,6 +132,8 @@ var Jmj = function() {
 	this.l_bm_gc = new Array(Jmj.NCOLOR);
 	
 	this.data = [0, 18, 0, 23, 17, 23, 20, 22, 22, 20, 23, 17, 23, 12, 18, 12, 18, 16, 16, 18, 0, 18, 12, 15, 23, 17];
+	
+	this.sbm = new Array();
 }
 
 Jmj.prototype.init = function() {
@@ -707,20 +709,10 @@ Jmj.prototype.patt_print = function(mode_, isUpdate) {
 	var i;
 	var c;
 	if (mode_ == 1) {
-		//if (this.pattw > this.c0 && this.pattw > this.intsyn + 1) {
-			//this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], false);
-			//this.tx += this.singless[this.c0].length;
-		//}
-		//c = this.time_period;
-		//if (c <= this.c0) {
-		//	this.tx = 0;
-		//}
-		//this.drawSiteswap(this.patt_x + this.tx, this.singless[c], true);
-		//this.c0 = c;
-		this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], true);
+		this.drawSiteswap(this.patt_x + this.tx, this.singless[this.c0], this.c0, true);
 		if (isUpdate){
 			this.tx += this.singless[this.c0].length;
-			this.c0 += 1 + this.intsyn;;
+			this.c0 += 1 + this.intsyn;
 			if (this.c0 > this.time_period){
 				this.c0 = 0;
 				this.tx = 0;
@@ -729,16 +721,16 @@ Jmj.prototype.patt_print = function(mode_, isUpdate) {
 		return;
 	}
 	if (mode_ == 0) {
-		// this.tx = 0;
-		//for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
-		//	this.drawSiteswap(this.patt_x + this.tx, this.singless[i], false);
-		//	this.tx += this.singless[i].length;
-		//}
-		//this.c0 = this.pattw;
-		var x = 0;
-		for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
-			this.drawSiteswap(this.patt_x + x, this.singless[i], false);
-			x += this.singless[i].length;
+		// for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
+			// this.drawSiteswap(this.patt_x + x, this.singless[i], i, false);
+			// x += this.singless[i].length;
+		// }
+		for (var j = 0; j < this.pattw; j += this.intsyn + 1){
+			var x = 0;
+			for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
+				this.drawSiteswap(this.patt_x + x, this.singless[i], j, false);
+				x += this.singless[i].length;
+			}
 		}
 	}
 };
@@ -871,7 +863,14 @@ Jmj.prototype.startJuggling = function(index, s) {
 		this.pattInitialize();
 	}
 	if (this.show_ss) {
+		this.initSiteswapGraphics();
 		this.patt_print(0);
+		this.tx = 0;
+		for (var i = 0; i < this.pattw; i += 1 + this.intsyn){
+			this.c0 = i;
+			this.patt_print(1, false);
+			this.tx += this.singless[i].length;
+		}
 	}
 	this.controller.setLabels();
 	this.initBallGraphics();
@@ -929,11 +928,7 @@ Jmj.prototype.do_juggle = function() {
 	//}
 	this.eraseBalls ();
 	if (this.show_ss) {
-		this.image_gc.beginPath();
-		this.patt_print(0);
-		this.patt_print(1, iCnt > 0);
-		this.image_gc.closePath();
-		this.image_gc.stroke();
+		this.drawSiteswapImage(iCnt > 0);
 	}
 	for (var jPerNo = 0; jPerNo < Jmj.iPerNo; jPerNo++) {
 		this.ap[jPerNo].rx[0] = this.rhand[jPerNo].gx + 11 + this.arm_x;
@@ -1025,16 +1020,34 @@ Jmj.prototype.disposeGraphics = function() {
 	}
 };
 
-Jmj.prototype.drawSiteswap = function(x, str, is_red) {
+Jmj.prototype.drawSiteswap = function(x, str, i, is_red) {
 	if (this.image_gc == null) return ;
+
+	var c = this.sbm[i];
+	var g = c.getGraphics();
 	if (is_red) {
-		this.image_gc.setColor (java.awt.Color.red);
+		g.setColor (java.awt.Color.red);
 	} else {
-		this.image_gc.setColor (java.awt.Color.black);
+		g.setColor (java.awt.Color.black);
 	}
-	this.image_gc.drawString (str, x * 8, 20);
+	g.drawString (str, x * 8, 20);
 };
-	
+
+Jmj.prototype.drawSiteswapImage = function(isUpdate) {
+	var c = this.sbm[this.c0];
+	var g = c.getGraphics();
+	this.image_gc.drawImage(c, 0, 0);
+
+	if (isUpdate){
+		this.tx += this.singless[this.c0].length;
+		this.c0 += 1 + this.intsyn;
+		if (this.c0 > this.time_period){
+			this.c0 = 0;
+			this.tx = 0;
+		}
+	}
+};
+
 Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 	//c if (x < -this.iMoveX || x > 480 - this.iMoveX || y < 0 || y > 376) {
 	if (x < -this.iMoveX || x > Jmj.IMAGE_WIDTH - this.iMoveX || y < 0 || y > Jmj.IMAGE_HEIGHT - 24) {
@@ -1093,6 +1106,28 @@ Jmj.prototype.drawCircle = function(x, y, r) {
 	
 Jmj.prototype.fillBox = function(x1_b, y1, x2_b, y2) {
 	this.image_gc.fillRect (this.fx ((x1_b - (x2_b - x1_b)) * 8), y1, (x2_b - x1_b + 1) * 8 * 2, y2 - y1 + 1);
+};
+
+Jmj.prototype.initSiteswapGraphics = function() {
+	var pid = 'main2';
+	var id;
+	var i;
+	var obj;
+	var c = $('#canvas');
+	var w = c.attr('width');
+	
+	w = w.replace('px', '');
+	w = Integer.parseInt(w);
+	for (i = 0; i < this.pattw; i++){
+		obj = this.sbm[i];
+		if (isUndefined(obj)){
+			id = 'offscrn' + 's' + i;
+			this.sbm[i] = this.imf.createImage2 (pid, id, w, Jmj.OFF_H);
+		}
+		var c = this.sbm[i];
+		var g = c.getGraphics();
+		g.clearRect (0, 0, Jmj.IMAGE_WIDTH, Jmj.OFF_H);
+	}	
 };
 
 Jmj.prototype.initBallGraphics = function() {
