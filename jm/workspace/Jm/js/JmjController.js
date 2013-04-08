@@ -105,7 +105,6 @@ JmjController.prototype.actionPerformedForPatternList = function(e) {
 	// 手抜き
 	this.jmj.startJuggling(this.patternList.getSelectedIndex(), "");
 	
-	// TODO jQueryを外に
 	$.mobile.changePage('#page2');
 };
 

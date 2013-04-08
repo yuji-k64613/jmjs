@@ -27,7 +27,7 @@ Scrollbar.prototype.setValue = function(v) {
 };
 
 Scrollbar.prototype.refresh = function(isForce) {
-//this.isRefreshed=false; // TODO 削除忘れてる
+	//this.isRefreshed=false; // 削除忘れてた
 	var b = false;
 	if (arguments.length >= 1 && isForce) {
 		b = true;

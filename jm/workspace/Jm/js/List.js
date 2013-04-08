@@ -34,6 +34,7 @@ List.prototype.add = function(id, index, n, func, isPattern) {
 			main.find("ul[data-role=listview]").listview({refresh:true}); 
 		}
 		main.find("li").click(func);
+		//main.find("li").on('vclick', null, func);
 				
 		this.data = null;
 	}

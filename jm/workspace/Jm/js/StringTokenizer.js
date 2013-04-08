@@ -19,10 +19,6 @@ StringTokenizer.prototype.nextToken = function() {
 			}
 		}
 		var m = this.pos;
-		// if (t < 0) {
-		// this.pos = l;
-		// return this.s.substring(m);
-		// }
 		if (t > this.pos) {
 			this.pos = t + 1;
 			var v = this.s.substring(m, t);

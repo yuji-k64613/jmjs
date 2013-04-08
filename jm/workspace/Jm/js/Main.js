@@ -1,6 +1,3 @@
-/**
- * @author 小西 裕治
- */
 var jmj = null;
 function initJmj(e) {
 	initCanvas();
@@ -91,12 +88,31 @@ function changePage(e, d){
 	}
 };
 
+// FOO
+/*
+$(document).delegate('a', 'vclick', function(e){
+    e.preventDefault();
+    var link = $(this);
+    $.mobile.changePage(link.attr('href'), {
+        transition: link.jqmData('transition')
+    });
+});
+*/
+
+var isMobile = false;
 $(document).bind('pageinit', function(e, d) {
 	if (isInit == null){
 		isInit = new Object();
 		isInit['page1'] = true;
 		isInit['page2'] = true;
 		isInit['page3'] = true;
+		
+		// FOO
+		isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())
+		if (isMobile){
+			$.mobile.defaultPageTransition = 'none';
+			$.mobile.buttonMarkup.hoverDelay = 10;
+		}
 		
 		startPage = e.target.id;
 		
