@@ -71,6 +71,10 @@
 		<script type="text/javascript" src="./js/PatternHolder.js"></script>
 		<script type="text/javascript" src="./js/JmjController.js"></script>
 		<script type="text/javascript" src="./js/MessageBox.js"></script>
+		<script type="text/javascript" src="./js/ListWithQuicksort.js"></script>
+		<script type="text/javascript" src="./js/MotionList.js"></script>
+		<script type="text/javascript" src="./js/FormationList.js"></script>
+		<script type="text/javascript" src="./js/JmjDialog.js"></script>
 
 		<script type="text/javascript" src="./js/Main.js"></script>
 	</head>
@@ -78,7 +82,7 @@
 
 		<div id="page1" data-role="page">
 			<div data-role="header">
-				<h1>JuggleMaster JavaScript Ver1.0.0</h1>
+				<h1>JuggleMaster JavaScript Ver1.1.0</h1>
 				<div data-role="navbar" data-iconpos="left">
 					<ul>
 						<li>
@@ -88,20 +92,14 @@
 						<li>
 							<a href="#page2" data-icon="grid" data-transition="none">Juggle</a>
 						<li>
+							<a href="#page4" data-icon="gear" data-transition="none">New</a>
+						<li>
 							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
 					</ul>
 				</div>
 			</div>
 			<div id="main" data-role="content">
 				<div id="loading1">Loading...</div>
-				<!--
-				<ul id="patternList" data-role="listview" data-inset="true" data-filter="true">
-				</ul>
-				-->
-				<!--
-				<div id="patternList" data-role="collapsible-set" data-collapsed="false">
-				</div>
-				-->				
 				<div id="patternList" data-role="collapsible-set">
 				</div>				
 			</div>
@@ -111,7 +109,7 @@
 		</div>
 		<div id="page2" data-role="page">
 			<div data-role="header">
-				<h1>JuggleMaster JavaScript Ver1.0.0</h1>
+				<h1>JuggleMaster JavaScript Ver1.1.0</h1>
 				<div data-role="navbar" data-iconpos="left">
 					<ul>
 						<li>
@@ -121,14 +119,42 @@
 							class="ui-btn-active ui-state-persist"
 							data-icon="grid" data-transition="none">Juggle</a>
 						<li>
-							<a id="page2_page3" href="#page3" data-icon="gear" data-transition="none">Settings</a>
+							<a href="#page4" data-icon="gear" data-transition="none">New</a>
+						<li>
+							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
 					</ul>
 				</div>
 			</div>
 			<div id="main2" class="main" data-role="content" align="center">
-<!--
-				<canvas id="canvas" class="canvas" width="480px" height="400px"></canvas>
--->
+			</div>
+			<div data-role="footer">
+				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
+			</div>
+		</div>
+		<div id="page4" data-role="page">
+			<div data-role="header">
+				<h1>JuggleMaster JavaScript Ver1.1.0</h1>
+				<div data-role="navbar" data-iconpos="left">
+					<ul>
+						<li>
+							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
+						<li>
+							<a href="#page2" data-icon="gear" data-transition="none">Juggle</a>
+						<li>
+							<a href="#page4"
+							class="ui-btn-active ui-state-persist"
+							data-icon="star" data-transition="none">New</a>
+						<li>
+							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<label for="basic">Sitewap:</label>
+				<input type="text" name="name" value="" />
+
+				<a href="#" id="page4_ok" data-role="button" data-inline="true" data-theme="b">Ok</a>
+				<a href="#" data-role="button" data-inline="true">Cancel</a>
 			</div>
 			<div data-role="footer">
 				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
@@ -136,13 +162,15 @@
 		</div>
 		<div id="page3" data-role="page">
 			<div data-role="header">
-				<h1>JuggleMaster JavaScript Ver1.0.0</h1>
+				<h1>JuggleMaster JavaScript Ver1.1.0</h1>
 				<div data-role="navbar" data-iconpos="left">
 					<ul id='custIconUL'>
 						<li>
 							<a href="#page1" data-icon="star" data-transition="none">Patterns</a>
 						<li>
 							<a href="#page2" data-icon="grid" data-transition="none">Juggle</a>
+						<li>
+							<a href="#page4" data-icon="grid" data-transition="none">New</a>
 						<li>
 							<a href="#page3"
 							class="ui-btn-active ui-state-persist"

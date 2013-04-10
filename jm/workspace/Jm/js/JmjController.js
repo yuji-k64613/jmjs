@@ -43,6 +43,12 @@ var JmjController = function(jmj, quitflag) {
 	this.body_box = null;
 	this.prevIndex = 0;
 
+	// property
+    this.patternList = null;
+    //this.dialog_fileList = new PatternfileList();
+    this.dialog_motionList = new MotionList('TODO', jmj);
+    //this.dialog_didyoumeanList = new DidyoumeanList();
+	
 	// Constructor
     this.jmj = jmj;
 
@@ -94,6 +100,12 @@ var JmjController = function(jmj, quitflag) {
 	
 	this.juggle_button.setEnabled(false);
 	this.pause_button.setEnabled(false);
+	
+	//JmjController.prototype.actionPerformedForNewSiteswapButton 
+	var self = this;
+	$('#page4_ok').click(function(e) {
+		self.actionPerformedForNewSiteswapButton(e);
+	}); 
 };
 
 JmjController.prototype.actionPerformedForPatternList = function(e) {
@@ -106,6 +118,11 @@ JmjController.prototype.actionPerformedForPatternList = function(e) {
 	this.jmj.startJuggling(this.patternList.getSelectedIndex(), "");
 	
 	$.mobile.changePage('#page2');
+};
+
+JmjController.prototype.actionPerformedForNewSiteswapButton = function(e) {
+    var jd = new JmjDialog(this);
+    jd.popup(JmjDialog.TRY_SITESWAP);
 };
 
 JmjController.prototype.juggle_pressed = function() {

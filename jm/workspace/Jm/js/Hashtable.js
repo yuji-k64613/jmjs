@@ -74,4 +74,7 @@ Hashtable.prototype.clear = function() {
 	this.length = 0;
 };
 
+Hashtable.prototype.size = function() {
+	return this.length;
+};
 
