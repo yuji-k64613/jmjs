@@ -10,6 +10,10 @@ Vector.prototype.elementAt = function(i) {
 	return this.vec[i];
 };
 
+Vector.prototype.set = function(i, val) {
+	return this.vec[i] = val;
+};
+
 Vector.prototype.size = function() {
 	return this.vec.length;
 };

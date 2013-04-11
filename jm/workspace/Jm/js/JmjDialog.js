@@ -52,16 +52,16 @@ JmjDialog.prototype.popup = function(a) {
 			this.add(this.label1);
 			this.add(this.label2);
 			this.motionList.create();
-			this.motionList.setBounds(410, 50, 180, 190);
+			//this.motionList.setBounds(410, 50, 180, 190);
 			this.add(this.motionList);
-			this.textField.setText(String.instantialize());
-			this.textField.setBounds(10, 60, 380, 30);
+			this.textField.setText("");
+			//this.textField.setBounds(10, 60, 380, 30);
 			this.add(this.textField);
-			this.cancel.setLocation(230, 120);
-			this.ok.setLocation(100, 120);
+			//this.cancel.setLocation(230, 120);
+			//this.ok.setLocation(100, 120);
 			this.validate();
 			this.setVisible(true);
-			this.textField.requestFocusInWindow();
+			//this.textField.requestFocusInWindow();
 			return;
 		case 3:
 			this.setSize(200, 310);
@@ -146,7 +146,8 @@ JmjDialog.prototype.popup = function(a) {
 };
 
 JmjDialog.prototype.actionPerformed = function(a) {
-	var b = a.getSource();
+	//var b = a.getSource();
+	var b = a.currentTarget.id;
 	switch (this.status) {
 		case 1:
 			if (b === this.textField || b === this.ok) {
@@ -160,7 +161,8 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			}
 			break;
 		case 2:
-			if (b === this.ok || b === this.textField) {
+			//if (b === this.ok || b === this.textField) {
+			if (b === 'page4_ok' || b === this.textField) {
 				this.setVisible(false);
 				if (this.textField.getText().length != 0) {
 					if (this.motionList.getSelectedIndex() != -1) {
@@ -170,14 +172,19 @@ JmjDialog.prototype.actionPerformed = function(a) {
 					}
 					var c = this.jc.patternList.getSelectedIndex();
 					if (c != -1) {
-						this.jc.patternList.deselect(c);
+						//this.jc.patternList.deselect(c);
 						this.jc.isNewChoice();
 					} {
-						var d = this.textField.getText().$replace(" ", "");
+						//var d = this.textField.getText().$replace(" ", "");
+						var d = this.textField.getText().replace(" ", "");
 						if (this.jc.jmj.startJuggling(-3, d) == false) {
 							if (this.didyoumeanList.create(d)) {
 								this.popup(this.CHOOSE_DID_YOU_MEAN);
 							}
+						}
+						else {
+							// 追加
+							$.mobile.changePage('#page2');
 						}
 					}
 				}

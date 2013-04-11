@@ -502,7 +502,7 @@ PatternHolder.prototype.nextMotion = function() {
 	if (this.en.hasMoreElements()) {
 		return this.en.nextElement();
 	} else {
-		return String.instantialize();
+		return "";
 	}
 };
 
@@ -585,7 +585,7 @@ PatternHolder.prototype.nextFormation = function() {
 	if (this.enXY.hasMoreElements()) {
 		return this.enXY.nextElement();
 	} else {
-		return String.instantialize();
+		return "";
 	}
 };
 

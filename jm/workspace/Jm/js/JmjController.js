@@ -44,9 +44,11 @@ var JmjController = function(jmj, quitflag) {
 	this.prevIndex = 0;
 
 	// property
+	this.dialog_text = new TextField('page4_text');
+
     this.patternList = null;
     //this.dialog_fileList = new PatternfileList();
-    this.dialog_motionList = new MotionList('TODO', jmj);
+    this.dialog_motionList = new MotionList('page4_select', jmj);
     //this.dialog_didyoumeanList = new DidyoumeanList();
 	
 	// Constructor
@@ -121,8 +123,7 @@ JmjController.prototype.actionPerformedForPatternList = function(e) {
 };
 
 JmjController.prototype.actionPerformedForNewSiteswapButton = function(e) {
-    var jd = new JmjDialog(this);
-    jd.popup(JmjDialog.TRY_SITESWAP);
+    this.jmj.jmjDialog.actionPerformed(e);
 };
 
 JmjController.prototype.juggle_pressed = function() {

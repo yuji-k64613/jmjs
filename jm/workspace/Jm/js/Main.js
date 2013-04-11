@@ -65,6 +65,9 @@ function initPage(e){
 			else if (id == 'page3'){
 				jmj.initPage3();
 			}
+			else if (id == 'page4'){
+				jmj.initPage4();
+			}
 			isInit[id] = false;
 		}
 	}	
@@ -86,6 +89,9 @@ function changePage(e, d){
 	else if (id == 'page3'){
 		jmj.changePage3();
 	}
+	else if (id == 'page4'){
+		jmj.changePage4();
+	}
 };
 
 // FOO
@@ -106,6 +112,7 @@ $(document).bind('pageinit', function(e, d) {
 		isInit['page1'] = true;
 		isInit['page2'] = true;
 		isInit['page3'] = true;
+		isInit['page4'] = true;
 		
 		// FOO
 		isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())

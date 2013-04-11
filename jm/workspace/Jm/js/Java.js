@@ -34,15 +34,27 @@ java.awt.Color.white = new java.awt.Color(255, 255, 255);
 java.awt.Color.black = new java.awt.Color(0, 0, 0);
 java.awt.Color.red = new java.awt.Color(255, 0, 0);
 
-var Enumeration = function() {
-
-};
+//var Enumeration = function() {
+//
+//};
 
 String.prototype.equals = function(param) {
 	if (this == param) {
 		return (typeof param === 'string')? true : false;
 	}
 	return false;
+};
+
+String.prototype.compareTo = function(b) {
+	var a = this;
+	
+	if (a < b){
+		return -1;
+	}
+	if (a > b){
+		return 1;
+	}
+	return 0;
 };
 
 var System = function(){

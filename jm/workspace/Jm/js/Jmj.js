@@ -1463,6 +1463,11 @@ Jmj.prototype.initPage3 = function(e) {
 	this.controller.perno_gauge.refresh(true);
 }
 
+Jmj.prototype.initPage4 = function(e) {
+    this.jmjDialog = new JmjDialog(this.controller);
+    this.jmjDialog.popup(JmjDialog.TRY_SITESWAP);
+};
+
 Jmj.prototype.changePage1 = function(e) {
 	this.stopJuggling();
 };
@@ -1482,6 +1487,10 @@ Jmj.prototype.changePage3 = function(e) {
 	this.controller.height_gauge.refresh(true);
 	this.controller.dwell_gauge.refresh(true);
 	this.controller.perno_gauge.refresh(true);
+};
+
+Jmj.prototype.changePage4 = function(e) {
+	this.stopJuggling();
 };
 
 // Applet

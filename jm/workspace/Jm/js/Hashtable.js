@@ -48,7 +48,7 @@ Hashtable.prototype.keys = function() {
 			keys.push(k);
 		}
 	}
-	return keys;
+	return new Enumeration(keys);
 };
 
 Hashtable.prototype.values = function() {

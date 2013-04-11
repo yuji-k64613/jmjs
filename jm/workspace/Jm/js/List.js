@@ -6,7 +6,11 @@ var List = function(id) {
 	this.list = new Vector();
 	this.index = -1;
 	
-	//this.data = null;
+	var self = this;
+	var func = function(e){
+		self.index = Integer.parseInt(self.obj.val());
+	}
+	this.obj.change(func);
 };
 List.prototype = new Component();
 
@@ -18,9 +22,22 @@ List.prototype.select = function(i) {
 	this.index = i;
 };
 
+List.prototype.getSelectedItem = function() {
+	return this.index;
+};
+
 List.prototype.getItemCount = function() {
 	return this.list.size();
 };
+
+List.prototype.getItem = function(i) {
+	return this.list.elementAt(i);
+};
+
+List.prototype.replaceItem = function(val, i) {
+	return this.list.set(i, val);
+};
+
 
 List.prototype.getSelectedIndex = function() {
 	return this.index;

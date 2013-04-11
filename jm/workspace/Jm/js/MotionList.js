@@ -24,4 +24,14 @@ MotionList.prototype.create = function() {
 		}
 		this.quickSort(0, this.getItemCount() - 1);
 	}
+	
+	var v = this.list;
+	var l = v.size();
+	var s;
+	
+	for (var i = 0; i < l; i++){
+		s = v.elementAt(i);
+		this.obj.append('<option value="' + i + '">' + s + '</option> ');
+	}
+	$('#' + this.id).selectmenu('refresh', true); 
 };
