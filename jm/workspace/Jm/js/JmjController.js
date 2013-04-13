@@ -49,7 +49,7 @@ var JmjController = function(jmj, quitflag) {
     this.patternList = null;
     //this.dialog_fileList = new PatternfileList();
     this.dialog_motionList = new MotionList('page4_select', jmj);
-    //this.dialog_didyoumeanList = new DidyoumeanList();
+    this.dialog_didyoumeanList = new DidyoumeanList('page4_list', jmj);
 	
 	// Constructor
     this.jmj = jmj;
@@ -108,6 +108,23 @@ var JmjController = function(jmj, quitflag) {
 	$('#page4_ok').click(function(e) {
 		self.actionPerformedForNewSiteswapButton(e);
 	}); 
+	$('#page4_ok2').click(function(e) {
+		self.actionPerformedForShowerize(e);
+	}); 
+};
+
+JmjController.vanilla_siteswap_check = function(str) {
+	for (var i = 0; i < str.length; i++) {
+		var c = str.charAt (i);
+		if (('0').charCodeAt (0) <= (c).charCodeAt (0) && (c).charCodeAt (0) <= ('9').charCodeAt (0)) {
+	
+		} else if (('a').charCodeAt (0) <= (c).charCodeAt (0) && (c).charCodeAt (0) <= ('z').charCodeAt (0)) {
+	
+		} else {
+			return false;
+		}
+	}
+	return true;
 };
 
 JmjController.prototype.actionPerformedForPatternList = function(e) {
@@ -123,6 +140,41 @@ JmjController.prototype.actionPerformedForPatternList = function(e) {
 };
 
 JmjController.prototype.actionPerformedForNewSiteswapButton = function(e) {
+    this.jmj.jmjDialog.actionPerformed(e);
+};
+
+JmjController.prototype.actionPerformedForShowerize = function(e) {
+	if (JmjController.vanilla_siteswap_check(this.jmj.siteswap)) {
+		var newPatternStr = "";
+		for (var i = 0; i < this.jmj.pattw; i++) {
+			var d = 2 * this.jmj.patt[i][0] - 1;
+			if (this.jmj.patt[i][0] == 0) {
+					newPatternStr += "00";
+				} else {
+					newPatternStr += "1";
+				if (d < 10) {
+					//newPatternStr += String.valueOf (d);
+					newPatternStr += d;
+				} else if (d < 36) {
+					//newPatternStr += String.valueOf (String.fromCharCode ((('a').charCodeAt (0) + d - 10)));
+					newPatternStr += String.fromCharCode(('a').charCodeAt(0) + d - 10);
+				} else {
+					$.mobile.changePage('#page4_error');
+					return ;
+				}
+			}
+		}
+		this.dialog_text.setText(newPatternStr);
+		this.dialog_text.refresh();
+		this.jmj.startJuggling (-3, newPatternStr);
+		$.mobile.changePage('#page2');
+		return ;
+	}
+	else {
+		$.mobile.changePage('#page4_error');
+	}
+};
+JmjController.prototype.actionPerformedForDidyoumeanList = function(e) {
     this.jmj.jmjDialog.actionPerformed(e);
 };
 

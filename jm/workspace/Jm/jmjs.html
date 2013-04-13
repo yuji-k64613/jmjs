@@ -33,6 +33,9 @@
 				margin: 0px;
 				padding: 0px;
           	}
+          	.margin {
+				margin-top: 1.5em;
+          	}
 		</style>
 
 		<!--[if lt IE 9]>
@@ -45,6 +48,7 @@
 
 		<script type="text/javascript" src="./js/Enumeration.js"></script>
 		<script type="text/javascript" src="./js/Hashtable.js"></script>
+		<script type="text/javascript" src="./js/HashSet.js"></script>
 		<script type="text/javascript" src="./js/Vector.js"></script>
 		<script type="text/javascript" src="./js/BufferedReader.js"></script>
 		<script type="text/javascript" src="./js/StringTokenizer.js"></script>
@@ -76,6 +80,7 @@
 		<script type="text/javascript" src="./js/ListWithQuicksort.js"></script>
 		<script type="text/javascript" src="./js/MotionList.js"></script>
 		<script type="text/javascript" src="./js/FormationList.js"></script>
+		<script type="text/javascript" src="./js/DidyoumeanList.js"></script>
 		<script type="text/javascript" src="./js/JmjDialog.js"></script>
 
 		<script type="text/javascript" src="./js/Main.js"></script>
@@ -90,11 +95,11 @@
 						<li>
 							<a href="#page1"
 							class="ui-btn-active ui-state-persist"
-							data-icon="star" data-transition="none">Patterns</a>
+							data-icon="grid" data-transition="none">Patterns</a>
 						<li>
-							<a href="#page2" data-icon="grid" data-transition="none">Juggle</a>
+							<a href="#page2" data-icon="arrow-r" data-transition="none">Juggle</a>
 						<li>
-							<a href="#page4" data-icon="gear" data-transition="none">New</a>
+							<a href="#page4" data-icon="plus" data-transition="none">New</a>
 						<li>
 							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
 					</ul>
@@ -115,13 +120,13 @@
 				<div data-role="navbar" data-iconpos="left">
 					<ul>
 						<li>
-							<a href="#page1" data-icon="star" data-transition="none">Patterns</a>
+							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
 						<li>
 							<a href="#page2"
 							class="ui-btn-active ui-state-persist"
-							data-icon="grid" data-transition="none">Juggle</a>
+							data-icon="arrow-r" data-transition="none">Juggle</a>
 						<li>
-							<a href="#page4" data-icon="gear" data-transition="none">New</a>
+							<a href="#page4" data-icon="plus" data-transition="none">New</a>
 						<li>
 							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
 					</ul>
@@ -141,33 +146,37 @@
 						<li>
 							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
 						<li>
-							<a href="#page2" data-icon="gear" data-transition="none">Juggle</a>
+							<a href="#page2" data-icon="arrow-r" data-transition="none">Juggle</a>
 						<li>
 							<a href="#page4"
 							class="ui-btn-active ui-state-persist"
-							data-icon="star" data-transition="none">New</a>
+							data-icon="plus" data-transition="none">New</a>
 						<li>
 							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
 					</ul>
 				</div>
 			</div>
 			<div data-role="content">
-				<label for="basic">Sitewap:</label>
-				<input id="page4_text" type="text" name="name" value="" />
-
-				<div data-role="fieldcontain">
-					<div>
-						<label for="page4_select" class="select">Arm motion:</label>
+				<div data-role="collapsible" data-theme="a" data-collapsed="false">
+					<h1>Try a new siteswap</h1>
+					<label for="basic">Type in a sitewap:</label>
+					<input id="page4_text" type="text" name="name" value="" />
+	
+					<div data-role="fieldcontain">
+						<div>
+							<label for="page4_select" class="select">Arm motion:</label>
+						</div>
+						<select name="page4_select" id="page4_select" data-native-menu="false">
+						</select>
 					</div>
-					<select name="page4_select" id="page4_select" data-native-menu="false">
-					</select>
+	
+					<div class="margin">
+						<a href="#" id="page4_ok" data-role="button" data-theme="b">Juggle</a>
+					</div>
 				</div>
-
-				<div>
-					<a href="#" id="page4_ok" data-role="button" data-inline="true" data-theme="b">Ok</a>
-					<!--
-					<a href="#" data-role="button" data-inline="true">Cancel</a>
-					-->
+				<div data-role="collapsible" data-theme="a" data-collapsed="false">
+					<h1>Showerize</h1>
+					<a href="#" id="page4_ok2" data-role="button" data-theme="b">Juggle</a>
 				</div>
 			</div>
 			<div data-role="footer">
@@ -180,11 +189,11 @@
 				<div data-role="navbar" data-iconpos="left">
 					<ul id='custIconUL'>
 						<li>
-							<a href="#page1" data-icon="star" data-transition="none">Patterns</a>
+							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
 						<li>
-							<a href="#page2" data-icon="grid" data-transition="none">Juggle</a>
+							<a href="#page2" data-icon="arrow-r" data-transition="none">Juggle</a>
 						<li>
-							<a href="#page4" data-icon="grid" data-transition="none">New</a>
+							<a href="#page4" data-icon="plus" data-transition="none">New</a>
 						<li>
 							<a href="#page3"
 							class="ui-btn-active ui-state-persist"
@@ -217,6 +226,24 @@
 			<div data-role="footer">
 				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
 			</div>
+		</div>
+		<div id="page4_dialog" data-role="dialog">
+		    <header data-role="header">
+		        <h1>Did you mean:</h1>
+		    </header>
+		    <div data-role="content">
+				<ul id="page4_list" data-role="listview"> 
+				</ul> 
+		    </div>
+		</div>
+		<div id="page4_error" data-role="dialog">
+		    <header data-role="header">
+		        <h1>Warning</h1>
+		    </header>
+		    <div data-role="content">
+		    	<h2>Wrong siteswap</h2>
+		    	<a href="#" id="page4_error_ok" data-role="button" data-theme="b">Ok</a>
+		    </div>
 		</div>
 	</body>
 </html>

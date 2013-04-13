@@ -112,22 +112,25 @@ JmjDialog.prototype.popup = function(a) {
 			this.setVisible(true);
 			return;
 		case 6:
-			this.remove(this.textField);
-			this.remove(this.motionList);
-			this.remove(this.label2);
-			this.remove(this.label3);
-			this.remove(this.label4);
-			this.remove(this.label5);
-			this.setSize(600, 310);
-			this.label1.setText("Did you mean:");
-			this.label1.setBounds(5, 30, 190, 20);
-			this.add(this.label1);
-			this.add(this.didyoumeanList);
-			this.didyoumeanList.setBounds(10, 50, 580, 190);
-			this.cancel.setLocation(230, 250);
-			this.ok.setLocation(100, 250);
-			this.validate();
-			this.setVisible(true);
+			//this.remove(this.textField);
+			//this.remove(this.motionList);
+			//this.remove(this.label2);
+			//this.remove(this.label3);
+			//this.remove(this.label4);
+			//this.remove(this.label5);
+			//this.setSize(600, 310);
+			//this.label1.setText("Did you mean:");
+			//this.label1.setBounds(5, 30, 190, 20);
+			//this.add(this.label1);
+			//this.add(this.didyoumeanList);
+			//this.didyoumeanList.setBounds(10, 50, 580, 190);
+			//this.cancel.setLocation(230, 250);
+			//this.ok.setLocation(100, 250);
+			//this.validate();
+			//this.setVisible(true);
+			this.didyoumeanList.createList();
+			$.mobile.changePage('#page4_dialog');
+			$('#page4_list').listview('refresh');
 			return;
 		case 7:
 			this.setSize(600, 310);
@@ -179,7 +182,11 @@ JmjDialog.prototype.actionPerformed = function(a) {
 						var d = this.textField.getText().replace(" ", "");
 						if (this.jc.jmj.startJuggling(-3, d) == false) {
 							if (this.didyoumeanList.create(d)) {
-								this.popup(this.CHOOSE_DID_YOU_MEAN);
+								this.popup(JmjDialog.CHOOSE_DID_YOU_MEAN);
+							}
+							else {
+								// 追加
+								$.mobile.changePage('#page4_error');							
 							}
 						}
 						else {
@@ -219,9 +226,19 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			}
 			break;
 		case 6:
-			if (b === this.didyoumeanList || b === this.ok) {
+			//if (b === this.didyoumeanList || b === this.ok) {
+			if (b === 'didyoumeanList' || b === this.ok) {
 				this.setVisible(false);
-				this.jc.jmj.startJuggling(-3, this.didyoumeanList.getSelectedItem());
+				//this.jc.jmj.startJuggling(-3, this.didyoumeanList.getSelectedItem());
+				var target = a.currentTarget;
+				var i = target.index;
+				var key = target.key;
+				//$('#page4_text').val(key);
+				this.jc.dialog_text.setText(key);
+				this.jc.dialog_text.refresh();
+				this.jc.jmj.startJuggling(-3, this.didyoumeanList.getItem(i));
+				$.mobile.changePage('#page2');
+				//$('#page4_dialog').dialog('close');
 				return;
 			}
 			break;
@@ -236,6 +253,10 @@ JmjDialog.prototype.actionPerformed = function(a) {
 	if (b === this.cancel) {
 		this.setVisible(false);
 	}
+};
+
+JmjDialog.prototype.setStatus = function(s) {
+	this.status = s;
 };
 
 JmjDialog.prototype.setLayout = function(l) {

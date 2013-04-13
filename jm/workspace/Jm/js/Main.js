@@ -94,7 +94,6 @@ function changePage(e, d){
 	}
 };
 
-// FOO
 /*
 $(document).delegate('a', 'vclick', function(e){
     e.preventDefault();
@@ -114,7 +113,6 @@ $(document).bind('pageinit', function(e, d) {
 		isInit['page3'] = true;
 		isInit['page4'] = true;
 		
-		// FOO
 		isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())
 		if (isMobile){
 			$.mobile.defaultPageTransition = 'none';

@@ -17,3 +17,11 @@ Enumeration.prototype.nextElement = function() {
 	}
 	return this.array[this.index++];
 };
+
+Enumeration.prototype.hasNext = function() {
+	return this.hasMoreElements();
+};
+
+Enumeration.prototype.next = function() {
+	return this.nextElement();
+};

@@ -28,10 +28,19 @@ MotionList.prototype.create = function() {
 	var v = this.list;
 	var l = v.size();
 	var s;
+	var n = -1;
 	
 	for (var i = 0; i < l; i++){
 		s = v.elementAt(i);
+		if (s == Jmj.NORMAL){
+			n = i;
+		}
 		this.obj.append('<option value="' + i + '">' + s + '</option> ');
 	}
-	$('#' + this.id).selectmenu('refresh', true); 
+	
+	var obj = $('#' + this.id);
+	if (n >= 0){
+		obj.val(n);
+	}
+	obj.selectmenu('refresh', true); 
 };

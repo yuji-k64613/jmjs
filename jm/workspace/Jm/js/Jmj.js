@@ -770,7 +770,10 @@ Jmj.prototype.startJuggling = function(index, s) {
 	if (this.controller.isNewChoice() || index == Jmj.SITESWAP_MODE) {
 		//c if (index == -3) {
 		if (index == Jmj.SITESWAP_MODE) {
-			this.holder.getPattern(s);
+			//this.holder.getPattern(s);
+			if (!this.holder.getPattern(s)){
+				return false;
+			}
 			this.$height = this.controller.GetHeight_();
 			this.dwell = this.controller.getDwell();
 			for ( iCnt = 0; iCnt < Jmj.iPerNo; iCnt++) {
@@ -1466,6 +1469,9 @@ Jmj.prototype.initPage3 = function(e) {
 Jmj.prototype.initPage4 = function(e) {
     this.jmjDialog = new JmjDialog(this.controller);
     this.jmjDialog.popup(JmjDialog.TRY_SITESWAP);
+    $('#page4_error_ok').click(function(e){
+    	$('#page4_error').dialog('close');
+    });
 };
 
 Jmj.prototype.changePage1 = function(e) {
@@ -1491,6 +1497,8 @@ Jmj.prototype.changePage3 = function(e) {
 
 Jmj.prototype.changePage4 = function(e) {
 	this.stopJuggling();
+	
+	this.jmjDialog.setStatus(JmjDialog.TRY_SITESWAP);
 };
 
 // Applet

@@ -23,7 +23,7 @@ List.prototype.select = function(i) {
 };
 
 List.prototype.getSelectedItem = function() {
-	return this.index;
+	return this.list.elementAt(this.index);
 };
 
 List.prototype.getItemCount = function() {

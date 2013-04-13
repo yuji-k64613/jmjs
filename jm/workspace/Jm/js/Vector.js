@@ -1,5 +1,10 @@
-var Vector = function(){
-	this.vec = new Array();
+var Vector = function(vec){
+	if (arguments.length < 1) {
+		this.vec = new Array();
+	}
+	else {
+		this.vec = vec;
+	}
 };
 
 Vector.prototype.addElement = function(elm) {

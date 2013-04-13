@@ -23,3 +23,6 @@ TextField.prototype.getText = function(t) {
 	return this.text;
 };
 
+TextField.prototype.refresh = function() {
+	this.obj.val(this.text);
+};

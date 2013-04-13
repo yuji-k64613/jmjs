@@ -14,6 +14,7 @@ var awt = function() {
 java.awt = awt;
 java.util = util;
 java.util.Hashtable = Hashtable;
+java.util.HashSet = HashSet;
 java.util.Vector = Vector;
 java.util.StringTokenizer = StringTokenizer;
 
@@ -66,6 +67,12 @@ System.out = function(){
 
 System.out.println = function(s){
 	
+};
+
+System.arraycopy = function(src, srcPos, dest, destPos, length) {
+	for (var i = 0; i < length; i++) {
+		dest[destPos + i] = src[srcPos + i];
+	}
 };
 
 var Throwable = function(){
