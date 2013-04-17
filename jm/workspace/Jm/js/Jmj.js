@@ -1505,15 +1505,13 @@ Jmj.prototype.changePage4 = function(e) {
 // Applet
 Jmj.prototype.getParameter = function(s) {
 	if (s == 'file') {
-		return 'pattern.jm';
-		//return 'https://dl.dropbox.com/u/9975638/juggling/jmj/pattern.jm';
+		return $('#param_file').val();
 	}
 	if (s == 'startwith') {
-		return 'Throw Twice';
-		//return '35-Cascade';
+		return $('#param_startwith').val();
 	}
-	if (s == '') {
-		return 'pattern.jm,pattern_ja.jm';
+	if (s == 'patternfiles') {
+		return $('#param_patternfiles').val();
 	}
 	return null;
 };

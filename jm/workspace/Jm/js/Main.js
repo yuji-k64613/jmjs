@@ -147,11 +147,16 @@ function loadTextFile(fileName, callback, e) {
 	Clazz.data = null;
 	
 	httpObj.onreadystatechange = function() {
-		if ((httpObj.readyState == 4) && (httpObj.status == 200)) {
-			var data = httpObj.responseText;
-			Clazz.data = data;
-			
-			callback(e);
+		if (httpObj.readyState == 4){
+			if (httpObj.status == 200) {
+				var data = httpObj.responseText;
+				Clazz.data = data;
+				
+				callback(e);
+			}
+			else {
+				$('#loading1').hide();				
+			}
 		}
 	}
 }
