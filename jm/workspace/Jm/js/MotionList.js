@@ -23,7 +23,7 @@ MotionList.prototype.create = function() {
 	}
 };
 
-MotionList.prototype.createList = function() {	
+MotionList.prototype.createMotionList = function() {	
 	var v = this.list;
 	var l = v.size();
 	var s;

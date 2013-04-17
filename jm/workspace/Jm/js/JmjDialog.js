@@ -2,8 +2,8 @@ var JmjDialog = function(a) {
 	this.setLayout(null);
 	this.jc = a;
 	this.fileList = this.jc.dialog_fileList;
-	this.motionList = this.jc.dialog_motionList;
-	// FOO this.motionList = new MotionList('page4_list', jmj);
+	this.motionSelect = this.jc.dialog_motionList;
+	this.motionList = new MotionList('page4_list', jmj);
 	this.didyoumeanList = this.jc.dialog_didyoumeanList;
 	//this.formationList = Clazz.innerTypeInstance(JmjController.JmjDialog.FormationList, this, null);
 	this.formationList = new FormationList('page4_list', jmj);
@@ -52,10 +52,10 @@ JmjDialog.prototype.popup = function(a) {
 			//this.label2.setBounds(410, 30, 180, 20);
 			this.add(this.label1);
 			this.add(this.label2);
-			this.motionList.create();
-			this.motionList.createList();
-			//this.motionList.setBounds(410, 50, 180, 190);
-			this.add(this.motionList);
+			this.motionSelect.create();
+			this.motionSelect.createMotionList();
+			//this.motionSelect.setBounds(410, 50, 180, 190);
+			this.add(this.motionSelect);
 			this.textField.setText("");
 			//this.textField.setBounds(10, 60, 380, 30);
 			this.add(this.textField);
@@ -187,8 +187,8 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			if (b === 'page4_juggle_button' || b === this.textField) {
 				this.setVisible(false);
 				if (this.textField.getText().length != 0) {
-					if (this.motionList.getSelectedIndex() != -1) {
-						this.jc.jmj.motion = this.motionList.getSelectedItem();
+					if (this.motionSelect.getSelectedIndex() != -1) {
+						this.jc.jmj.motion = this.motionSelect.getSelectedItem();
 					} else {
 						this.jc.jmj.motion = "Normal";
 					}
@@ -219,9 +219,13 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			break;
 		case 3:
 			//if (b === this.motionList || b === this.ok) {
-			if (b === 'page4_motion_button' || b === this.ok) {
-				this.setVisible(false); {
+			if (b === 'motionList' || b === this.ok) {
+				this.setVisible(false); 
+				{
+					var i = target.index;
+					this.motionList.select(i);
 					this.jc.jmj.startJuggling(-2, this.motionList.getSelectedItem());
+					$.mobile.changePage('#page2');
 				}
 				return;
 			}
