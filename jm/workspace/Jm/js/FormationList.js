@@ -1,14 +1,20 @@
-var FormationList = function() {
+var FormationList = function(id, jmj) {
+	if (arguments.length < 1) {
+		return;
+	}
+	List.apply(this, [id]);
+	
+	this.jmj = jmj;
 };
 FormationList.prototype = new ListWithQuicksort();
 
-Float.prototype.create = function() {
-	if (this.b$["JmjController.JmjDialog"].jc.jmj.holder.countFormation() > this.getItemCount()) {
+FormationList.prototype.create = function() {
+	if (this.jmj.holder.countFormation() > this.getItemCount()) {
 		var a;
 		this.removeAll();
-		this.b$["JmjController.JmjDialog"].jc.jmj.holder.rewindFormation();
+		this.jmj.holder.rewindFormation();
 		while (true) {
-			a = this.b$["JmjController.JmjDialog"].jc.jmj.holder.nextFormation();
+			a = this.jmj.holder.nextFormation();
 			if (a.length == 0)
 				break;
 			this.add(a);

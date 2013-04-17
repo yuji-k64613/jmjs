@@ -3,9 +3,10 @@ var JmjDialog = function(a) {
 	this.jc = a;
 	this.fileList = this.jc.dialog_fileList;
 	this.motionList = this.jc.dialog_motionList;
+	// FOO this.motionList = new MotionList('page4_list', jmj);
 	this.didyoumeanList = this.jc.dialog_didyoumeanList;
 	//this.formationList = Clazz.innerTypeInstance(JmjController.JmjDialog.FormationList, this, null);
-	this.formationList = new FormationList();
+	this.formationList = new FormationList('page4_list', jmj);
 	//this.fileList.addActionListener(this);
 	//this.motionList.addActionListener(this);
 	//this.didyoumeanList.addActionListener(this);
@@ -52,6 +53,7 @@ JmjDialog.prototype.popup = function(a) {
 			this.add(this.label1);
 			this.add(this.label2);
 			this.motionList.create();
+			this.motionList.createList();
 			//this.motionList.setBounds(410, 50, 180, 190);
 			this.add(this.motionList);
 			this.textField.setText("");
@@ -66,28 +68,38 @@ JmjDialog.prototype.popup = function(a) {
 		case 3:
 			this.setSize(200, 310);
 			this.label1.setText("Choose the motion:");
-			this.label1.setBounds(5, 30, 190, 20);
+			//this.label1.setBounds(5, 30, 190, 20);
 			this.add(this.label1);
 			this.motionList.create();
-			this.motionList.setBounds(5, 50, 190, 190);
+			//this.motionList.setBounds(5, 50, 190, 190);
 			this.add(this.motionList);
-			this.cancel.setLocation(110, 250);
-			this.ok.setLocation(20, 250);
+			//this.cancel.setLocation(110, 250);
+			//this.ok.setLocation(20, 250);
 			this.validate();
 			this.setVisible(true);
+			this.motionList.setCallback('motionList', this.jc.actionPerformedForDialogList);
+			this.motionList.createList();
+			$('#page4_message').text('Choose the motion:');
+			$.mobile.changePage('#page4_dialog');
+			$('#page4_list').listview('refresh');
 			return;
 		case 4:
 			this.setSize(200, 310);
 			this.add(this.formationList);
 			this.label1.setText("Choose the formation:");
-			this.label1.setBounds(5, 30, 190, 20);
+			//this.label1.setBounds(5, 30, 190, 20);
 			this.add(this.label1);
 			this.formationList.create();
-			this.formationList.setBounds(5, 50, 190, 190);
-			this.cancel.setLocation(110, 250);
-			this.ok.setLocation(20, 250);
+			//this.formationList.setBounds(5, 50, 190, 190);
+			//this.cancel.setLocation(110, 250);
+			//this.ok.setLocation(20, 250);
 			this.validate();
 			this.setVisible(true);
+			this.formationList.setCallback('formationList', this.jc.actionPerformedForDialogList);
+			this.formationList.createList();
+			$('#page4_message').text('Choose the formation:');
+			$.mobile.changePage('#page4_dialog');
+			$('#page4_list').listview('refresh');
 			return;
 		case 5:
 			this.setSize(520, 200);
@@ -129,21 +141,27 @@ JmjDialog.prototype.popup = function(a) {
 			//this.validate();
 			//this.setVisible(true);
 			this.didyoumeanList.createList();
+			$('#page4_message').text('Did you mean:');
 			$.mobile.changePage('#page4_dialog');
 			$('#page4_list').listview('refresh');
 			return;
 		case 7:
 			this.setSize(600, 310);
 			this.label1.setText("Select file to load:");
-			this.label1.setBounds(5, 30, 190, 20);
+			//this.label1.setBounds(5, 30, 190, 20);
 			this.add(this.label1);
 			this.fileList.create();
-			this.fileList.setBounds(10, 50, 580, 180);
+			//this.fileList.setBounds(10, 50, 580, 180);
 			this.add(this.fileList);
-			this.cancel.setLocation(230, 250);
-			this.ok.setLocation(100, 250);
+			//this.cancel.setLocation(230, 250);
+			//this.ok.setLocation(100, 250);
 			this.validate();
 			this.setVisible(true);
+			this.fileList.setCallback('fileList', this.jc.actionPerformedForDialogList);
+			this.fileList.createList();
+			$('#page4_message').text('Select file to load:');
+			$.mobile.changePage('#page4_dialog');
+			$('#page4_list').listview('refresh');
 			return;
 	}
 };
@@ -151,6 +169,7 @@ JmjDialog.prototype.popup = function(a) {
 JmjDialog.prototype.actionPerformed = function(a) {
 	//var b = a.getSource();
 	var b = a.currentTarget.id;
+	var target = a.currentTarget;
 	switch (this.status) {
 		case 1:
 			if (b === this.textField || b === this.ok) {
@@ -165,7 +184,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			break;
 		case 2:
 			//if (b === this.ok || b === this.textField) {
-			if (b === 'page4_ok' || b === this.textField) {
+			if (b === 'page4_juggle_button' || b === this.textField) {
 				this.setVisible(false);
 				if (this.textField.getText().length != 0) {
 					if (this.motionList.getSelectedIndex() != -1) {
@@ -199,7 +218,8 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			}
 			break;
 		case 3:
-			if (b === this.motionList || b === this.ok) {
+			//if (b === this.motionList || b === this.ok) {
+			if (b === 'page4_motion_button' || b === this.ok) {
 				this.setVisible(false); {
 					this.jc.jmj.startJuggling(-2, this.motionList.getSelectedItem());
 				}
@@ -207,8 +227,11 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			}
 			break;
 		case 4:
-			if (b === this.formationList || b === this.ok) {
+			//if (b === this.formationList || b === this.ok) {
+			if (b === 'formationList' || b === this.ok) {
 				this.setVisible(false);
+				var i = target.index;
+				this.formationList.select(i);
 				if (this.formationList.getSelectedIndex() != -1) {
 					this.jc.jmj.formation = this.formationList.getSelectedItem();
 				} else {
@@ -216,6 +239,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 				} {
 					this.jc.jmj.startJuggling(-1, this.jc.jmj.motion);
 				}
+				$.mobile.changePage('#page2');
 				return;
 			}
 			break;
@@ -230,7 +254,6 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			if (b === 'didyoumeanList' || b === this.ok) {
 				this.setVisible(false);
 				//this.jc.jmj.startJuggling(-3, this.didyoumeanList.getSelectedItem());
-				var target = a.currentTarget;
 				var i = target.index;
 				var key = target.key;
 				//$('#page4_text').val(key);
@@ -243,9 +266,18 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			}
 			break;
 		case 7:
-			if (b === this.fileList || b === this.ok) {
+			if (b === 'fileList' || b === this.ok) {
 				this.setVisible(false);
-				this.jc.jmj.openFile(this.fileList.getSelectedItem());
+				var i = target.index;
+				this.fileList.select(i);
+				//this.jc.jmj.openFile(this.fileList.getSelectedItem());
+				var e = {
+					target: {
+						id: ''
+					}
+				};
+				loadTextFile(this.fileList.getSelectedItem(), initJmj, e);
+				$.mobile.changePage('#page1');
 				return;
 			}
 			break;

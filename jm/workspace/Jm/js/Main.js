@@ -1,12 +1,26 @@
 var jmj = null;
 function initJmj(e) {
-	initCanvas();
+	if (jmj == null){
+		initCanvas();
+	}
+	// page1のリストを削除
+	$('#patternList').children().remove();
+	$('#patternList').show();
+	// TODO
+	if (jmj != null){
+		jmj.controller.patternList.data = null;
+	}
 
-	jmj = new Jmj();
-	jmj.init();
+	if (jmj == null){
+		jmj = new Jmj();
+		jmj.init();
+	}
+	else {
+		jmj.openFile(''); // TODO どのファイルを読んでるの？
+	}
 	initPage(e);
 	
-	$('#loading1').remove();
+	$('#loading1').hide();
 }
 
 var canvasScale = 1.0;
@@ -33,19 +47,9 @@ function initCanvas(){
 	w = Math.round(w);
 	h = Math.round(h);
 	var c1 = $('<canvas id="canvas" class="canvas" width="' + w + 'px" height="' + h + 'px">');
-	//var c2 = $('<canvas id="offscrn" class="canvas" width="' + w + 'px" height="' + h + 'px">');
 
 	var m = $('#main2');
 	m.append(c1);
-	//m.append(c2);
-/*
-	var pid = 'main2';
-	for (var i = 0; i < 16; i++){
-		var id = 'offscrn' + i;
-		var c = $('<canvas id="' + id + '" class="canvas" width="' + w + 'px" height="' + h + 'px">');
-		$('#' + pid).append(c);	
-	}
-*/
 }
 
 var isInit = null;
@@ -121,12 +125,36 @@ $(document).bind('pageinit', function(e, d) {
 		
 		startPage = e.target.id;
 		
-		//loadTextFile('http://localhost:8080/pattern.jm', initJmj, e);
 		loadTextFile('./pattern.jm', initJmj, e);
 		return;
 	}
 	initPage(e);
 });
+
+Clazz.data = null;
+function loadTextFile(fileName, callback, e) {
+	$('#loading1').show();
+	$('#patternList').hide();
+
+
+	httpObj = new XMLHttpRequest();
+	httpObj.open('GET', fileName, true);
+//TODO
+//httpObj.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+//httpObj.setRequestHeader("Content-Type","text/plain; charset=UTF-8");
+//httpObj.overrideMimeType("text/plain; charset=UTF-8");
+	httpObj.send(null);
+	Clazz.data = null;
+	
+	httpObj.onreadystatechange = function() {
+		if ((httpObj.readyState == 4) && (httpObj.status == 200)) {
+			var data = httpObj.responseText;
+			Clazz.data = data;
+			
+			callback(e);
+		}
+	}
+}
 
 $(document).bind('pagechange', function(e, d) {
 	changePage(e, d);

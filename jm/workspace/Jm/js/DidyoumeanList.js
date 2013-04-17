@@ -3,7 +3,7 @@ var DidyoumeanList = function(id, jmj) {
 		return;
 	}
 	List.apply(this, [id]);
-
+	
 	this.jmj = jmj;
 };
 DidyoumeanList.prototype = new List();

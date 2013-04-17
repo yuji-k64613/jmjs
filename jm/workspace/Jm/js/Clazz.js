@@ -24,21 +24,6 @@ var arrayInit = function(n, v){
 	}
 };
 
-Clazz.data = null;
-function loadTextFile(fileName, callback, e) {
-	httpObj = new XMLHttpRequest();
-	httpObj.open('GET', fileName, true);
-	httpObj.send(null);
-	httpObj.onreadystatechange = function() {
-		if ((httpObj.readyState == 4) && (httpObj.status == 200)) {
-			var data = httpObj.responseText;
-			Clazz.data = data;
-			
-			callback(e);
-		}
-	}
-}
-
 Clazz.instanceOf = function(e, t){
 	return false;
 };

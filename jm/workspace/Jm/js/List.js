@@ -53,3 +53,38 @@ List.prototype.validate = function() {
 	//	this.obj.listview('refresh');
 	//}
 };
+
+List.prototype.setCallback = function(cid, func) {
+	this.cid = cid;
+	this.func = func;
+};
+
+List.prototype.createList = function() {
+	var controller = this.jmj.controller;
+	var list = this.list;
+	var l = list.size();
+	var obj = this.obj;
+	
+	obj.children().remove();
+	for (var i = 0; i < l; i++){
+		var key = list.elementAt(i);
+		var li = $('<li><a href="#">' + key + '</a></li>');
+		var cid = this.cid;
+		var func = this.func;
+		li.click(function(){
+			var index = i;
+			var k = key;
+			return function(){
+				var e = {
+					currentTarget: {
+						id: cid,
+						index: index,
+						key: k
+					}
+				};
+				func.call(controller, e);
+			}
+		}());
+		obj.append(li);
+	};
+};

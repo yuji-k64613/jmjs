@@ -47,7 +47,7 @@ var JmjController = function(jmj, quitflag) {
 	this.dialog_text = new TextField('page4_text');
 
     this.patternList = null;
-    //this.dialog_fileList = new PatternfileList();
+    this.dialog_fileList = new PatternfileList('page4_list', jmj);
     this.dialog_motionList = new MotionList('page4_select', jmj);
     this.dialog_didyoumeanList = new DidyoumeanList('page4_list', jmj);
 	
@@ -103,13 +103,21 @@ var JmjController = function(jmj, quitflag) {
 	this.juggle_button.setEnabled(false);
 	this.pause_button.setEnabled(false);
 	
-	//JmjController.prototype.actionPerformedForNewSiteswapButton 
 	var self = this;
-	$('#page4_ok').click(function(e) {
+	$('#page4_juggle_button').click(function(e) {
 		self.actionPerformedForNewSiteswapButton(e);
 	}); 
-	$('#page4_ok2').click(function(e) {
+	$('#page4_showerize_button').click(function(e) {
 		self.actionPerformedForShowerize(e);
+	}); 
+	$('#page4_motion_button').click(function(e) {
+		self.actionPerformedForMotion(e);
+	}); 
+	$('#page4_formation_button').click(function(e) {
+		self.actionPerformedForFormation(e);
+	}); 
+	$('#page4_pattern_button').click(function(e) {
+		self.actionPerformedForPattern(e);
 	}); 
 };
 
@@ -140,6 +148,7 @@ JmjController.prototype.actionPerformedForPatternList = function(e) {
 };
 
 JmjController.prototype.actionPerformedForNewSiteswapButton = function(e) {
+	this.jmj.jmjDialog.setStatus(JmjDialog.TRY_SITESWAP);
     this.jmj.jmjDialog.actionPerformed(e);
 };
 
@@ -174,8 +183,25 @@ JmjController.prototype.actionPerformedForShowerize = function(e) {
 		$.mobile.changePage('#page4_error');
 	}
 };
-JmjController.prototype.actionPerformedForDidyoumeanList = function(e) {
+
+JmjController.prototype.actionPerformedForDialogList = function(e) {
     this.jmj.jmjDialog.actionPerformed(e);
+};
+
+JmjController.prototype.actionPerformedForDidyoumeanList = function(e) { // TODO
+    this.jmj.jmjDialog.actionPerformed(e);
+};
+
+JmjController.prototype.actionPerformedForMotion = function(e) {
+	this.jmj.jmjDialog.popup(JmjDialog.CHOOSE_MOTION);
+};
+
+JmjController.prototype.actionPerformedForFormation = function(e) {
+	this.jmj.jmjDialog.popup(JmjDialog.CHOOSE_FORMATION);
+};
+
+JmjController.prototype.actionPerformedForPattern = function(e) {
+	this.jmj.jmjDialog.popup(JmjDialog.SELECT_FILE);
 };
 
 JmjController.prototype.juggle_pressed = function() {

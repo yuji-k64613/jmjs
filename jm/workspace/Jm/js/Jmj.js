@@ -1472,6 +1472,7 @@ Jmj.prototype.initPage4 = function(e) {
     $('#page4_error_ok').click(function(e){
     	$('#page4_error').dialog('close');
     });
+    $('#page4_text').val('');
 };
 
 Jmj.prototype.changePage1 = function(e) {
