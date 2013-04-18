@@ -6,7 +6,7 @@ function initJmj(e) {
 	// page1のリストを削除
 	$('#patternList').children().remove();
 	$('#patternList').show();
-	// TODO
+	// リストの作成開始のフラグを初期化
 	if (jmj != null){
 		jmj.controller.patternList.data = null;
 	}
@@ -16,7 +16,14 @@ function initJmj(e) {
 		jmj.init();
 	}
 	else {
-		jmj.openFile(''); // TODO どのファイルを読んでるの？
+		jmj.openFile('');
+
+		if (startPage != 'page1'){
+			var main = $("#main");
+			main.find("div[data-role=collapsible-set]").collapsibleset({refresh:true}); 
+			main.find("div[data-role=collapsible]").collapsible({refresh:true}); 
+			main.find("ul[data-role=listview]").listview({refresh:true}); 
+		}	
 	}
 	initPage(e);
 	
@@ -139,10 +146,6 @@ function loadTextFile(fileName, callback, e) {
 
 	httpObj = new XMLHttpRequest();
 	httpObj.open('GET', fileName, true);
-//TODO
-//httpObj.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-//httpObj.setRequestHeader("Content-Type","text/plain; charset=UTF-8");
-//httpObj.overrideMimeType("text/plain; charset=UTF-8");
 	httpObj.send(null);
 	Clazz.data = null;
 	

@@ -188,10 +188,6 @@ JmjController.prototype.actionPerformedForDialogList = function(e) {
     this.jmj.jmjDialog.actionPerformed(e);
 };
 
-JmjController.prototype.actionPerformedForDidyoumeanList = function(e) { // TODO
-    this.jmj.jmjDialog.actionPerformed(e);
-};
-
 JmjController.prototype.actionPerformedForMotion = function(e) {
 	this.jmj.jmjDialog.popup(JmjDialog.CHOOSE_MOTION);
 };

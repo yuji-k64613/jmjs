@@ -138,31 +138,3 @@ DidyoumeanList.prototype.pat2string = function(a, b) {
 	}
 	return c;
 };
-
-DidyoumeanList.prototype.createList = function() {
-	var controller = this.jmj.controller;
-	var list = this.list;
-	var l = list.size();
-	var obj = this.obj;
-	
-	obj.children().remove();
-	for (var i = 0; i < l; i++){
-		var key = list.elementAt(i);
-		var li = $('<li><a href="#">' + key + '</a></li>');
-		li.click(function(){
-			var index = i;
-			var k = key;
-			return function(){
-				var e = {
-					currentTarget: {
-						id: 'didyoumeanList',
-						index: index,
-						key: k
-					}
-				};
-				controller.actionPerformedForDidyoumeanList(e);
-			}
-		}());
-		obj.append(li);
-	};
-};

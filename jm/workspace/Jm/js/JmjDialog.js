@@ -31,7 +31,7 @@ var JmjDialog = function(a) {
 JmjDialog.prototype.popup = function(a) {
 	var b;
 	switch (this.status = a) {
-		case 1:
+		case JmjDialog.LOAD_FILE:
 			this.setSize(600, 160);
 			this.label1.setText("Type in URL or filename to load:");
 			this.label1.setBounds(10, 30, 380, 20);
@@ -44,7 +44,7 @@ JmjDialog.prototype.popup = function(a) {
 			this.validate();
 			this.setVisible(true);
 			return;
-		case 2:
+		case JmjDialog.TRY_SITESWAP:
 			this.setSize(600, 260);
 			this.label1.setText("Type in a siteswap, and choose the motion if you like:");
 			this.label2.setText("Arm motion:");
@@ -65,7 +65,7 @@ JmjDialog.prototype.popup = function(a) {
 			this.setVisible(true);
 			//this.textField.requestFocusInWindow();
 			return;
-		case 3:
+		case JmjDialog.CHOOSE_MOTION:
 			this.setSize(200, 310);
 			this.label1.setText("Choose the motion:");
 			//this.label1.setBounds(5, 30, 190, 20);
@@ -83,7 +83,7 @@ JmjDialog.prototype.popup = function(a) {
 			$.mobile.changePage('#page4_dialog');
 			$('#page4_list').listview('refresh');
 			return;
-		case 4:
+		case JmjDialog.CHOOSE_FORMATION:
 			this.setSize(200, 310);
 			this.add(this.formationList);
 			this.label1.setText("Choose the formation:");
@@ -101,7 +101,7 @@ JmjDialog.prototype.popup = function(a) {
 			$.mobile.changePage('#page4_dialog');
 			$('#page4_list').listview('refresh');
 			return;
-		case 5:
+		case JmjDialog.CHOOSE_ABOUT:
 			this.setSize(520, 200);
 			this.label1.setText("JuggleMaster Version 1.60 Copyright (C) 1995-1996 Ken Matsuoka");
 			this.label2.setText("JuggleMaster X Version 0.42 Copyright (C) 1996 MASUDA Kazuyoshi");
@@ -123,7 +123,7 @@ JmjDialog.prototype.popup = function(a) {
 			this.validate();
 			this.setVisible(true);
 			return;
-		case 6:
+		case JmjDialog.CHOOSE_DID_YOU_MEAN:
 			//this.remove(this.textField);
 			//this.remove(this.motionList);
 			//this.remove(this.label2);
@@ -140,12 +140,13 @@ JmjDialog.prototype.popup = function(a) {
 			//this.ok.setLocation(100, 250);
 			//this.validate();
 			//this.setVisible(true);
+			this.didyoumeanList.setCallback('didyoumeanList', this.jc.actionPerformedForDialogList);
 			this.didyoumeanList.createList();
 			$('#page4_message').text('Did you mean:');
 			$.mobile.changePage('#page4_dialog');
 			$('#page4_list').listview('refresh');
 			return;
-		case 7:
+		case JmjDialog.SELECT_FILE:
 			this.setSize(600, 310);
 			this.label1.setText("Select file to load:");
 			//this.label1.setBounds(5, 30, 190, 20);
@@ -171,7 +172,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 	var b = a.currentTarget.id;
 	var target = a.currentTarget;
 	switch (this.status) {
-		case 1:
+		case JmjDialog.LOAD_FILE:
 			if (b === this.textField || b === this.ok) {
 				this.setVisible(false);
 				if (this.textField.getText().length != 0 && !this.textField.getText().equals(String.valueOf(this.jc.jmj.getCodeBase()))) {
@@ -182,7 +183,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 				}
 			}
 			break;
-		case 2:
+		case JmjDialog.TRY_SITESWAP:
 			//if (b === this.ok || b === this.textField) {
 			if (b === 'page4_juggle_button' || b === this.textField) {
 				this.setVisible(false);
@@ -190,7 +191,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 					if (this.motionSelect.getSelectedIndex() != -1) {
 						this.jc.jmj.motion = this.motionSelect.getSelectedItem();
 					} else {
-						this.jc.jmj.motion = "Normal";
+						this.jc.jmj.motion = Jmj.NORMAL;
 					}
 					var c = this.jc.patternList.getSelectedIndex();
 					if (c != -1) {
@@ -199,7 +200,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 					} {
 						//var d = this.textField.getText().$replace(" ", "");
 						var d = this.textField.getText().replace(" ", "");
-						if (this.jc.jmj.startJuggling(-3, d) == false) {
+						if (this.jc.jmj.startJuggling(Jmj.SITESWAP_MODE, d) == false) {
 							if (this.didyoumeanList.create(d)) {
 								this.popup(JmjDialog.CHOOSE_DID_YOU_MEAN);
 							}
@@ -217,20 +218,20 @@ JmjDialog.prototype.actionPerformed = function(a) {
 				return;
 			}
 			break;
-		case 3:
+		case JmjDialog.CHOOSE_MOTION:
 			//if (b === this.motionList || b === this.ok) {
 			if (b === 'motionList' || b === this.ok) {
 				this.setVisible(false); 
 				{
 					var i = target.index;
 					this.motionList.select(i);
-					this.jc.jmj.startJuggling(-2, this.motionList.getSelectedItem());
+					this.jc.jmj.startJuggling(Jmj.MOTION_MODE, this.motionList.getSelectedItem());
 					$.mobile.changePage('#page2');
 				}
 				return;
 			}
 			break;
-		case 4:
+		case JmjDialog.CHOOSE_FORMATION:
 			//if (b === this.formationList || b === this.ok) {
 			if (b === 'formationList' || b === this.ok) {
 				this.setVisible(false);
@@ -239,21 +240,21 @@ JmjDialog.prototype.actionPerformed = function(a) {
 				if (this.formationList.getSelectedIndex() != -1) {
 					this.jc.jmj.formation = this.formationList.getSelectedItem();
 				} else {
-					this.jc.jmj.formation = "1-Person";
+					this.jc.jmj.formation = Jmj.FORMATION_BASIC;
 				} {
-					this.jc.jmj.startJuggling(-1, this.jc.jmj.motion);
+					this.jc.jmj.startJuggling(Jmj.FORMATION_MODE, this.jc.jmj.motion);
 				}
 				$.mobile.changePage('#page2');
 				return;
 			}
 			break;
-		case 5:
+		case JmjDialog.CHOOSE_ABOUT:
 			if (b === this.ok) {
 				this.setVisible(false);
 				return;
 			}
 			break;
-		case 6:
+		case JmjDialog.CHOOSE_DID_YOU_MEAN:
 			//if (b === this.didyoumeanList || b === this.ok) {
 			if (b === 'didyoumeanList' || b === this.ok) {
 				this.setVisible(false);
@@ -263,13 +264,13 @@ JmjDialog.prototype.actionPerformed = function(a) {
 				//$('#page4_text').val(key);
 				this.jc.dialog_text.setText(key);
 				this.jc.dialog_text.refresh();
-				this.jc.jmj.startJuggling(-3, this.didyoumeanList.getItem(i));
+				this.jc.jmj.startJuggling(Jmj.SITESWAP_MODE, this.didyoumeanList.getItem(i));
 				$.mobile.changePage('#page2');
 				//$('#page4_dialog').dialog('close');
 				return;
 			}
 			break;
-		case 7:
+		case JmjDialog.SELECT_FILE:
 			if (b === 'fileList' || b === this.ok) {
 				this.setVisible(false);
 				var i = target.index;
