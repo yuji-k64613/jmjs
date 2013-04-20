@@ -875,8 +875,14 @@ Jmj.prototype.startJuggling = function(index, s) {
 		else if (s != null && s.length == 0 && index >= 0){
 			// Java版には無い
 			// 前回と同じパターンを選択した場合
-			Jmj.iPerNo = Jmj.iPerMax;
 			this.holder.getPattern(index);
+			this.holder.getMotion(this.motion);
+			for ( iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
+				this.holder.getMotion2(this.motion2[iCnt], iCnt);
+			}
+			this.holder.getFormation(this.formation);
+			Jmj.iPerNo = Jmj.iPerMax;
+			
 			this.controller.setPerno(Jmj.iPerNo);
 			this.controller.setLabels();
 			this.controller.setHeight(this.$height);
