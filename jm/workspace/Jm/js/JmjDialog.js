@@ -275,7 +275,6 @@ JmjDialog.prototype.actionPerformed = function(a) {
 				this.setVisible(false);
 				var i = target.index;
 				this.fileList.select(i);
-				//this.jc.jmj.openFile(this.fileList.getSelectedItem());
 				var e = {
 					target: {
 						id: ''

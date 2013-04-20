@@ -136,9 +136,9 @@ var Jmj = function() {
 	this.sbm = new Array();
 }
 
-Jmj.prototype.init = function() {
+Jmj.prototype.init = function(isInit) {
 	var s;
-	s = this.getParameter("embed");
+	s = Jmj.getParameter("embed");
 	if (s != null && s.equalsIgnoreCase("true")) {
 		//( $t$ = Jmj.Y_OFFSET = 0, Jmj.prototype.Y_OFFSET = Jmj.Y_OFFSET, $t$);
 		Jmj.Y_OFFSET = 0;
@@ -175,9 +175,9 @@ Jmj.prototype.init = function() {
 	var icnt;
 	//c for ( icnt = 0; icnt < 10; icnt++) {
 	for ( icnt = 0; icnt < Jmj.PERMAX; icnt++) {
-		this.holder.getMotion2("Normal", icnt);
+		this.holder.getMotion2(Jmj.NORMAL, icnt);
 	}
-	this.controller = new JmjController(this, this.getParameter("noquit"));
+	this.controller = new JmjController(this, Jmj.getParameter("noquit"), isInit);
 	this.controller.setLocation(0, 0);
 	this.controller.setVisible(true);
 	this.controller.enableMenuBar();
@@ -215,9 +215,9 @@ Jmj.prototype.stopJuggling = function() {
 Jmj.prototype.readParameter = function() {
 	var s;
 
-	s = this.getParameter("file");
-	this.startpattern = this.getParameter("startwith");
-	this.patternfiles = this.getParameter("patternfiles");
+	s = Jmj.getParameter("file");
+	this.startpattern = Jmj.getParameter("startwith");
+	this.patternfiles = Jmj.getParameter("patternfiles");
 	if (s != null && s.length != 0) {
 		this.openFile(s);
 	}
@@ -1522,8 +1522,17 @@ Jmj.prototype.changePage4 = function(e) {
 	this.jmjDialog.setStatus(JmjDialog.TRY_SITESWAP);
 };
 
+Jmj.prototype.reload = function() {
+	this.jmjDialog.motionSelect.setReload(true);
+	this.jmjDialog.motionSelect.create();
+	this.jmjDialog.motionSelect.createMotionList();
+	this.jmjDialog.motionList.setReload(true);
+	this.jmjDialog.formationList.setReload(true);
+};
+
 // Applet
-Jmj.prototype.getParameter = function(s) {
+//Jmj.prototype.getParameter = function(s) {
+Jmj.getParameter = function(s) {
 	if (s == 'file') {
 		return $('#param_file').val();
 	}

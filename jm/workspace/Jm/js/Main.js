@@ -13,10 +13,12 @@ function initJmj(e) {
 
 	if (jmj == null){
 		jmj = new Jmj();
-		jmj.init();
+		jmj.init(true);
 	}
 	else {
-		jmj.openFile('');
+		//jmj.openFile('');
+		jmj.init(false);
+		jmj.reload();
 
 		if (startPage != 'page1'){
 			var main = $("#main");
@@ -132,7 +134,7 @@ $(document).bind('pageinit', function(e, d) {
 		
 		startPage = e.target.id;
 		
-		loadTextFile('./pattern.jm', initJmj, e);
+		loadTextFile(Jmj.getParameter('file'), initJmj, e);
 		return;
 	}
 	initPage(e);
@@ -142,7 +144,6 @@ Clazz.data = null;
 function loadTextFile(fileName, callback, e) {
 	$('#loading1').show();
 	$('#patternList').hide();
-
 
 	httpObj = new XMLHttpRequest();
 	httpObj.open('GET', fileName, true);

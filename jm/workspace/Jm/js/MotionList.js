@@ -5,11 +5,12 @@ var MotionList = function(id, jmj) {
 	ListWithQuicksort.apply(this, [id]);
 
 	this.jmj = jmj;
+	this.reload = true;
 };
 MotionList.prototype = new ListWithQuicksort();
 
 MotionList.prototype.create = function() {
-	if (this.jmj.holder.countMotions() > this.getItemCount()) {
+	if (this.reload || this.jmj.holder.countMotions() > this.getItemCount()) {
 		var a;
 		this.removeAll();
 		this.jmj.holder.rewindMotion();
@@ -20,7 +21,13 @@ MotionList.prototype.create = function() {
 			this.add(a);
 		}
 		this.quickSort(0, this.getItemCount() - 1);
+		
+		this.reload = false;
 	}
+};
+
+MotionList.prototype.setReload = function(b) {
+	this.reload = b;
 };
 
 MotionList.prototype.createMotionList = function() {	
@@ -29,6 +36,7 @@ MotionList.prototype.createMotionList = function() {
 	var s;
 	var n = -1;
 	
+	this.obj.children().remove();
 	for (var i = 0; i < l; i++){
 		s = v.elementAt(i);
 		if (s == Jmj.NORMAL){

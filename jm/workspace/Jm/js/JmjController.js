@@ -1,4 +1,4 @@
-var JmjController = function(jmj, quitflag) {
+var JmjController = function(jmj, quitflag, isInit) {
 	this.jmj = null;
 	this.jd = null;
 	this.new_siteswap_button = null;
@@ -103,22 +103,24 @@ var JmjController = function(jmj, quitflag) {
 	this.juggle_button.setEnabled(false);
 	this.pause_button.setEnabled(false);
 	
-	var self = this;
-	$('#page4_juggle_button').click(function(e) {
-		self.actionPerformedForNewSiteswapButton(e);
-	}); 
-	$('#page4_showerize_button').click(function(e) {
-		self.actionPerformedForShowerize(e);
-	}); 
-	$('#page4_motion_button').click(function(e) {
-		self.actionPerformedForMotion(e);
-	}); 
-	$('#page4_formation_button').click(function(e) {
-		self.actionPerformedForFormation(e);
-	}); 
-	$('#page4_pattern_button').click(function(e) {
-		self.actionPerformedForPattern(e);
-	}); 
+	if (isInit){
+		var self = this;
+		$('#page4_juggle_button').click(function(e) {
+			self.actionPerformedForNewSiteswapButton(e);
+		}); 
+		$('#page4_showerize_button').click(function(e) {
+			self.actionPerformedForShowerize(e);
+		}); 
+		$('#page4_motion_button').click(function(e) {
+			self.actionPerformedForMotion(e);
+		}); 
+		$('#page4_formation_button').click(function(e) {
+			self.actionPerformedForFormation(e);
+		}); 
+		$('#page4_pattern_button').click(function(e) {
+			self.actionPerformedForPattern(e);
+		}); 
+	}
 };
 
 JmjController.vanilla_siteswap_check = function(str) {

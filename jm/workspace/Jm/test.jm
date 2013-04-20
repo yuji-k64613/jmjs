@@ -1,0 +1,80 @@
+;==============================================================================
+;       JuggleMaster  Version 1.60  Copyright (c) 1995-1996 Ken Matsuoka
+;       JuggleMaster2 Version 2.03  Copyright (c) 2005-     Takumi Okada
+;==============================================================================
+
+;The first numbers on the line are juggling patterns, and space or tab, title.
+;The length of pattern must be 76 or less, and title 40 or less.
+;JuggleMaster can read up to 9999 patterns.
+;Style names are limited to 300.
+;Style data are limited to 3000 lines.
+;
+;The first character on the line means...
+;  ';' Comment.
+;  '#' Set the parameter.
+;  '/' Separator(Green color).
+;  '%' Name of the style (30 characters or less) with style data,
+;      or call the registered style.
+;  '!' Formation Data(person's position)  with style data,
+;      or call the registered formation.
+;      If you don't define Formation Data in trick-pattern, JM2 set immediately before pattern.
+;  '$' Set style on person,
+;      set registered style.
+;
+;This style is already defined.
+;%Normal
+;{ 13,  0}{  4,  0}
+;
+;!1-Person
+;{ 0,0}
+;====  Parameters  ============================================================
+;
+
+#GA=9.8		;Gravity (0<f<=98) [meter/second^2]
+#DR=0.50	;Dwell ratio (0.10<=f<=0.90)
+#HR=0.20	;Height (0.01<=f<=1.00) [meter]
+#SP=1.0		;Speed ratio (0.1<=f<=2.0)
+#BC=000		;Background color  Red Green Blue (0<=R,G,B<=F)
+#BP=1		;Beep ON (n=0,1)
+#HD=1		;Hand ON (n=0,1)
+#PD=1		;Pattern ON (n=0,1)
+#MR=0		;Switch right and left (n=0,1)
+;==============================================================================
+
+!2-Person RL
+{30, 0}
+{ 0, 0}
+
+!2-Person LR
+{ 0, 0}
+{30, 0}
+
+!2-Person UpDown
+{ 0,30}
+{ 0, 0}
+
+
+%Reverse
+{  4,  0}{ 13,  0}
+
+%Shower
+{  5,  0}{ 10,  0}
+{ 10,  0}{  5,  0}
+
+/[ 3-Cascade Step By Step ]
+
+#DR=0.5
+#HR=0.2
+%Normal
+!1-Person
+300	1 Ball out of a 3-Cascade
+33022	Throw Twice
+330	2 Balls out of a 3-Cascade
+[32]3322	Throw 3 Times
+3	3-Cascade
+
+#DR=0.75
+#HR=0.2
+3	Slower 3-Cascade
+
+/----------------- end ------------------
