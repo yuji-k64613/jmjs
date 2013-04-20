@@ -31,7 +31,7 @@ Checkbox.prototype.refresh = function(isForce) {
 	if (arguments.length >= 1 && isForce) {
 		b = true;
 		this.obj = $('#' + this.id);
-		this.obj.attr("checked", s)
+		this.obj.attr("checked", this.state)
 	}
 	if (b || (!this.isRefreshed && this.obj.is(':visible'))) {
 		this.obj.checkboxradio('refresh');

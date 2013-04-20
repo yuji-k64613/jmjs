@@ -1514,6 +1514,10 @@ Jmj.prototype.changePage3 = function(e) {
 	this.controller.height_gauge.refresh(true);
 	this.controller.dwell_gauge.refresh(true);
 	this.controller.perno_gauge.refresh(true);
+	
+	this.controller.mirror_box.refresh(true);
+	this.controller.ss_box.refresh(true);
+	this.controller.body_box.refresh(true);
 };
 
 Jmj.prototype.changePage4 = function(e) {
