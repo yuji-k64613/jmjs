@@ -776,7 +776,14 @@ Jmj.prototype.startJuggling = function(index, s) {
 			}
 			this.$height = this.controller.GetHeight_();
 			this.dwell = this.controller.getDwell();
-			for ( iCnt = 0; iCnt < Jmj.iPerNo; iCnt++) {
+
+			// JuggleMaster Java Ver2.05では、
+			// JmjDialog.actionPerformed()が2回呼ばれるため、偶然動いている(たぶん)
+			// 2回目のactionPerformedは、
+			// status = JmjDialog.CHOOSE_MOTION
+			// である(前回のaddActionListenerが残っているから2回呼ばれる？)。
+			//for ( iCnt = 0; iCnt < Jmj.iPerNo; iCnt++) {
+			for ( iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
 				this.motion2[iCnt] = this.motion;
 			}
 		} else {
@@ -845,9 +852,22 @@ Jmj.prototype.startJuggling = function(index, s) {
 		//c } else if (index == -1 && s != null) {
 		} else if (index == Jmj.FORMATION_MODE && s != null) {
 			this.motion = s;
+			
+			//
+			// JuggleMaster Java Ver2.05の不具合？
+			//
+			//this.holder.getMotion(s);
+			//this.holder.getFormation(this.formation);
+			////( $t$ = Jmj.iPerNo = Jmj.iPerMax, Jmj.prototype.iPerNo = Jmj.iPerNo, $t$);
+			this.holder.getFormation (this.formation);
+			for (iCnt = 0; iCnt < Jmj.iPerMax; iCnt++) {
+				this.motion2[iCnt] = this.motion;
+			}
 			this.holder.getMotion(s);
-			this.holder.getFormation(this.formation);
-			//( $t$ = Jmj.iPerNo = Jmj.iPerMax, Jmj.prototype.iPerNo = Jmj.iPerNo, $t$);
+			for (iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
+				this.holder.getMotion2 (this.motion2[iCnt], iCnt);
+			}
+						
 			Jmj.iPerNo = Jmj.iPerMax;
 			this.controller.setPerno(Jmj.iPerNo);
 			this.controller.setLabels();
