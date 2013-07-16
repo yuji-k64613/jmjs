@@ -30,6 +30,7 @@ function initJmj(e) {
 	initPage(e);
 	
 	$('#loading1').hide();
+	$('#loading2').hide();
 }
 
 var canvasScale = 1.0;
@@ -107,17 +108,10 @@ function changePage(e, d){
 	}
 };
 
-/*
-$(document).delegate('a', 'vclick', function(e){
-    e.preventDefault();
-    var link = $(this);
-    $.mobile.changePage(link.attr('href'), {
-        transition: link.jqmData('transition')
-    });
-});
-*/
-
 var isMobile = false;
+var isAndroid = false;
+var isIOS = false;
+var isIE = false;
 $(document).bind('pageinit', function(e, d) {
 	if (isInit == null){
 		isInit = new Object();
@@ -126,7 +120,11 @@ $(document).bind('pageinit', function(e, d) {
 		isInit['page3'] = true;
 		isInit['page4'] = true;
 		
-		isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())
+		var userAgent = navigator.userAgent.toLowerCase();
+		isAndroid = /android/i.test(userAgent);
+		isIOS = /iphone|ipad|ipod/i.test(userAgent);
+		isIE = /MSIE/i.test(userAgent);
+		isMobile = isAndroid || isIOS;
 		if (isMobile){
 			$.mobile.defaultPageTransition = 'none';
 			$.mobile.buttonMarkup.hoverDelay = 10;
@@ -134,6 +132,8 @@ $(document).bind('pageinit', function(e, d) {
 		
 		startPage = e.target.id;
 		
+		$('#loading2').hide();				
+
 		loadTextFile(Jmj.getParameter('file'), initJmj, e);
 		return;
 	}
@@ -168,3 +168,10 @@ function loadTextFile(fileName, callback, e) {
 $(document).bind('pagechange', function(e, d) {
 	changePage(e, d);
 });
+
+$(document).bind('pagebeforechange', function(e, d) {
+	if (jmj != null){
+		jmj.pagebeforechange(e, d);
+	}
+});
+

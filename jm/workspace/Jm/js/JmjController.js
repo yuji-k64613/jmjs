@@ -41,6 +41,7 @@ var JmjController = function(jmj, quitflag, isInit) {
 	this.mirror_box = null;
 	this.ss_box = null;
 	this.body_box = null;
+	this.sound_box = null;
 	this.prevIndex = 0;
 
 	// property
@@ -91,6 +92,7 @@ var JmjController = function(jmj, quitflag, isInit) {
     this.mirror_box = new Checkbox('mirror_box', 'mirror_box_label', "Mirror image");
     this.ss_box = new Checkbox('ss_box', 'ss_box_label', "Show siteswap");
     this.body_box = new Checkbox('body_box', 'body_box_label', "Show juggler");
+    this.sound_box = new Checkbox('sound_box', 'sound_box_label', "Sound");
 
     this.new_siteswap_button = new Button();
     this.juggle_button = new Button();
@@ -285,6 +287,10 @@ JmjController.prototype.ifMirror = function() {
 	return this.mirror_box.getState();
 };
 
+JmjController.prototype.ifSound = function() {
+	return this.sound_box.getState();
+};
+
 JmjController.prototype.setIfShowBody = function(f) {
 	this.body_box.setState(f);
 };
@@ -295,6 +301,10 @@ JmjController.prototype.setIfShowSiteSwap = function(f) {
 
 JmjController.prototype.setIfMirror = function(f) {
 	this.mirror_box.setState(f);
+};
+
+JmjController.prototype.setIfSound = function(f) {
+	this.sound_box.setState(f);
 };
 
 JmjController.prototype.isNewChoice = function() {

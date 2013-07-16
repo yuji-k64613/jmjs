@@ -1,6 +1,6 @@
 var Jmj = function() {
 	// Filed
-	//this.strVer = "2.13__";
+	//this.strVer = "2.20__";
 	this.TEST_MODE = false;
 	//this.redrawrate = 100.0;
 	this.redrawrate = 25.0;
@@ -52,6 +52,7 @@ var Jmj = function() {
 	this.time_count = 0;
 	this.time_period = 0;
 	this.isSync = false;
+	this.bSound = false;	
 	this.hand_on = true;
 	this.show_ss = true;
 	this.intsyn = 0;
@@ -73,6 +74,7 @@ var Jmj = function() {
 	this.kw0 = 0;
 	this.singless = null;
 	this.vsync_Count1 = 0;
+	this.audioClip = null;	
 	this.color = null;
 	this.gg1 = null;
 	this.gg2 = null;
@@ -177,10 +179,12 @@ Jmj.prototype.init = function(isInit) {
 	for ( icnt = 0; icnt < Jmj.PERMAX; icnt++) {
 		this.holder.getMotion2(Jmj.NORMAL, icnt);
 	}
-	this.controller = new JmjController(this, Jmj.getParameter("noquit"), isInit);
-	this.controller.setLocation(0, 0);
-	this.controller.setVisible(true);
-	this.controller.enableMenuBar();
+	if (isInit){
+		this.controller = new JmjController(this, Jmj.getParameter("noquit"), isInit);
+		this.controller.setLocation(0, 0);
+		this.controller.setVisible(true);
+		this.controller.enableMenuBar();
+	}
 	//c for (var i = 0; i < 35; i++) {
 	for (var i = 0; i < Jmj.BMAX; i++) {
 		this.b[i] = new Ball();
@@ -196,7 +200,7 @@ Jmj.prototype.init = function(isInit) {
 		this.lhand[i] = new Ball();
 	}
 	this.SetXYDummyData();
-	this.readParameter();
+	this.readParameter(isInit);
 	if (this.startindex == -1) {
 		this.startindex = this.fallback_startindex;
 		//this.startJuggling(this.startindex, null);
@@ -212,7 +216,7 @@ Jmj.prototype.stopJuggling = function() {
     this.status = Jmj.IDLE;
 };
 
-Jmj.prototype.readParameter = function() {
+Jmj.prototype.readParameter = function(isInit) {
 	var s;
 
 	s = Jmj.getParameter("file");
@@ -221,7 +225,12 @@ Jmj.prototype.readParameter = function() {
 	if (s != null && s.length != 0) {
 		this.openFile(s);
 	}
-	if (this.startindex >= 0) { {
+	if (!isInit){
+		// 初回だけ実行させる(初期化のため。手抜き)
+		return;
+	}
+	if (this.startindex >= 0) {
+		{
 			this.startJuggling(this.startindex);
 		}
 		return;
@@ -342,6 +351,7 @@ Jmj.prototype.openFile = function(s) {
 	this.controller.setIfShowBody(this.hand_on);
 	this.controller.setIfShowSiteSwap(this.show_ss);
 	this.controller.setIfMirror(this.mirror);
+	this.controller.setIfSound(this.bSound);
 	this.controller.setPerno(Jmj.iPerNo);
 	this.controller.patternList.select(this.startindex);
 	//System.gc();
@@ -764,6 +774,7 @@ Jmj.prototype.startJuggling = function(index, s) {
 	this.mirror = this.controller.ifMirror();
 	this.show_ss = this.controller.ifShowSiteSwap();
 	this.hand_on = this.controller.ifShowBody();
+	this.bSound = this.controller.ifSound();
 	//( $t$ = Jmj.iPerNo = this.controller.getPerNo(), Jmj.prototype.iPerNo = Jmj.iPerNo, $t$);
 	Jmj.iPerNo = this.controller.getPerNo();
 	//c if (this.controller.isNewChoice() || index == -3) {
@@ -882,6 +893,23 @@ Jmj.prototype.startJuggling = function(index, s) {
 			}
 			this.holder.getFormation(this.formation);
 			Jmj.iPerNo = Jmj.iPerMax;
+
+			// Ver1.1.0不具合			
+			// (1)Newタブを選択
+			// (2)「1」を入力して、Juggle
+			// (3)Patternsタブを選択
+			// (4)「Throw Twice」を選択
+			// 表示されるサイトスワップが「13022」となっている。先頭の「1」がおかしい」。
+			if (this.isSync) {
+				this.intsyn = 1;
+			} else {
+				this.intsyn = 0;
+			}
+			this.siteswap = "";
+			for ( i = 0; i < this.pattw; i += this.intsyn + 1) {
+				this.singless[i] = this.getSingless(i);
+				this.siteswap = this.siteswap + this.singless[i];
+			}
 			
 			this.controller.setPerno(Jmj.iPerNo);
 			this.controller.setLabels();
@@ -907,12 +935,111 @@ Jmj.prototype.startJuggling = function(index, s) {
 	this.initGraphics();
 	this.time_count = 0;
 	this.time_period = 0;
-	//this.kicker = new Thread(this);
+	
+	if (this.bSound){
+		return this.readySound();		
+	}
+	else {
+		return this.startThread();
+	}
+};
+
+Jmj.prototype.readySound = function() {
+	if (this.audioClip == null){
+		this.audioClip = new AudioClip("./sound/cevio12sec.wav");
+		//this.audioClip = new AudioClip("./sound/cevio12sec.mp3");
+		//this.audioClip = new AudioClip("./sound/cevio12sec.ogg");
+		var audio = this.audioClip.getAudio();
+
+		if (isAndroid || isIE){
+			this.startSound(true);			
+		}
+		else {
+			$('#loading2').show();
+
+			var self = this;
+			var handler = function() {
+				audio.removeEventListener('canplaythrough', handler, false);
+				self.startSound(true);
+			};
+			audio.addEventListener('canplaythrough', handler, false);
+			if (isIOS){
+				audio.load();
+			}
+		}
+	}
+	else {
+		this.startSound(false);		
+	}	
+	this.isAudioEnd = false;	
+	return true;
+};
+
+Jmj.prototype.startSound = function(isInit) {
+	if (isInit){		
+		this.isCanplaythrough = false;
+		var self = this;	
+		var audio = this.audioClip.getAudio();
+
+		var handler = function() {
+			if (!self.isAudioInit){
+				try {
+					audio.currentTime = audio.currentTime;
+					self.isAudioInit = true;
+				}
+				catch (e){
+					return;
+				}
+			}
+			if (self.isAudioPlay){
+			    if (audio.currentTime >= self.startPlayTime / 3 + self.playTimeDx) {
+			        audio.pause();
+			        self.isAudioPlay = false;
+			    }
+			}
+		};
+		audio.addEventListener('timeupdate', handler, false);
+
+		if (isAndroid || isIE){
+			this.isCanplaythrough = true;
+		}
+		else {
+			var h1 = function() {
+				$('#loading2').hide();
+				self.isCanplaythrough = true;
+			};
+			audio.addEventListener('canplaythrough', h1, false);
+			var h2 = function() {
+				$('#loading2').show();
+				self.isCanplaythrough = false;
+			};
+			audio.addEventListener('canplay', h2, false);
+
+			$("#page2_ul").click(function(){
+				if (self.isAudioPlay){
+					audio.pause();	
+					self.isAudioPlay = false;
+				}
+				self.isAudioEnd = true;
+			});
+		}
+		audio.load();
+		this.isAudioInit = false;
+		if (isIE){
+			this.isAudioInit = true;
+		}
+	}	
+	this.isAudioPlay = false;
+	this.playTimeDx = 1 / 6.0 * 0.9;
+	this.startPlayTime = 0;
+	
+	this.startThread();
+};
+
+Jmj.prototype.startThread = function() {
 	this.kicker = new Thread(this, Jmj.prototype.run, 1000 / this.redrawrate);
 	this.kicker.start();
-	//self = this;
 	self = null;
-	//c this.status = 2;
 	this.status = Jmj.JUGGLING;
 
 	return true;
@@ -931,6 +1058,29 @@ Jmj.prototype.run = function() {
 Jmj.prototype.do_juggle = function() {
 	var i;
 	
+	if (this.bSound){
+		if (!this.isCanplaythrough){
+			return;
+		}
+		var audio = this.audioClip.getAudio();
+	    if (!this.isAudioInit){
+			try {
+				audio.currentTime = audio.currentTime;
+				this.isAudioInit = true;
+			}
+			catch (e){
+				return;
+			}                	
+	    }
+	    if (this.isAudioInit){
+			if (this.isAudioPlay){
+			    if (audio.currentTime >= this.startPlayTime / 3 + this.playTimeDx) {
+			        audio.pause();
+			        this.isAudioPlay = false;
+			    }
+			}
+		}
+	}
 	//c if (this.status == 1 || this.status == 0) {
 	if (this.status == Jmj.PAUSE || this.status == Jmj.IDLE) {
 		this.vsync_Count1 = 0;
@@ -957,9 +1107,8 @@ Jmj.prototype.do_juggle = function() {
 	//	}
 	//}
 	this.eraseBalls ();
-	if (this.show_ss) {
-		this.drawSiteswapImage(iCnt > 0);
-	}
+	this.drawSiteswapImage(this.show_ss, iCnt > 0);
+	this.playSiteswap(this.bSound, iCnt > 0);
 	for (var jPerNo = 0; jPerNo < Jmj.iPerNo; jPerNo++) {
 		this.ap[jPerNo].rx[0] = this.rhand[jPerNo].gx + 11 + this.arm_x;
 		this.ap[jPerNo].ry[0] = this.rhand[jPerNo].gy + 11 + this.arm_y;
@@ -1050,6 +1199,16 @@ Jmj.prototype.disposeGraphics = function() {
 	}
 };
 
+Jmj.prototype.toIndex = function(c) {
+    if (c >= '0' && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+    } else if (c >= 'a' && c <= 'z') {
+        return c.charCodeAt(0) - 'a'.charCodeAt(0) + 10;
+    } else {
+        return 0;
+    }
+};
+
 Jmj.prototype.drawSiteswap = function(x, str, i, is_red) {
 	if (this.image_gc == null) return ;
 
@@ -1057,17 +1216,20 @@ Jmj.prototype.drawSiteswap = function(x, str, i, is_red) {
 	var g = c.getGraphics();
 	if (is_red) {
 		g.setColor (java.awt.Color.red);
+        // 音声出力
+        // 移動する
 	} else {
 		g.setColor (java.awt.Color.black);
 	}
 	g.drawString (str, x * 8, 20);
 };
 
-Jmj.prototype.drawSiteswapImage = function(isUpdate) {
-	var c = this.sbm[this.c0];
-	var g = c.getGraphics();
-	this.image_gc.drawImage(c, 0, 0);
-
+Jmj.prototype.drawSiteswapImage = function(isDraw, isUpdate) {
+	if (isDraw){
+		var c = this.sbm[this.c0];
+		var g = c.getGraphics();
+		this.image_gc.drawImage(c, 0, 0);
+	}
 	if (isUpdate){
 		this.tx += this.singless[this.c0].length;
 		this.c0 += 1 + this.intsyn;
@@ -1076,6 +1238,42 @@ Jmj.prototype.drawSiteswapImage = function(isUpdate) {
 			this.tx = 0;
 		}
 	}
+};
+
+Jmj.prototype.playSiteswap = function(isPlay, isUpdate) {
+	if (this.isAudioEnd){
+		return;
+	}
+	if (isPlay && isUpdate){
+        // 音声出力
+        if (this.bSound) {
+        	var str = this.singless[this.c0];
+            if (str.length == 1) {
+            	var n = this.toIndex(str.charAt(0));
+             	this.playAudio(n, true);
+            } else {
+                for (var i=0; i<str.length; i++) {
+                    var c = str.charAt(i);
+                    if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z' && c != 'x')) {
+	                    var n = this.toIndex(c);
+                        this.playAudio(n, i >= str.length - 1);
+                    }
+                }
+            }
+        }
+	}
+};
+
+Jmj.prototype.playAudio = function(n, isLast) {
+	var audio = this.audioClip.getAudio();
+	if (this.isAudioPlay && isLast){
+		audio.pause();
+        this.isAudioPlay = false;
+	}
+	audio.currentTime = n / 3;	
+	audio.play();
+	this.isAudioPlay = true;
+	this.startPlayTime = n;
 };
 
 Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
@@ -1524,12 +1722,26 @@ Jmj.prototype.changePage3 = function(e) {
 	this.controller.mirror_box.refresh(true);
 	this.controller.ss_box.refresh(true);
 	this.controller.body_box.refresh(true);
+	this.controller.sound_box.refresh(true);
 };
 
 Jmj.prototype.changePage4 = function(e) {
 	this.stopJuggling();
 	
 	this.jmjDialog.setStatus(JmjDialog.TRY_SITESWAP);
+};
+
+Jmj.prototype.pagebeforechange = function(e, d) {
+    if (this.audioClip != null && this.bSound){
+    	if (!/#page2/i.test(d.absUrl)){
+			if (this.isAudioPlay){
+				var audio = this.audioClip.getAudio();
+				audio.pause();	
+				this.isAudioPlay = false;
+			}
+			this.isAudioEnd = true;
+		}
+	}    
 };
 
 Jmj.prototype.reload = function() {
