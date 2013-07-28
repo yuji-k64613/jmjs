@@ -176,7 +176,7 @@ JmjDialog.prototype.actionPerformed = function(a) {
 			if (b === this.textField || b === this.ok) {
 				this.setVisible(false);
 				if (this.textField.getText().length != 0 && !this.textField.getText().equals(String.valueOf(this.jc.jmj.getCodeBase()))) {
-					this.jc.jmj.openFile(this.textField.getText());
+					this.jc.jmj.openFile(this.textField.getText(), true);
 					return;
 				} else {
 					return;

@@ -11,6 +11,9 @@ function initJmj(e) {
 		jmj.controller.patternList.data = null;
 	}
 
+	$('#page2_content').show();
+	$('#page3_content').show();
+	$('#page4_content').show();
 	if (jmj == null){
 		jmj = new Jmj();
 		jmj.init(true);
@@ -58,7 +61,7 @@ function initCanvas(){
 	h = Math.round(h);
 	var c1 = $('<canvas id="canvas" class="canvas" width="' + w + 'px" height="' + h + 'px">');
 
-	var m = $('#main2');
+	var m = $('#page2_content');
 	m.append(c1);
 }
 
@@ -132,7 +135,7 @@ $(document).bind('pageinit', function(e, d) {
 		
 		startPage = e.target.id;
 		
-		$('#loading2').hide();				
+		$('#loading2').hide();
 
 		loadTextFile(Jmj.getParameter('file'), initJmj, e);
 		return;
@@ -144,6 +147,10 @@ Clazz.data = null;
 function loadTextFile(fileName, callback, e) {
 	$('#loading1').show();
 	$('#patternList').hide();
+
+	$('#page2_content').hide();
+	$('#page3_content').hide();
+	$('#page4_content').hide();
 
 	httpObj = new XMLHttpRequest();
 	httpObj.open('GET', fileName, true);

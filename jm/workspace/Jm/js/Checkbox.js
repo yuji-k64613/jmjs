@@ -10,19 +10,23 @@ var Checkbox = function(id, id_label, t){
 		var target = t;
 		return function(e){
 			var self = target;
-			var checked = self.isChecked(self.obj.attr("checked"));
+			// jQuery Mobile 1.3.1
+			//var checked = self.isChecked(self.obj.attr("checked"));
+			var checked = self.obj.is(':checked');
 			self.state = checked;
 		}
 	}(this));
 
-	this.state = false;	
+	this.state = false;
 	this.isRefreshed = false;
 };
 Checkbox.prototype = new Component();
 
 Checkbox.prototype.setState = function(s) {
 	this.state = s;
-	this.obj.attr("checked", s)
+	// Ver1.2.0
+	//this.obj.attr("checked", s);
+	this.obj.prop("checked", s);
 	this.refresh();
 };
 
@@ -31,7 +35,9 @@ Checkbox.prototype.refresh = function(isForce) {
 	if (arguments.length >= 1 && isForce) {
 		b = true;
 		this.obj = $('#' + this.id);
-		this.obj.attr("checked", this.state)
+		// Ver1.2.0
+		//this.obj.attr("checked", this.state);
+		this.obj.prop("checked", this.state);
 	}
 	if (b || (!this.isRefreshed && this.obj.is(':visible'))) {
 		this.obj.checkboxradio('refresh');

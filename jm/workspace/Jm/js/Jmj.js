@@ -223,7 +223,7 @@ Jmj.prototype.readParameter = function(isInit) {
 	this.startpattern = Jmj.getParameter("startwith");
 	this.patternfiles = Jmj.getParameter("patternfiles");
 	if (s != null && s.length != 0) {
-		this.openFile(s);
+		this.openFile(s, isInit);
 	}
 	if (!isInit){
 		// 初回だけ実行させる(初期化のため。手抜き)
@@ -244,7 +244,7 @@ Jmj.prototype.readParameter = function(isInit) {
 	}
 };
 
-Jmj.prototype.openFile = function(s) {
+Jmj.prototype.openFile = function(s, isInit) {
 	var fp = null;
 	this.controller.disableSwitches();
 	this.stopJuggling();
@@ -347,6 +347,10 @@ Jmj.prototype.openFile = function(s) {
 	this.controller.enableSwitches();
 	this.controller.putMessage("", "");
 	this.controller.enableMenuBar();
+	// Ver1.2.1
+	if (!isInit){
+		this.resetCheckBoxValue();		
+	}
 	this.controller.setSpeed(this.speed);
 	this.controller.setIfShowBody(this.hand_on);
 	this.controller.setIfShowSiteSwap(this.show_ss);
@@ -1337,7 +1341,7 @@ Jmj.prototype.fillBox = function(x1_b, y1, x2_b, y2) {
 };
 
 Jmj.prototype.initSiteswapGraphics = function() {
-	var pid = 'main2';
+	var pid = 'page4_content';
 	var id;
 	var i;
 	var obj;
@@ -1364,7 +1368,7 @@ Jmj.prototype.initBallGraphics = function() {
 	var g;
 	
 	//begin
-	var pid = 'main2';
+	var pid = 'page2_content';
 	var pid;
 	if (this.bm[0] == null) {
 		if (this.imf != null) {
@@ -1643,6 +1647,14 @@ Jmj.prototype.getColor = function(i) {
 	return c[(l - 1) - i % (l - n)];
 };
 
+Jmj.prototype.resetCheckBoxValue = function() {
+	// Ver1.2.1
+	this.mirror = this.controller.mirror_box.obj.is(':checked');
+	this.show_ss = this.controller.ss_box.obj.is(':checked');
+	this.hand_on = this.controller.body_box.obj.is(':checked');
+	this.bSound = this.controller.sound_box.obj.is(':checked');
+};
+
 Jmj.prototype.initPage = function(e) {
 
 };
@@ -1704,9 +1716,15 @@ Jmj.prototype.changePage1 = function(e) {
 };
 
 Jmj.prototype.changePage2 = function(e) {
-	if (this.kicker == null) {
-		this.controller.juggle_pressed();
-	}
+	// Ver1.2.0不具合
+	// (1)page3から開く
+	// (2)チェックを変更
+	// (3)Juggle
+	//    pagebeforechangeにstopjuggling()を追加
+	//if (this.kicker == null) {
+	//	this.controller.juggle_pressed();
+	//}
+	this.controller.juggle_pressed();
 };
 
 Jmj.prototype.changePage3 = function(e) {
@@ -1718,7 +1736,7 @@ Jmj.prototype.changePage3 = function(e) {
 	this.controller.height_gauge.refresh(true);
 	this.controller.dwell_gauge.refresh(true);
 	this.controller.perno_gauge.refresh(true);
-	
+
 	this.controller.mirror_box.refresh(true);
 	this.controller.ss_box.refresh(true);
 	this.controller.body_box.refresh(true);
@@ -1741,7 +1759,8 @@ Jmj.prototype.pagebeforechange = function(e, d) {
 			}
 			this.isAudioEnd = true;
 		}
-	}    
+	}   
+	this.stopJuggling();
 };
 
 Jmj.prototype.reload = function() {
