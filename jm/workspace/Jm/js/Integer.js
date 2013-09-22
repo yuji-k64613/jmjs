@@ -7,11 +7,11 @@ Integer.prototype.intValue = function() {
 };
 
 Integer.parseInt = function(s) {
-	return parseInt(s);
+	return parseInt(s, 10);
 };
 
 Integer.$valueOf = function(v){
-	var i = parseInt(v)
+	var i = parseInt(v, 10);
 	if (isNaN(i)){
 		throw new TypeError();
 	}

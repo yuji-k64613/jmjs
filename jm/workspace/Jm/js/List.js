@@ -9,7 +9,7 @@ var List = function(id) {
 	var self = this;
 	var func = function(e){
 		self.index = Integer.parseInt(self.obj.val());
-	}
+	};
 	this.obj.change(func);
 };
 List.prototype = new Component();
@@ -83,7 +83,7 @@ List.prototype.createList = function() {
 					}
 				};
 				func.call(controller, e);
-			}
+			};
 		}());
 		obj.append(li);
 	};

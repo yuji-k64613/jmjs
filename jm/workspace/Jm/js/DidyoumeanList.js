@@ -121,13 +121,11 @@ DidyoumeanList.prototype.pat2string = function(a, b) {
 	var x;
 	for (var d = 0; d < b; d++) {
 		if (0 <= a[d] && a[d] <= 9) {
-			//c += (String.fromCharCode((('0').charCodeAt(0) + a[d]))).charCodeAt(0);
 			x = ('0').charCodeAt(0);
 			x = x + a[d];
 			x = String.fromCharCode(x);
 			c += x;
 		} else if (10 <= a[d] && a[d] <= 35) {
-			//c += (String.fromCharCode((('a').charCodeAt(0) + a[d] - 10))).charCodeAt(0);
 			x = ('a').charCodeAt(0);
 			x = x + a[d] - 10;
 			x = String.fromCharCode(x);

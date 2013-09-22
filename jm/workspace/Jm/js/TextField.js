@@ -9,7 +9,7 @@ var TextField = function(id){
 	var self = this;
 	var func = function(e){
 		self.text = self.obj.val();
-	}
+	};
 	this.obj.change(func);
 };
 TextField.prototype = new Component();

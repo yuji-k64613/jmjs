@@ -70,7 +70,7 @@ Hashtable.prototype.each = function(fn) {
 };
 
 Hashtable.prototype.clear = function() {
-	this.items = {}
+	this.items = {};
 	this.length = 0;
 };
 

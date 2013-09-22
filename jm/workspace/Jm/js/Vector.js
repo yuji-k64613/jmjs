@@ -16,7 +16,8 @@ Vector.prototype.elementAt = function(i) {
 };
 
 Vector.prototype.set = function(i, val) {
-	return this.vec[i] = val;
+	this.vec[i] = val;
+	return val;
 };
 
 Vector.prototype.size = function() {

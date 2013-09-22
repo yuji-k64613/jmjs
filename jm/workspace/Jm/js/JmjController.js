@@ -79,10 +79,10 @@ var JmjController = function(jmj, quitflag, isInit) {
     this.dwell_label = new Label('dwell_label', "Dwell ratio");
     this.perno_label = new Label('perno_label', "Person #");
 
-    this.speed_gauge  = new Scrollbar('speed_gauge');
-    this.height_gauge = new Scrollbar('height_gauge');
-    this.dwell_gauge  = new Scrollbar('dwell_gauge');
-    this.perno_gauge  = new Scrollbar('perno_gauge');
+    this.speed_gauge  = new Scrollbar('speed_gauge', 10 / 10.0);
+    this.height_gauge = new Scrollbar('height_gauge', 20 / 100.0);
+    this.dwell_gauge  = new Scrollbar('dwell_gauge', 20 / 100.0);
+    this.perno_gauge  = new Scrollbar('perno_gauge', JmjController.iPersonNo);
 
     this.speed_value  = new Label("");
     this.height_value = new Label("");
@@ -312,6 +312,10 @@ JmjController.prototype.isNewChoice = function() {
 	b = (this.prevIndex != this.patternList.getSelectedIndex());
 	this.prevIndex = this.patternList.getSelectedIndex();
 	return b;
+};
+
+JmjController.prototype.forceNewChoice = function() {
+	this.prevIndex = -1;
 };
 
 JmjController.prototype.enableSwitches = function() {

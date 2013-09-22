@@ -68,7 +68,7 @@ PatternList.prototype.add = function(id, index, n, func, isPattern) {
 	// アコーディオンバージョン
 	var collapsed = true;
 	if (!isPattern) {
-		n = n.substring(1, l - 2)
+		n = n.substring(1, l - 2);
 		if (this.data == null){
 			this.data = '';
 			//this.data = '<div id="patternList" data-role="collapsible-set" data-collapsed="false">';

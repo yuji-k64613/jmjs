@@ -14,7 +14,7 @@ var Checkbox = function(id, id_label, t){
 			//var checked = self.isChecked(self.obj.attr("checked"));
 			var checked = self.obj.is(':checked');
 			self.state = checked;
-		}
+		};
 	}(this));
 
 	this.state = false;
@@ -51,4 +51,5 @@ Checkbox.prototype.getState = function() {
 
 Checkbox.prototype.isChecked = function(checked) {
 	return typeof checked != 'undefined';
-}
+};
+

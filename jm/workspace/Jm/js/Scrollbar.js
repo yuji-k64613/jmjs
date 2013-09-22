@@ -1,10 +1,10 @@
-var Scrollbar = function(id) {
-	if (arguments.length < 1) {
+var Scrollbar = function(id, value) {
+	if (arguments.length < 2) {
 		return;
 	}
 	Component.apply(this, [id]);
 
-	this.value = null;
+	this.value = value;
 	this.isRefreshed = false;
 	
 	this.func = function(t){
@@ -14,7 +14,7 @@ var Scrollbar = function(id) {
 			var v = self.obj.val();
 			v = Float.parseFloat(v);
 			self.value = v;
-		}
+		};
 	};
 };
 Scrollbar.prototype = new Component();

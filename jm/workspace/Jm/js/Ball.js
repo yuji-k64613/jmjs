@@ -47,11 +47,9 @@ Ball.prototype.juggle = function() {
 		if (tp < Ball.jmj.aw) {
 			break;
 		}
-		//c this.st &= -3;
         this.st &= ~Ball.OBJECT_UNDER;
 		this.c0 = this.c;
 		
-		//c if ((this.st & 1) != 0) {
         if((this.st & Ball.OBJECT_HAND) != 0) {
 			this.c += 2;
 			flag = 1;
@@ -95,27 +93,19 @@ Ball.prototype.juggle = function() {
 		this.tPer = (Math.floor (Math.abs (this.bh) / 2)) % Jmj.iPerNo;
 	}
 	
-	//c if ((this.st & 1) != 0) {
     if ((this.st & Ball.OBJECT_HAND) != 0) {
 		this.tPer = Ball.jmj.jPerNo;
 		this.cPer = Ball.jmj.jPerNo;
 	}
 	
-	//c if (this.c >= 0 && tp >= 0 && (this.st & 2) == 0) {
 	if (this.c >= 0 && tp >= 0 && (this.st & Ball.OBJECT_UNDER) == 0) {
-		//c this.st |= 2;
 		this.st |= Ball.OBJECT_UNDER;
 
-		//c if ((this.st & 1) != 0) {
         if((this.st & Ball.OBJECT_HAND) != 0) {
-			//c if ((this.st & 8) != 0) {
 			if ((this.st & Ball.OBJECT_MOVE2) != 0) {
-				//c this.st |= 4;
 				this.st |= Ball.OBJECT_MOVE;
-				//c this.st &= -9;
                 this.st &= ~Ball.OBJECT_MOVE2;
 			} else {
-				//c this.st &= -5;
                 this.st &= ~Ball.OBJECT_MOVE;
 			}
 		} else {
@@ -131,7 +121,6 @@ Ball.prototype.juggle = function() {
 			}
 			t %= Ball.jmj.pattw;
 			if (this.bh == 1) {
-				//c this.st |= 4;
                 this.st |= Ball.OBJECT_MOVE;
 			} else {
 				//this.st &= -5;
@@ -142,18 +131,14 @@ Ball.prototype.juggle = function() {
 				if (h == 1) {
 					if (Ball.jmj.mirror == false) {
 						if (this.chand != 0) {
-							//c Ball.jmj.lhand[(this.cPer + 1) % Jmj.iPerNo].st |= 8;
 							Ball.jmj.lhand[(this.cPer + 1) % Jmj.iPerNo].st |= Ball.OBJECT_MOVE2;
 						} else {
-							//c Ball.jmj.rhand[(this.cPer + 1) % Jmj.iPerNo].st |= 8;
 							Ball.jmj.rhand[(this.cPer + 1) % Jmj.iPerNo].st |= Ball.OBJECT_MOVE2;
 						}
 					} else {
 						if (this.chand != 0) {
-							//c Ball.jmj.lhand[(this.cPer + Jmj.iPerNo - 1) % Jmj.iPerNo].st |= 8;
 							Ball.jmj.lhand[(this.cPer + Jmj.iPerNo - 1) % Jmj.iPerNo].st |= Ball.OBJECT_MOVE2;
 						} else {
-							//c Ball.jmj.rhand[(this.cPer + Jmj.iPerNo - 1) % Jmj.iPerNo].st |= 8;
 							Ball.jmj.rhand[(this.cPer + Jmj.iPerNo - 1) % Jmj.iPerNo].st |= Ball.OBJECT_MOVE2;
 						}
 					}
@@ -169,10 +154,8 @@ Ball.prototype.juggle = function() {
 				} else {
 					// ボールを投げる
 					if (this.chand != 0) {
-						//c Ball.jmj.rhand[this.cPer].st |= 8;
 						Ball.jmj.rhand[this.cPer].st |= Ball.OBJECT_MOVE2;
 					} else {
-						//c Ball.jmj.lhand[this.cPer].st |= 8;
 						Ball.jmj.lhand[this.cPer].st |= Ball.OBJECT_MOVE2;
 					}
 					//this.st |= 4;
@@ -182,14 +165,12 @@ Ball.prototype.juggle = function() {
 		}
 	}
 	
-	//c if ((this.st & 2) != 0 && this.bh != 1) {
 	if ((this.st & Ball.OBJECT_UNDER) != 0 && this.bh != 1) {
 		this.tPer = this.cPer;
 	}
 	
 	if (this.c < 0) this.tPer = this.cPer;
 
-	//c if ((this.st & 4) == 0) {
 	if ((this.st & Ball.OBJECT_MOVE) == 0) {
 		if (this.c < 0) {
 			this.hand_pos (-this.c, this.chand, this.tPer);
@@ -211,7 +192,6 @@ Ball.prototype.juggle = function() {
 					rpox = this.hand_x;
 					rpoz = this.hand_y;
 					if (tpox != rpox || tpoz != rpoz) {
-						//c this.st |= 4;
 						this.st |= Ball.OBJECT_MOVE;
 					}
 				}
@@ -227,14 +207,12 @@ Ball.prototype.juggle = function() {
 					tpox = this.hand_x;
 					tpoz = this.hand_y;
 					if (tpox != rpox || tpoz != rpoz) {
-						//c this.st |= 4;
 						this.st |= Ball.OBJECT_MOVE;
 					}
 				}
 			}
 		}
 	}
-	//c if ((this.st & 4) != 0) {
 	if ((this.st & Ball.OBJECT_MOVE) != 0) {
 		if (this.bh == 1) {
 			this.hand_pos (this.c0 + 1, this.thand, this.tPer);
@@ -262,7 +240,6 @@ Ball.prototype.juggle = function() {
 	}
 	
     // add position data on Throw & Catch person
-	//c if ((this.st & 1) == 0) {
     if ((this.st & Ball.OBJECT_HAND) == 0) {
 		if (Ball.jmj.mirror == false) {
 			tpox += Math.floor (Ball.jmj.iXData[this.tPer] * 40 / Jmj.PXY);
@@ -285,7 +262,6 @@ Ball.prototype.juggle = function() {
 		rpoz += Math.floor (Ball.jmj.iYData[Ball.jmj.jPerNo] * 20 / Jmj.PXY);
 	}
 	
-	//c if ((this.st & 1) == 0 && this.c < 0) {
     if((this.st & Ball.OBJECT_HAND) == 0 && this.c < 0 ) {
 		if (tpox == 0) {
 			fx = 0;
@@ -298,7 +274,6 @@ Ball.prototype.juggle = function() {
 			}
 			y = Math.round ((tpoz * Ball.jmj.dpm / 20));
 		}
-	//c } else if ((this.st & 4) == 0) {
 	} else if ((this.st & Ball.OBJECT_MOVE) == 0) {
 		fx = tpox / 10;
 		y = Math.round ((tpoz * Ball.jmj.dpm / 20));
@@ -306,7 +281,6 @@ Ball.prototype.juggle = function() {
 		if (this.bh == 1) {
 			fx = (tp - Ball.jmj.aw) / Ball.jmj.tw * 2 + 1;
 			y = Math.round ((Ball.jmj.high[1] * (1 - this.square (fx))));
-		//c } else if ((this.st & 2) != 0) {
 		} else if ((this.st & Ball.OBJECT_UNDER) != 0) {
 			fx = tp / Ball.jmj.aw * 2 - 1;
 			y = Math.round ((Ball.jmj.high[0] * (1 - this.square (fx))));
@@ -321,7 +295,6 @@ Ball.prototype.juggle = function() {
 	x = Math.round ((fx * Ball.jmj.dpm * Jmj.KW));
 	this.gx = (x - 11);
 	
-	//c if ((this.st & 1) != 0) {
     if((this.st & Ball.OBJECT_HAND) != 0) {
 		if (this.chand != 0) {
 			this.gx += Ball.jmj.hand_x;

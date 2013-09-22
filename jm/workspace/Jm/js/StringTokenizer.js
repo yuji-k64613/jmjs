@@ -34,9 +34,8 @@ StringTokenizer.prototype.countTokens = function() {
 	var t = this.pos;
 	
 	this.pos = 0;
-	var s;
 	var i = 0;
-	for (i = 0; (s = this.nextToken()) != null; i++){
+	for (i = 0; this.nextToken() !== null; i++){
 		;
 	}
 	this.pos = t;

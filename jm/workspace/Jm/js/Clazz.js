@@ -33,7 +33,7 @@ function parseId(s){
 	if (n < 0){
 		return -1;
 	}
-	return parseInt(s.substring(n + 1));
+	return parseInt(s.substring(n + 1), 10);
 }
 
 function clone(o)
@@ -41,7 +41,7 @@ function clone(o)
     var f = function(){};
     f.prototype = o;
     return new f();
-};
+}
 
 function isUndefined(obj) {
 	return typeof obj == 'undefined';

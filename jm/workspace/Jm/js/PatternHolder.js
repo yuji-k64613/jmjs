@@ -17,7 +17,6 @@ var PatternHolder = function(j) {
 	this.bbuf = null;
 	this.ibuf = null;
 	this.pattbarr = null;
-	//c this.motion = "Normal";
 	this.motion = Jmj.NORMAL;
 	this.motion2 = null;
 	this.formation = "1-Person";
@@ -30,7 +29,6 @@ var PatternHolder = function(j) {
 	this.xyformation = new java.util.Hashtable();
 	this.enXY = this.xyformation.keys();
 	this.cbuf = Clazz.newArray(256, 0);
-	//c this.bbuf = Clazz.newArray(200, 0);
 	this.bbuf = Clazz.newArray(Jmj.LMAX, 0);
 	this.ibuf = Clazz.newArray(256, 0);
 	this.motion2 = new Array(Jmj.PERMAX);
@@ -45,7 +43,7 @@ PatternHolder.prototype.setHolder = function(fp) {
 	this.readflag = true;
 	this.dwell = 0.5;
 	this.patternVector = new java.util.Vector();
-	this.height = .2;
+	this.height = 0.2;
 	this.fline = 0;
 	try {
 		this.resetmotion2();
@@ -184,7 +182,6 @@ PatternHolder.prototype.wasMotion = function(fp) {
 				}
 				//this.bbuf[bindex] = Byte.parseByte(s1);
 				this.bbuf[bindex] = Integer.$valueOf(s1).intValue();
-				//c if ((this.bbuf[bindex] < this.Y_MIN || this.bbuf[bindex] > this.Y_MAX) && ((bindex & 1) == 1) && (this.bbuf[bindex] < this.X_MIN || this.bbuf[bindex] > this.X_MAX)) {
 				if ((this.bbuf[bindex] < PatternHolder.Y_MIN || this.bbuf[bindex] > PatternHolder.Y_MAX) && ((bindex & 1) == 1) && (this.bbuf[bindex] < PatternHolder.X_MIN || this.bbuf[bindex] > PatternHolder.X_MAX)) {
 					throw new NumberFormatException();
 				}
@@ -222,23 +219,18 @@ PatternHolder.prototype.parsePattern = function(s) {
 	for (var i = 0; i < this.next; i++, bindex++) {
 		switch ((c = s.charAt (i))) {
 			case '(':
-				//c this.bbuf[bindex] = -4;
 				this.bbuf[bindex] = PatternHolder.PAR;
 				break;
 			case ')':
-				//c this.bbuf[bindex] = -5;
 				this.bbuf[bindex] = PatternHolder.ENTHESIS;
 				break;
 			case ',':
-				//c this.bbuf[bindex] = -1;
 				this.bbuf[bindex] = PatternHolder.COMMA;
 				break;
-			//c case '[':
 			case '[':
 				this.bbuf[bindex] = PatternHolder.BRA;
 				break;
 			case ']':
-				//c this.bbuf[bindex] = -3;
 				this.bbuf[bindex] = PatternHolder.KET;
 				break;
 			default:
@@ -253,7 +245,6 @@ PatternHolder.prototype.parsePattern = function(s) {
 				}
 		}
 	}
-	//c if (this.next > 200) {
 	if (this.next > Jmj.LMAX) {
 		this.jmj.putError("Too Long Pattern in line :" + this.fline, s);
 		return null;
@@ -319,21 +310,18 @@ PatternHolder.prototype.getPattern = function(o, s) {
 		}
 	}
 	
-	//c if (this.pattbarr[0] == -4) {
 	if (this.pattbarr[0] == PatternHolder.PAR) {
 		this.jmj.isSync = true;
 	} else {
 		this.jmj.isSync = false;
 	}
 	while (j < this.pattbarr.length) {
-		//c if (this.pattbarr[j] == -2) {
 		if (this.pattbarr[j] == PatternHolder.BRA) {
 			flag2 = 1;
 			this.jmj.patts[pattw] = 0;
 			j++;
 			continue;
 		}
-		//c if (this.pattbarr[j] == -3) {
 		if (this.pattbarr[j] == PatternHolder.KET) {
 			if (flag2 == 0) {
 				return false;
@@ -345,7 +333,6 @@ PatternHolder.prototype.getPattern = function(o, s) {
 		}
 		if (this.jmj.isSync) {
 			switch (this.pattbarr[j]) {
-				//c case -4:
 				case PatternHolder.PAR:
 					if (flag != 0) {
 						return false;
@@ -353,7 +340,6 @@ PatternHolder.prototype.getPattern = function(o, s) {
 					flag = 1;
 					j++;
 					continue;
-				//c case -5:
 				case PatternHolder.ENTHESIS:
 					if (flag != 5) {
 						return false;
@@ -361,7 +347,6 @@ PatternHolder.prototype.getPattern = function(o, s) {
 					flag = 0;
 					j++;
 					continue;
-				//c case -1:
 				case PatternHolder.COMMA:
 					if (flag != 2) {
 						return false;
@@ -369,7 +354,6 @@ PatternHolder.prototype.getPattern = function(o, s) {
 					flag = 4;
 					j++;
 					continue;
-				//c case 33:
 				case PatternHolder.CROSS:
 					if (flag != 2 && flag != 5) {
 						return false;
@@ -403,7 +387,6 @@ PatternHolder.prototype.getPattern = function(o, s) {
 				return false;
 			}
 			this.jmj.patt[pattw][this.jmj.patts[pattw]++] = a;
-			//c if (this.jmj.patts[pattw] > 11) {
 			if (this.jmj.patts[pattw] > Jmj.MMAX) {
 				return false;
 			}
@@ -472,7 +455,7 @@ PatternHolder.prototype.chooseTrickByName = function(trickName) {
 		}
 	}
 	return -1;
-}
+};
 
 PatternHolder.prototype.invalidate = function(index) {
 	this.patternVector.setElementAt(new PatternHolder.Piece(false, this.patternVector.elementAt(index).name), index);
@@ -755,7 +738,6 @@ PatternHolder.Piece = function(isPat, nm, mt, ss, hght, ht, fm, mt2) {
 		this.dwell = ht;
 		this.formation = fm;
 
-		//c for (var i = 0; i < 10; i++) {
 		for (var i = 0; i < Jmj.PERMAX; i++) {
 			if (mt2[i] === "") {
 				this.motion2[i] = this.motion;
