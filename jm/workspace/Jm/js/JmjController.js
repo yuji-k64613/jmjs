@@ -122,6 +122,9 @@ var JmjController = function(jmj, quitflag, isInit) {
 		$('#page4_pattern_button').click(function(e) {
 			self.actionPerformedForPattern(e);
 		}); 
+		$('#page4_select_file').change(function(e) {
+			jmj.select_file(e);
+		}); 
 	}
 };
 

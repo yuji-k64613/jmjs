@@ -100,6 +100,7 @@ PatternHolder.prototype.setHolder = function(fp) {
 					} else {
 						this.jmj.putError("Bad Pattern Definition in line :" + this.fline, this.s);
 					}
+					break;
 			}
 		}
 	} catch (e$$) {

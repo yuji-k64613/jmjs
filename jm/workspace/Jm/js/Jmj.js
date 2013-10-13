@@ -1641,6 +1641,19 @@ Jmj.prototype.resetCheckBoxValue = function() {
 	this.bSound = this.controller.sound_box.obj.is(':checked');
 };
 
+Jmj.prototype.select_file = function(e) {
+	var input = $('#page4_select_file').get(0).files[0];
+    var reader = new FileReader();
+    reader.addEventListener('load', function(e) {
+    	$.mobile.changePage('#page1');
+    	
+    	var result = reader.result;
+    	Clazz.data = result;
+    	initJmj(e);
+    }, true);
+    reader.readAsText(input, 'UTF-8');
+};
+
 Jmj.prototype.initPage = function(e) {
 
 };

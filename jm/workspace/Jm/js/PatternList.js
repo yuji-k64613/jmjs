@@ -15,6 +15,9 @@ PatternList.prototype.add = function(id, index, n, func, isPattern) {
 	List.prototype.add.call(this, n);
 
 	if (id == null){
+		if (this.data == null){
+			return;
+		}
 		//this.data += '</ul></li>';
 		this.data += '</ul></div>';
 		//this.data += '</div>';
@@ -31,6 +34,9 @@ PatternList.prototype.add = function(id, index, n, func, isPattern) {
 		//main.find("li").on('vclick', null, func);
 				
 		this.data = null;
+	}
+	if (id == null){
+		return;
 	}
 	var l = n.length;
 	var ids = 'id="' + id + '_' + index + '"';
@@ -75,7 +81,13 @@ PatternList.prototype.add = function(id, index, n, func, isPattern) {
 			collapsed = false;
 		}
 		else {
+			if (this.data == null){
+				return;
+			}
 			this.data += '</ul></div>';
+		}
+		if (this.data == null){
+			return;
 		}
 		if (collapsed){
 			this.data += '<div data-role="collapsible" data-theme="b" data-content-theme="c">';			
@@ -86,6 +98,9 @@ PatternList.prototype.add = function(id, index, n, func, isPattern) {
 		this.data += '<h3>' + n + '</h3>';
 		this.data += '<ul data-role="listview" data-inset="true">';
 	} else {
+		if (this.data == null){
+			return;
+		}
 		this.data += '<li><a ' + ids + ' href="#">' + n + '</a></li>';
 		//this.obj.click(func);
 	}
