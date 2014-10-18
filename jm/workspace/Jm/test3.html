@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JuggleMaster</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="500pt" height="200pt">
+		</canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+
+		context.beginPath();
+		context.arc(0, 0, 100, 0, Math.PI * 2, true);
+		//context.closePath();
+		context.stroke();
+		
+	</script>
+</html>
+

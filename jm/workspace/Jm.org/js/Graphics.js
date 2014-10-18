@@ -20,7 +20,7 @@ Graphics.prototype.dispose = function() {
 	//this.ctx = null;
 };
 
-// ������
+// 不要
 //Graphics.prototype.translate = function(center, i) {
 //	this.center = center;
 //};
@@ -214,7 +214,7 @@ Graphics.prototype.stroke = function() {
 };
 
 Graphics.prototype.fill = function() {
-	this.ctx.stroke(); // ������������������drawImage()������������������������������������
+	this.ctx.stroke(); // なぜかしら、drawImage()で輪郭が描画されないため
 	this.ctx.fill();
 };
 
@@ -246,7 +246,7 @@ Graphics.prototype.setColor = function(c) {
 };
 
 Graphics.prototype.create = function(x, y, w, h) {
-	var g = new Graphics(this.ctx); // x, y, w, h������������������������
+	var g = new Graphics(this.ctx); // x, y, w, hを使用していない
 	return g;
 };
 
