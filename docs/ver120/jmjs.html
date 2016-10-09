@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JuggleMaster</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+<!--
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+-->
+
+		<style>
+			.ui-icon-my-chat {
+				background:url(chat.png) no-repeat transparent;
+				border-radius:0px;
+				box-shadow:0px 0px 0px #000;
+			}
+			.ui-icon-my-tag {
+				background:url(tag.png) no-repeat transparent;
+				border-radius:0px;
+				box-shadow:0px 0px 0px #000;
+			}
+			.ui-icon-my-clock {
+				background:url(clock.png) no-repeat transparent;
+				border-radius:0px;
+				box-shadow:0px 0px 0px #000;
+			}
+			.main {
+				width: 100%;
+				border: 1px solid #000;
+				margin: 0 auto;
+				padding: 4px;
+			}
+			.canvas {  
+				background: #ffffff;
+				border: 1px solid #cccccc;  
+				margin: 0px;
+				padding: 0px;
+          	}
+          	.margin {
+				margin-top: 1.5em;
+          	}
+		</style>
+
+		<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<script type="text/javascript" src="./libs/excanvas.js"></script>
+		<![endif]-->
+
+		<script type="text/javascript" src="./js/Enumeration.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Hashtable.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/HashSet.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Vector.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/BufferedReader.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/StringTokenizer.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Integer.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Float.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Thread.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Component.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Label.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/TextField.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Button.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Checkbox.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Menu.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Scrollbar.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/List.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Canvas.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Image.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Graphics.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/PatternList.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Clazz.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Java.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Resource.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Arm.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Ball.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/AudioClip.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Jmj.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/PatternHolder.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/JmjController.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/MessageBox.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/ListWithQuicksort.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/PatternfileList.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/MotionList.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/FormationList.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/DidyoumeanList.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/JmjDialog.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Main.js" charset="UTF-8"></script>
+	</head>
+	<body>
+		<input type="hidden" id="param_file" value="pattern.jm" />
+		<input type="hidden" id="param_patternfiles" value="pattern.jm,pattern_ja.jm" />
+		<input type="hidden" id="param_startwith" value="Throw Twice" />
+<!--
+		<audio id="sound_0" preload="auto"><source src="./sound/0.wav" type="audio/wav"></audio>
+		<audio id="sound_1" preload="auto"><source src="./sound/1.wav" type="audio/wav"></audio>
+		<audio id="sound_2" preload="auto"><source src="./sound/2.wav" type="audio/wav"></audio>
+		<audio id="sound_3" preload="auto"><source src="./sound/3.wav" type="audio/wav"></audio>
+		<audio id="sound_4" preload="auto"><source src="./sound/4.wav" type="audio/wav"></audio>
+		<audio id="sound_5" preload="auto"><source src="./sound/5.wav" type="audio/wav"></audio>
+		<audio id="sound_6" preload="auto"><source src="./sound/6.wav" type="audio/wav"></audio>
+		<audio id="sound_7" preload="auto"><source src="./sound/7.wav" type="audio/wav"></audio>
+		<audio id="sound_8" preload="auto"><source src="./sound/8.wav" type="audio/wav"></audio>
+		<audio id="sound_9" preload="auto"><source src="./sound/9.wav" type="audio/wav"></audio>
+		<audio id="sound_a" preload="auto"><source src="./sound/a.wav" type="audio/wav"></audio>
+		<audio id="sound_b" preload="auto"><source src="./sound/b.wav" type="audio/wav"></audio>
+		<audio id="sound_c" preload="auto"><source src="./sound/c.wav" type="audio/wav"></audio>
+		<audio id="sound_d" preload="auto"><source src="./sound/d.wav" type="audio/wav"></audio>
+		<audio id="sound_e" preload="auto"><source src="./sound/e.wav" type="audio/wav"></audio>
+		<audio id="sound_f" preload="auto"><source src="./sound/f.wav" type="audio/wav"></audio>
+		<audio id="sound_g" preload="auto"><source src="./sound/g.wav" type="audio/wav"></audio>
+		<audio id="sound_h" preload="auto"><source src="./sound/h.wav" type="audio/wav"></audio>
+		<audio id="sound_i" preload="auto"><source src="./sound/i.wav" type="audio/wav"></audio>
+		<audio id="sound_j" preload="auto"><source src="./sound/j.wav" type="audio/wav"></audio>
+		<audio id="sound_k" preload="auto"><source src="./sound/k.wav" type="audio/wav"></audio>
+		<audio id="sound_l" preload="auto"><source src="./sound/l.wav" type="audio/wav"></audio>
+		<audio id="sound_m" preload="auto"><source src="./sound/m.wav" type="audio/wav"></audio>
+		<audio id="sound_n" preload="auto"><source src="./sound/n.wav" type="audio/wav"></audio>
+		<audio id="sound_o" preload="auto"><source src="./sound/o.wav" type="audio/wav"></audio>
+		<audio id="sound_p" preload="auto"><source src="./sound/p.wav" type="audio/wav"></audio>
+		<audio id="sound_q" preload="auto"><source src="./sound/q.wav" type="audio/wav"></audio>
+		<audio id="sound_r" preload="auto"><source src="./sound/r.wav" type="audio/wav"></audio>
+		<audio id="sound_s" preload="auto"><source src="./sound/s.wav" type="audio/wav"></audio>
+		<audio id="sound_t" preload="auto"><source src="./sound/t.wav" type="audio/wav"></audio>
+		<audio id="sound_u" preload="auto"><source src="./sound/u.wav" type="audio/wav"></audio>
+		<audio id="sound_v" preload="auto"><source src="./sound/v.wav" type="audio/wav"></audio>
+		<audio id="sound_w" preload="auto"><source src="./sound/w.wav" type="audio/wav"></audio>
+		<audio id="sound_x" preload="auto"><source src="./sound/x.wav" type="audio/wav"></audio>
+		<audio id="sound_y" preload="auto"><source src="./sound/y.wav" type="audio/wav"></audio>
+		<audio id="sound_z" preload="auto"><source src="./sound/z.wav" type="audio/wav"></audio>
+-->
+		<div id="page1" data-role="page">
+			<div data-role="header">
+				<h1>JuggleMaster JavaScript Ver1.2.0</h1>
+				<div data-role="navbar" data-iconpos="left">
+					<ul>
+						<li>
+							<a href="#page1"
+							class="ui-btn-active ui-state-persist"
+							data-icon="grid" data-transition="none">Patterns</a>
+						<li>
+							<a href="#page2" data-icon="arrow-r" data-transition="none">Juggle</a>
+						<li>
+							<a href="#page4" data-icon="plus" data-transition="none">New</a>
+						<li>
+							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
+					</ul>
+				</div>
+			</div>
+			<div id="main" data-role="content">
+				<div id="loading1">Loading...</div>
+				<div id="patternList" data-role="collapsible-set">
+				</div>				
+			</div>
+			<div data-role="footer">
+				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
+			</div>
+		</div>
+		<div id="page2" data-role="page">
+			<div data-role="header">
+				<h1>JuggleMaster JavaScript Ver1.2.0</h1>
+				<div data-role="navbar" data-iconpos="left">
+					<ul id="page2_ul">
+						<li>
+							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
+						<li>
+							<a href="#page2"
+							class="ui-btn-active ui-state-persist"
+							data-icon="arrow-r" data-transition="none">Juggle</a>
+						<li>
+							<a href="#page4" data-icon="plus" data-transition="none">New</a>
+						<li>
+							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
+					</ul>
+				</div>
+			</div>
+			<div id="main2" class="main" data-role="content" align="center">
+			<div id="loading2">Loading...</div>
+			</div>
+			<div data-role="footer">
+				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
+			</div>
+		</div>
+		<div id="page4" data-role="page">
+			<div data-role="header">
+				<h1>JuggleMaster JavaScript Ver1.2.0</h1>
+				<div data-role="navbar" data-iconpos="left">
+					<ul>
+						<li>
+							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
+						<li>
+							<a href="#page2" data-icon="arrow-r" data-transition="none">Juggle</a>
+						<li>
+							<a href="#page4"
+							class="ui-btn-active ui-state-persist"
+							data-icon="plus" data-transition="none">New</a>
+						<li>
+							<a href="#page3" data-icon="gear" data-transition="none">Settings</a>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<div data-role="collapsible" data-theme="a" data-collapsed="false">
+					<h1>Try a new siteswap</h1>
+					<label for="basic">Type in a sitewap:</label>
+					<input id="page4_text" type="text" name="name" value="" />
+	
+					<div data-role="fieldcontain">
+						<div>
+							<label for="page4_select" class="select">Arm motion:</label>
+						</div>
+						<select name="page4_select" id="page4_select" data-native-menu="false">
+						</select>
+					</div>
+	
+					<div class="margin">
+						<a href="#" id="page4_juggle_button" data-role="button" data-theme="b">Juggle</a>
+					</div>
+				</div>
+				<div data-role="collapsible" data-theme="a" data-collapsed="false">
+					<h1>Optoin</h1>
+					<a href="#" id="page4_showerize_button" data-role="button" data-theme="b">Showerize</a>
+					<a href="#" id="page4_motion_button" data-role="button" data-theme="b">Choose the motion</a>
+					<a href="#" id="page4_formation_button" data-role="button" data-theme="b">Choose the formation</a>
+					<a href="#" id="page4_pattern_button" data-role="button" data-theme="b">Select a pattern file</a>
+				</div>
+			</div>
+			<div data-role="footer">
+				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
+			</div>
+		</div>
+		<div id="page3" data-role="page">
+			<div data-role="header">
+				<h1>JuggleMaster JavaScript Ver1.2.0</h1>
+				<div data-role="navbar" data-iconpos="left">
+					<ul id='custIconUL'>
+						<li>
+							<a href="#page1" data-icon="grid" data-transition="none">Patterns</a>
+						<li>
+							<a href="#page2" data-icon="arrow-r" data-transition="none">Juggle</a>
+						<li>
+							<a href="#page4" data-icon="plus" data-transition="none">New</a>
+						<li>
+							<a href="#page3"
+							class="ui-btn-active ui-state-persist"
+							data-icon="gear" data-transition="none">Settings</a>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<label id="speed_label" for="speed_gauge">Speed</label>
+				<input type="range" name="slider" id="speed_gauge" value="0" min="0.1" max="2" step="0.1" />
+				
+				<label id="height_label" for="height_gauge">Height</label>
+				<input type="range" name="slider" id="height_gauge" value="0" min="0.01" max="1.00" step="0.01" />
+				
+				<label id="dwell_label" for="dwell_gauge">Dwell ratio</label>
+				<input type="range" name="slider" id="dwell_gauge" value="0" min="0.10" max="0.90" step="0.01" />
+				
+				<label id="perno_label" for="perno_gauge">Person #</label>
+				<input type="range" name="slider" id="perno_gauge" value="0" min="1" max="10"  />
+
+				<input id="mirror_box" type="checkbox" name="checkbox1" />
+				<label id="mirror_box_label" for="mirror_box">Mirror image</label>
+				
+				<input id="ss_box" type="checkbox" name="checkbox2" />
+				<label id="ss_box_label" for="ss_box">Show siteswap</label>
+				
+				<input id="body_box" type="checkbox" name="checkbox3" />
+				<label id="body_box_label" for="body_box">Show juggler</label>
+				
+				<input id="sound_box" type="checkbox" name="checkbox4" />
+				<label id="sound_box_label" for="sound_box">Sound</label>
+			</div>
+			<div data-role="footer">
+				<a href="http://www.geocities.jp/yuji_k64613/jmjs/index.html">Home</a>
+			</div>
+		</div>
+		<div id="page4_dialog" data-role="dialog">
+		    <header data-role="header">
+		        <h1 id="page4_message">message</h1>
+		    </header>
+		    <div data-role="content">
+				<ul id="page4_list" data-role="listview"> 
+				</ul> 
+		    </div>
+		</div>
+		<div id="page4_error" data-role="dialog">
+		    <header data-role="header">
+		        <h1>Warning</h1>
+		    </header>
+		    <div data-role="content">
+		    	<h2>Wrong siteswap</h2>
+		    	<a href="#" id="page4_error_ok" data-role="button" data-theme="b">Ok</a>
+		    </div>
+		</div>
+	</body>
+</html>
+
