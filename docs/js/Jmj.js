@@ -1663,7 +1663,7 @@ Jmj.prototype.initPage1 = function(e) {
 };
 
 Jmj.prototype.initPage2 = function(e) {
-    this.startJuggling(this.startindex);
+
 };
 
 // 初期起動時にバーを右に寄せるために無理矢理
