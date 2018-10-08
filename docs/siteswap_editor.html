@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>なにかエディター</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+	<style>
+		.ui-icon-my-chat {
+			background:url(chat.png) no-repeat transparent;
+			border-radius:0px;
+			box-shadow:0px 0px 0px #000;
+		}
+		.ui-icon-my-tag {
+			background:url(tag.png) no-repeat transparent;
+			border-radius:0px;
+			box-shadow:0px 0px 0px #000;
+		}
+		.ui-icon-my-clock {
+			background:url(clock.png) no-repeat transparent;
+			border-radius:0px;
+			box-shadow:0px 0px 0px #000;
+		}
+		.main {
+			width: 100%;
+			border: 1px solid #000;
+			margin: 0 auto;
+			padding: 4px;
+		}
+		.canvas {
+			background: #ffffff;
+			border: 1px solid #cccccc;
+			margin: 0px;
+			padding: 0px;
+		}
+		.margin {
+			margin-top: 1.5em;
+		}
+	</style>
+
+	<!--[if lt IE 9]>
+	<script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<script type="text/javascript" src="./libs/excanvas.js"></script>
+	<![endif]-->
+</head>
+<body>
+<p>新サイトスワップシンプルエディター130620</p>
+<button type="button" neme="jmjs" onclick="jmjs()">Juggle Master</button>
+<FORM name="Form2">
+</FORM>
+<FORM name="Form1">
+<hr />
+<input type="text" name="waza" size="60"/>
+<div data-role="controlgroup" data-type="horizontal">
+<button type="button" neme="rotef" value="rotef" onclick="rotete()">後ろにずす</button>
+<button type="button" neme="roteb" value="roteb" onclick="roteteb()">前にずらす</button>
+<button type="button" neme="plus" value="plus" onclick="zouka(1)">増やす</button>
+<button type="button" neme="minas" value="minas" onclick="zouka(-1)">減らす</button>
+<button type="button" neme="bplus" value="bplus" onclick="kosuu(1)">個数を増やす</button>
+<button type="button" neme="bminas" value="bminas" onclick="kosuu(-1)">個数を減らす</button>
+</div>
+<hr />
+<input type="text" name="kore" value="0" size="3"/>
+<div data-role="controlgroup" data-type="horizontal">
+<button type="button" neme="nisuru" value="nisuru" onclick="korenisuru()">最後を↑にする</button>
+<button type="button" neme="tasu" value="tasu" onclick="tasihiki(1)">+</button>
+<button type="button" neme="hiku" value="hiku" onclick="tasihiki(-1)">-</button>
+</div>
+<hr />
+<div data-role="controlgroup" data-type="horizontal">
+<button type="button" neme="gyaku" value="gyaku" onclick="gyakuni()">逆再生</button>
+<button type="button" neme="enter" value="enter"onclick="hantei()">判定</button>
+<button type="button" neme="nantoka" value="nantoka"onclick="nantoka()">なんとかする</button>
+<button type="button" neme="long" value="long" onclick="longs()">伸ばす</button>
+<button type="button" neme="short" value="short" onclick="shorts()">縮める</button>
+</div>
+<hr />
+<input type="text" name="yobi" size="60"/>
+<div class="ui-grid-a">
+<button type="button" neme="irekae" value="irekae" onclick="irekaeru()">入れ替える</button>
+</div>
+<hr />
+<input type="text" name="nori" value="0" size="3"/>
+<div data-role="controlgroup" data-type="horizontal">
+<button type="button" neme="ketugou" value="ketugou" onclick="ketugousuru()">ノリ↑で結合する</button>
+<button type="button" neme="tasunori" value="tasunori" onclick="tasihikinori(1)">+</button>
+<button type="button" neme="hikunori" value="hikunori" onclick="tasihikinori(-1)">-</button>
+</div>
+</FORM>
+<hr />
+使い方<br>
+<div>
+テキストボックスに適当なサイトスワップを書き込みます。12345とかでもいいです。<br>
+「後ろにずらす」を押すと、一番後ろの数字が一番前に来て、のこりが後ろにずれます。51234になるのね。<br>
+「前にずらす」を押すと、一番前の数字が一番後ろに来て、残りが前にずれます。12345に戻るのね。<br>
+「増やす」を押すと、一番後ろの数値が1多くなります。そして、どっかがその分減ります。やってみたら12246になったよ。<br>
+「減らす」を押すと、一番後ろの数値が1少なくなります。そして、どっかがその分減ります。やってみたら12345に戻ったよ。<br>
+「個数を増やす」を押すと、一番後ろの数値が、道具の個数1つ分だけ増えます。やってみたら1234aになったよ。4ボールのサイトスワップだね！<br>
+「個数を減らす」を押すと、一番後ろの数値が、道具の個数1つ分だけ減ります。やってみたら12345に戻ったよ。<br>
+「最後を↑にする」を押すと、一番後ろの数値が、このボタンの後ろのテキストボックスに入っている数値に変換されるよ。道具の個数は変わらないよ。<br>
+テキストボックスの後ろについている「+」「-」はそれぞれテキストボックス内の数値を１増減させるよ。<br>
+「逆再生」を押すと、元のサイトスワップを逆再生したときのサイトスワップに変換されるよ。<br>
+「判定」を押すと、サイトスワップじゃないときは「サイトスワップが成立していません」とかなんとかメッセージが出るよ。<br>
+サイトスワップが成立しているときは「○個のサイトスワップです」なんてメッセージがでるよ。<br>
+「なんとかする」を押すと、でたらめな英数字の羅列をジャグリング可能なサイトスワップに修正してくれるよ。bakaを直させたら8akaになったよ。<br>
+でも中の人は5歳だからあんまり複雑なでたらめ英数字を入れると切れて適当かますよ。<br>
+「伸ばす」を押すと1文字分長くなるよ。ボールの個数は同じまま、最後に0が入るよ<br>
+「縮める」を押すと1文字分短くなるよ。処理が難しいのでボールの個数は変わっちゃうかもしれないよ<br>
+残りのチェックボックスとかは飾りだよ<br>
+「入れ替える」を押すと上のテキストボックスの内容と、下のテキストボックスの内容が入れ替わるよ。<br>
+「ノリ↑で結合する」を押すと、上のやつと下のやつを矢印の先に入った数値分ののりで結合できるか試してくれるよ。出てきたものを<br>
+OKすると結合したものが上のテキストボックスに表示されるよ。<br>
+</div>
+<script type="text/javascript">
+function jmjs(){
+	siteswap = Form1.waza.value;
+	if (siteswap == ""){
+		return;
+	}
+	var url = "http://yuji-k64613.github.io/jmjs/jmjs.html?siteswap=" + siteswap + "#page2";
+	window.location.href = url;
+}
+</script>
+<script type="text/javascript">
+var ss=new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z");//数値とサイトスワップの変換用
+var kazusi=new Array();
+var kazusi2 = new Array();
+var ikisaki=new Array();
+//var ssnagasa;
+//for (ii = 1;ii<100;ii++){
+
+//}
+//function animejunbi(){
+// var ii;
+
+//}
+
+function ketugousuru(){
+var moto;
+var tasu;
+var nagasa;
+var motoko;
+var tasuko;
+var i;
+var j;
+var k;
+var a;
+var nori0;
+var nori1;
+var nori2;
+var noristr1;
+var noristr2;
+var gousei = new Array;
+var flg = new Array;
+var ikisaki = new Array;
+var hyouka = new Array;
+var breakPP;
+var res;
+var sagasu;
+var ikisai;
+motoko=0;
+tasuko=0;
+
+nori0=parseInt(Form1.nori.value);
+moto = Form1.waza.value.length;
+tasu = Form1.yobi.value.length;
+nagasa = moto + tasu + nori0;
+sutika(2);
+sutika(1);
+
+for(i=0;i<moto;i++){
+motoko = motoko + kazusi[i];
+}
+for(i=0;i<tasu;i++){
+tasuko = tasuko + kazusi2[i];
+}
+
+for(i=0;i<=nori0;i++){
+
+nori1=i;
+nori2=nori0-nori1;
+breakPP=0;
+
+for(j=1;j<=nagasa;j++){
+hyouka[j] = -1;
+if(j<=moto){
+flg[j]=1;
+}else if(j>moto && j<=(moto+nori1)){
+flg[j]=0;
+}else if(j>(moto+nori1) && j<=(moto+nori1+tasu)){
+flg[j]=1;
+}else{
+flg[j]=0;
+}
+// alert(flg[j]);
+}
+for(k=1;k<=nagasa;k++){
+ikisaki[k]=0;
+}
+for(j=1;j<=nagasa;j++){
+
+if(flg[j]==1 && j<=moto){
+ikisaki[j]=kazusi[j-1]+j;
+gousei[j]=kazusi[j-1];
+while(ikisaki[j]>nagasa){
+ikisaki[j]=ikisaki[j]-nagasa;
+}
+if(hyouka[ikisaki[j]]==-1){
+hyouka[ikisaki[j]]= 1;
+}else{
+breakPP=1;
+break;
+}
+
+}else if(flg[j]==1){
+ikisaki[j]=kazusi2[j-moto-nori1-1]+j;
+gousei[j]=kazusi2[j-moto-nori1-1];
+while(ikisaki[j]>nagasa){
+ikisaki[j]=ikisaki[j]-nagasa;
+}
+if(hyouka[ikisaki[j]]==-1){
+hyouka[ikisaki[j]]= 1;
+}else{
+breakPP=1;
+break;
+}
+
+}
+// alert(ikisaki[j]);
+}
+if(breakPP==1){
+// alert("ありません");
+continue;
+}
+// for(a=1;a<=nagasa;a++){
+// alert("ikisaki,"+ikisaki[a]);
+// }
+// alert(breakPP);
+noristr1="";
+noristr2="";
+// alert("長さ"+nagasa);
+for(j=1;j<=nagasa;j++){
+sagasu=0;
+if(flg[j]==0){
+for(k=1;k<=nagasa;k++){
+for(a=1;a<=nagasa;a++){
+sagasu=1;
+// alert("k"+k+"ikisaki["+a+"]"+ikisaki[a]);
+if(ikisaki[a]==k){
+sagasu=0;
+break;
+}
+}
+if(sagasu==1){
+ikisaki[j]=k;
+// alert(j);
+// alert(ikisaki[j]);
+ikisai=j;
+if(ikisaki[j]>=ikisai){
+ikisai=ikisaki[j]-ikisai;
+}else{
+ikisai=nagasa-(ikisai-ikisaki[j]);
+}
+if(j<=moto+nori1+tasu){
+noristr1=noristr1+ss[ikisai];
+}else{
+noristr2=noristr2+ss[ikisai];
+}
+break;
+}
+}
+}
+}
+res=confirm('結果\n'+Form1.waza.value+noristr1+Form1.yobi.value+noristr2);
+if(res){
+Form1.waza.value=Form1.waza.value+noristr1+Form1.yobi.value+noristr2;
+break;
+}
+}
+// alert(motoko+tasuko);
+if(breakPP==1){
+alert("ありません");
+}
+}
+
+function irekaeru(){
+var ue;
+var sita;
+ue = Form1.waza.value;
+sita = Form1.yobi.value;
+Form1.waza.value = sita;
+Form1.yobi.value = ue;
+}
+function longs(){//長くする関数
+var siteswap;
+var nagasa;
+var i;
+var newsiteswap;
+var tasukazu;
+var nagasaheri;
+var dame;
+newsiteswap = "";
+nagasa = Form1.waza.value.length;
+sutika(0);
+hyouka();
+dame= 0;
+for(i=0;i<nagasa;i++){
+if(kazusi[i]+i+1>= nagasa){
+nagasaheri=kazusi[i]+i;
+tasukazu = 0;
+while(nagasaheri>=nagasa){
+nagasaheri=nagasaheri-nagasa;
+tasukazu=tasukazu+1;
+}
+if(kazusi[i]+tasukazu>35){
+dame = 1;
+break;
+}
+newsiteswap = newsiteswap + ss[kazusi[i]+tasukazu];
+}else{
+newsiteswap = newsiteswap + ss[kazusi[i]];
+}
+
+}
+if(dame==0){
+newsiteswap = newsiteswap + ss[0];
+Form1.waza.value = newsiteswap;
+}
+}
+function shorts(){//短くする関数
+var siteswap;
+var nagasa;
+var i;
+var newsiteswap;
+var kosuu;
+var kazu;
+var nagasaheri;
+var dame;
+var siteswap;
+sutika(0);
+hyouka();
+nagasa= Form1.waza.value.length;
+siteswap="";
+kosuu=0;
+for(i=0;i<nagasa;i++){
+kosuu=kosuu+kazusi[i];
+}
+kazu=kosuu/nagasa;
+for(i=0;i<nagasa-1;i++){
+siteswap=siteswap+ss[kazusi[i]];
+}
+Form1.waza.value=siteswap;
+nantoka();
+}
+function rotete(){//後ろにずらす関数
+var siteswap;
+var nagasa;
+var kiritori;
+var nokori;
+siteswap = Form1.waza.value;
+nagasa = siteswap.length;
+kiritori = siteswap.charAt(nagasa-1);
+nokori = siteswap.substr(0,nagasa-1);
+siteswap = kiritori + nokori;
+Form1.waza.value = siteswap;
+
+}
+function roteteb(){//前にずらす関数
+var siteswap;
+var nagasa;
+var kiritori;
+var nokori;
+siteswap = Form1.waza.value;
+nagasa = siteswap.length;
+kiritori = siteswap.charAt(0);
+nokori = siteswap.substr(1,nagasa);
+siteswap = nokori + kiritori;
+Form1.waza.value = siteswap;
+
+}
+function sutika(aa){ //サイトスワップを数値に変換し、配列に格納
+var i;
+var j;
+var x;
+var nagasa;
+var breakPP=0;
+var ssbefor;
+var ssbefor2;
+ssbefor = Form1.waza.value;
+ssbefor2 = Form1.yobi.value;
+if(aa==1){
+nagasa = ssbefor2.length;
+}else{
+nagasa = ssbefor.length;
+}
+for(i=0;i<nagasa;i++){
+if(aa==1){
+x=ssbefor2.charAt(i);
+}else{
+x=ssbefor.charAt(i);
+}
+for(j=0;j<=35;j++){
+if(x==ss[j]){
+if(aa==1){
+kazusi2[i]=j;
+}else{
+kazusi[i]=j;
+}
+breakPP=1;
+break;
+}
+}
+if(breakPP==0 && aa==0){
+alert("サイトスワップが成立していませんよ");
+break;
+}
+breakPP=0;
+}
+}
+function hyouka(aa){ //ジャグリング可能なサイトスワップかどうかを判定
+var i;
+var j;
+var k;
+var owari = 0;
+var su=0;
+var nagasa;
+var ssbefor;
+ssbefor = Form1.waza.value;
+
+nagasa = ssbefor.length;
+for(i=0;i<nagasa;i++){
+su=su+kazusi[i];
+}
+if(su%nagasa!=0){
+owari = 1;
+alert("サイトスワップが成立していません");
+}
+else{
+for(j=0;j<nagasa;j++){
+for(k=0;k<nagasa;k++){
+if(k<=j) continue;
+if(((kazusi[j]+j)%nagasa)==((kazusi[k]+k)%nagasa)){
+owari=1;
+alert("サイトスワップが成立していません");
+break;
+}
+if(owari==1) break;
+
+}
+if(owari==1) break;
+}
+if(owari==0 && aa == 1){
+alert(su/nagasa + "個のサイトスワップです");
+}
+}
+}
+function ikisakihenkan(){//サイトスワップのたどり着く先を求めて行き先の配列に格納
+var nagasa;
+var i;
+var ssbefor;
+ssbefor = Form1.waza.value;
+nagasa = ssbefor.length;
+for (i=0;i<nagasa;i++){
+ikisaki[i] = (kazusi[i]+i+1) % nagasa;
+if (ikisaki[i] == 0){
+ikisaki[i] = nagasa;
+}
+}
+}
+function zouka(aa){//引数の数だけ一番後ろの英数字を増減させる
+var nagasa;
+var i;
+var j;
+var newsiteswap;
+newsiteswap = "";
+sutika(0);
+hyouka();
+nagasa= Form1.waza.value.length;
+ikisakihenkan();
+kazusi[nagasa-1] = kazusi[nagasa-1] + aa;
+if(kazusi[nagasa-1]<36 && kazusi[nagasa-1]>(-1)){
+ikisaki[nagasa-1] = ikisaki[nagasa-1] + aa;
+while(ikisaki[nagasa-1] >= (nagasa+1)){
+ikisaki[nagasa-1] = ikisaki[nagasa-1] - nagasa;
+}
+while(ikisaki[nagasa-1] <= 0){
+ikisaki[nagasa-1] = ikisaki[nagasa-1] + nagasa;
+}
+for(i=0;i<nagasa-1;i++){
+if(ikisaki[i]== ikisaki[nagasa-1]){
+ikisaki[i] = ikisaki[i]-aa;
+kazusi[i] = kazusi[i]-aa;
+if(kazusi[i]>(-1) && kazusi[i]<36){
+for(j=0;j<nagasa;j++){
+newsiteswap= newsiteswap + ss[kazusi[j]];
+}
+Form1.waza.value = newsiteswap;
+}
+else{
+alert("ずらして");
+}
+}
+}
+
+}
+else{
+alert("ずらして");
+}
+
+
+}
+function kosuu(bb){//引数の数だけ道具の数を増減させる
+var nagasa;
+var i;
+var newsiteswap;
+newsiteswap = "";
+sutika(0);
+hyouka();
+nagasa= Form1.waza.value.length;
+kazusi[nagasa-1] = kazusi[nagasa-1] + (nagasa*bb);
+
+if(kazusi[nagasa-1]<36 && kazusi[nagasa-1]>(-1)){
+for(i=0;i<nagasa;i++){
+newsiteswap = newsiteswap+ ss[kazusi[i]];
+}
+Form1.waza.value = newsiteswap;
+}
+else{
+alert("たぶん範囲外");
+}
+}
+function hantei(){//サイトスワップの判定
+sutika(0);
+hyouka(1);
+}
+function nantoka(){//英数字の羅列をサイトスワップに何とか変換する
+var nagasa;
+var i;
+var j;
+var x;
+var y;
+var ana;
+var gosai;
+var newsiteswap;
+ana = 0;
+gosai=0;
+nagasa = Form1.waza.value.length;
+newsiteswap = "";
+sutika(0);
+ikisakihenkan();
+for(i=0;i<nagasa;i++){
+for(j=0;j<nagasa;j++){
+if(ikisaki[i]==ikisaki[j] && (i!=j)){
+ana = 1;
+for(x=1;x<=nagasa;x++){
+ana = 1;
+for(y=0;y<nagasa;y++){
+if(x==ikisaki[y]){
+ana = 0;
+}
+}
+if(ana == 1){
+kazusi[i] = kazusi[i] + (x - ikisaki[i]);
+if(kazusi[i]>35){
+kazusi[i]= kazusi[i]-nagasa;
+if(kazusi[i]<0){
+gosai=5;
+}
+}
+if(kazusi[i]<0){
+kazusi[i]= kazusi[i]+nagasa;
+if(kazusi[i]>35){
+gosai=5;
+}
+}
+ikisaki[i]=x;
+break;
+}
+}
+}
+}
+}
+if(gosai==5){
+alert("よくわかんない(;_;)");
+for(i=0;i<nagasa;i++){
+newsiteswap=newsiteswap+ss[kazusi[1]];
+}
+Form1.waza.value = newsiteswap;
+alert("これでいいよね(^-^)");
+}
+else{
+for(i=0;i<nagasa;i++){
+newsiteswap=newsiteswap+ss[kazusi[i]];
+
+}
+Form1.waza.value = newsiteswap;
+}
+}
+function korenisuru(){//サイトスワップの一番後ろの数字を、テキストボックスに入力した数字に変更する
+var nagasa;
+var henkoumoto;
+var henkousaki;
+var aratanasa;
+var i;
+nagasa = Form1.waza.value.length;
+sutika(0);
+henkoumoto = kazusi[nagasa - 1];
+for(i=0;i<36;i++){
+if(Form1.kore.value == ss[i]){
+henkousaki = i;
+}
+}
+aratanasa = henkousaki - henkoumoto;
+if(nagasa - aratanasa == 0){
+alert("この場合、個数を増やすを実行するのと同じことになります。そちらで対処してください");
+}
+else if(nagasa + aratanasa == 0){
+alert("この場合、個数を減らすを実行するのと同じことになります。そちらで対処してください");
+}
+else{
+
+zouka(aratanasa);
+}
+}
+function tasihikinori(aa){
+var moto;
+moto = parseInt(Form1.nori.value);
+moto = moto + aa;
+if(moto<10 && moto>=0){
+Form1.nori.value = moto;
+}
+}
+function tasihiki(aa){
+var i;
+var motonoatai;
+if(Form1.kore.value.length != 1){
+alert("1文字の英数字(小文字)でお願いします。");
+}
+else{
+for(i=0;i<36;i++){
+if(Form1.kore.value == ss[i]){
+motonoatai = i;
+}
+}
+motonoatai = motonoatai + aa;
+if(motonoatai >= 0 && motonoatai < 36){
+Form1.kore.value = ss[motonoatai];
+}
+else{
+alert("範囲外です");
+}
+}
+}
+function gyakuni(){//逆再生のサイトスワップの生成
+var nagasa;
+var i;
+var j;
+var newss;
+newss = "";
+sutika(0);
+ikisakihenkan();
+nagasa = Form1.waza.value.length;
+for(i=nagasa;i>0;i--){
+for(j=0;j<nagasa;j++){
+if(ikisaki[j]==i){
+newss = newss + ss[kazusi[j]];
+}
+}
+}
+Form1.waza.value = newss;
+}
+//var canvas = document.getElementById('canvassample1');
+//if ( ! canvas || ! canvas.getContext ) {
+// return false;
+//}
+//var ctx = canvas.getContext('2d');
+//ctx.strokeStyle = "rgba(0,0,0,1)";
+// ctx.fillStyle = "rgba(210,210,210,1)";
+// ctx.beginPath();
+// ctx.arc(200,700,20,0,Math.PI*2,true);
+// ctx.fill();
+// ctx.stroke();
+</script>
+</body>
