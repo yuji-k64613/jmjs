@@ -142,7 +142,7 @@ Jmj.prototype.init = function(isInit) {
 				Jmj.IMAGE_HEIGHT + 20);
 		this.image_gc = this.image_pixmap.getGraphics();
 	} else {
-		//@this.imf = Clazz.innerTypeInstance(Jmj.ImageFrame, this, null, this);
+		//@this.imf = Clazz.innerTypeInstance(Jmj.ImageFrame, this, null, this); 
 		this.imf = new Canvas('canvas');
 		//( $t$ = Jmj.Y_OFFSET = 20, Jmj.prototype.Y_OFFSET = Jmj.Y_OFFSET, $t$);
 		Jmj.Y_OFFSET = 20;
@@ -868,7 +868,7 @@ Jmj.prototype.startJuggling = function(index, s) {
 			this.holder.getFormation(this.formation);
 			Jmj.iPerNo = Jmj.iPerMax;
 
-			// Ver1.1.0不具合
+			// Ver1.1.0不具合			
 			// (1)Newタブを選択
 			// (2)「1」を入力して、Juggle
 			// (3)Patternsタブを選択
@@ -1260,7 +1260,7 @@ Jmj.prototype.drawBall = function(bm, x, y, hand, color) {
 		var r = Math.floor(11 * this.dpm / Jmj.DW);
 		x = this.fx(x + this.bm1);
 		y += this.bm1;
-		//this.image_gc.fillOval(x, y, r * 2, r * 2);
+		//this.image_gc.fillOval(x, y, r * 2, r * 2);		
 		this.image_gc.drawImage(bm, x, y);
 	} else {
 		// このルートは未使用
@@ -1639,6 +1639,19 @@ Jmj.prototype.resetCheckBoxValue = function() {
 	this.show_ss = this.controller.ss_box.obj.is(':checked');
 	this.hand_on = this.controller.body_box.obj.is(':checked');
 	this.bSound = this.controller.sound_box.obj.is(':checked');
+};
+
+Jmj.prototype.select_file = function(e) {
+	var input = $('#page4_select_file').get(0).files[0];
+    var reader = new FileReader();
+    reader.addEventListener('load', function(e) {
+    	$.mobile.changePage('#page1');
+    	
+    	var result = reader.result;
+    	Clazz.data = result;
+    	initJmj(e);
+    }, true);
+    reader.readAsText(input, 'UTF-8');
 };
 
 Jmj.prototype.initPage = function(e) {
