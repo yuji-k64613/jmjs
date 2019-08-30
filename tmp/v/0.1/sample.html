@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			.canvas {
+				background: #ffffff;
+				border: 1px solid #cccccc;
+				margin: 0px;
+				padding: 0px;
+          	}
+          	.margin {
+				margin-top: 1.5em;
+          	}
+		</style>
+
+		<script type="text/javascript" src="https://yuji-k64613.github.io/jmjsApi/js/jmjsApi.js" charset="UTF-8" >
+		</script>
+
+		<script type="text/javascript">
+			<!-- 初期化 -->
+			window.onload = function() {
+				initJmj(
+					{
+						// キャンバス
+						canvas: document.getElementById("canvas")
+					}
+				);
+			}
+
+			function startJuggling51(){
+				jmj.startJuggling(
+					{
+						// サイトスワップを指定
+						siteswap: "51",
+						// サイトスワップを非表示
+						showSiteswap: false
+					}
+				);
+			}
+			function startJuggling534(){
+				jmj.startJuggling(
+					{
+						// サイトスワップを指定
+						siteswap: "534",
+						// サイトスワップを表示
+						showSiteswap: true
+					}
+				);
+			}
+		</script>
+		</head>
+	<body>
+		<div align="center">
+			<canvas id="canvas" class="canvas" width="480px" height="400px" />
+		</div>
+
+		<!-- 起動、停止のサンプル -->
+		<div align="center">
+			<input type="button" value="51" onclick='startJuggling51()' />
+			<input type="button" value="534" onclick='startJuggling534()' />
+			<input type="button" value="stop" onclick='jmj.stopJuggling()' />
+		</div>
+	</body>
+</html>

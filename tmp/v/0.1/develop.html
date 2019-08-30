@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			.canvas {
+				background: #ffffff;
+				border: 1px solid #cccccc;
+				margin: 0px;
+				padding: 0px;
+          	}
+          	.margin {
+				margin-top: 1.5em;
+          	}
+		</style>
+
+		<script type="text/javascript" src="./js/Enumeration.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Hashtable.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/HashSet.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Vector.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/BufferedReader.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/StringTokenizer.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Integer.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Float.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Thread.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Component.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Canvas.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Image.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Graphics.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Clazz.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Java.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Resource.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Arm.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Ball.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Jmj.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/PatternHolder.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/JmjController.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/Main.js" charset="UTF-8"></script>
+<!--
+		<script type="text/javascript" src="./js/jmjsApi.js" charset="UTF-8"></script>
+-->
+		<script type="text/javascript">
+			<!-- 初期化 -->
+			window.onload = function() {
+				initJmj(
+					{
+						// キャンバス
+						canvas: document.getElementById("canvas")
+					}
+				);
+			}
+
+			function startJuggling51(){
+				jmj.startJuggling(
+					{
+						// サイトスワップを指定
+						siteswap: "51",
+						// サイトスワップを非表示
+						showSiteswap: false
+					}
+				);
+			}
+			function startJuggling534(){
+				jmj.startJuggling(
+					{
+						// サイトスワップを指定
+						siteswap: "534",
+						// サイトスワップを表示
+						showSiteswap: true
+					}
+				);
+			}
+		</script>
+		</head>
+	<body>
+		<div align="center">
+			<canvas id="canvas" class="canvas" width="480px" height="400px" />
+		</div>
+
+		<!-- 起動、停止のサンプル -->
+		<div align="center">
+			<input type="button" value="51" onclick='startJuggling51()' />
+			<input type="button" value="534" onclick='startJuggling534()' />
+			<input type="button" value="stop" onclick='jmj.stopJuggling()' />
+		</div>
+	</body>
+</html>
