@@ -4384,6 +4384,7 @@ function initJmj(e) {
 	//$('#loading1').hide();
 	//$('#loading2').hide();
 	// @FOO end
+	return jmj;
 }
 
 // @FOO start
