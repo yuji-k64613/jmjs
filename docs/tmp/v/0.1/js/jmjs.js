@@ -2085,8 +2085,6 @@ Jmj.prototype.startJuggling = function(index, s) {
 		if (this.pattInitialize()) {
 			this.removeErrorMessage();
 		} else {
-			if (index != Jmj.SITESWAP_MODE)
-				this.holder.invalidate(index);
 			this.putError("Wrong siteswap", this.pattern);
 			return false;
 		}
@@ -3625,10 +3623,6 @@ PatternHolder.prototype.chooseTrickByName = function(trickName) {
 		}
 	}
 	return -1;
-};
-
-PatternHolder.prototype.invalidate = function(index) {
-	this.patternVector.setElementAt(new PatternHolder.Piece(false, this.patternVector.elementAt(index).name), index);
 };
 
 PatternHolder.prototype.getTail = function(str) {
