@@ -2047,7 +2047,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 			if (index == -1 || !this.holder.isPattern(index))
 				return false;
 */
-			this.holder.getPattern(index);
+			if (!this.holder.getPattern(index)) {
+				return false;
+			}
 			var strs = "";
 			var icnt;
 			for (icnt = 0; icnt < 10; icnt++) {
@@ -2085,8 +2087,6 @@ Jmj.prototype.startJuggling = function(index, s) {
 		if (this.pattInitialize()) {
 			this.removeErrorMessage();
 		} else {
-			if (index != Jmj.SITESWAP_MODE)
-				this.holder.invalidate(index);
 			this.putError("Wrong siteswap", this.pattern);
 			return false;
 		}
@@ -2131,7 +2131,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 		} else if (s != null && s.length == 0 && index >= 0) {
 			// Java版には無い
 			// 前回と同じパターンを選択した場合
-			this.holder.getPattern(index);
+			if (!this.holder.getPattern(index)) {
+				return false;
+			}
 			this.holder.getMotion(this.motion);
 			for (iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
 				this.holder.getMotion2(this.motion2[iCnt], iCnt);
@@ -3625,10 +3627,6 @@ PatternHolder.prototype.chooseTrickByName = function(trickName) {
 		}
 	}
 	return -1;
-};
-
-PatternHolder.prototype.invalidate = function(index) {
-	this.patternVector.setElementAt(new PatternHolder.Piece(false, this.patternVector.elementAt(index).name), index);
 };
 
 PatternHolder.prototype.getTail = function(str) {
