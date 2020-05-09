@@ -2047,7 +2047,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 			if (index == -1 || !this.holder.isPattern(index))
 				return false;
 */
-			this.holder.getPattern(index);
+			if (!this.holder.getPattern(index)) {
+				return false;
+			}
 			var strs = "";
 			var icnt;
 			for (icnt = 0; icnt < 10; icnt++) {
@@ -2129,7 +2131,9 @@ Jmj.prototype.startJuggling = function(index, s) {
 		} else if (s != null && s.length == 0 && index >= 0) {
 			// Java版には無い
 			// 前回と同じパターンを選択した場合
-			this.holder.getPattern(index);
+			if (!this.holder.getPattern(index)) {
+				return false;
+			}
 			this.holder.getMotion(this.motion);
 			for (iCnt = 0; iCnt < Jmj.PERMAX; iCnt++) {
 				this.holder.getMotion2(this.motion2[iCnt], iCnt);
