@@ -1245,7 +1245,7 @@ Ball.OBJECT_MOVE = 0x04;
 Ball.OBJECT_MOVE2 = 0x08;
 
 Ball.jmj = null;
-var Jmj = function() {
+var Jmj = function(e) {
 	// Filed
 	//this.strVer = "2.20__";
 	this.TEST_MODE = false;
@@ -1374,6 +1374,11 @@ var Jmj = function() {
 			18, 16, 16, 18, 0, 18, 12, 15, 23, 17 ];
 
 	this.sbm = new Array();
+
+	Jmj.canvas = e.canvas;
+	this.initCanvas();
+	this.init(true);
+	this.initPage(e);
 };
 
 Jmj.prototype.init = function(isInit) {
