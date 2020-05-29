@@ -4329,66 +4329,6 @@ JmjController.prototype.setLocation = function(x, y) {
 JmjController.prototype.setVisible = function(b) {
 
 };
-var jmj = null;
-function initJmj(e) {
-	// @FOO start
-	Jmj.canvas = e.canvas;
-	// @FOO ebd
-
-	// @FOO start
-	// if (jmj == null){
-	// 	initCanvas();
-	// }
-	// @FOO end
-
-	// @FOO start
-	//// page1のリストを削除
-	//$('#patternList').children().remove();
-	//$('#patternList').show();
-	// @FOO end
-
-	// リストの作成開始のフラグを初期化
-	// @FOO start
-	// if (jmj != null){
-	// 	jmj.controller.patternList.data = null;
-	// }
-
-	// @FOO start
-	//$('#page2_content').show();
-	//$('#page3_content').show();
-	//$('#page4_content').show();
-	// @FOO end
-
-	// @FOO start
-	// if (jmj == null){
-	// 	jmj = new Jmj();
-	// 	jmj.init(true);
-	// }
-	// else {
-	// 	//jmj.openFile('');
-	// 	jmj.init(false);
-	// 	jmj.reload();
-	//
-	// 	if (startPage != 'page1'){
-	// 		var main = $("#main");
-	// 		main.find("div[data-role=collapsible-set]").collapsibleset({refresh:true});
-	// 		main.find("div[data-role=collapsible]").collapsible({refresh:true});
-	// 		main.find("ul[data-role=listview]").listview({refresh:true});
-	// 	}
-	// }
-	jmj = new Jmj();
-	jmj.initCanvas();
-	jmj.init(true);
-	// @FOO end
-	//initPage(e);
-	jmj.initPage(e);
-
-	// @FOO start
-	//$('#loading1').hide();
-	//$('#loading2').hide();
-	// @FOO end
-	return jmj;
-}
 
 // @FOO start
 /*
