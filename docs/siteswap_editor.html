@@ -43,14 +43,15 @@
 	</style>
 
 	<script type="text/javascript">
+        var jmj = null
 		// 初期化
 		window.onload = function() {
-			initJmj(
+            jmj = new Jmj(
 				{
 					// キャンバス
 					canvas: document.getElementById("canvas")
 				}
-			);
+            );
 		}
 		function startJuggling(){
 			siteswap = Form1.waza.value;
